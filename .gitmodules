@@ -1,3 +1,6 @@
 [submodule "submodules/gcc"]
 	path = submodules/gcc
 	url = https://github.com/mirrors/gcc.git
+[submodule "submodules/CodeLite"]
+	path = submodules/CodeLite
+	url = git@github.com:cepr/CodeLite.git
