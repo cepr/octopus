@@ -4,3 +4,6 @@
 [submodule "submodules/CodeLite"]
 	path = submodules/CodeLite
 	url = git@github.com:cepr/CodeLite.git
+[submodule "submodules/simulavr"]
+	path = submodules/simulavr
+	url = git@github.com:cepr/simulavr.git
