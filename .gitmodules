@@ -1,0 +1,3 @@
+[submodule "submodules/gcc"]
+	path = submodules/gcc
+	url = https://github.com/mirrors/gcc.git
