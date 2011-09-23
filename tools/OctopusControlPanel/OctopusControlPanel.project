@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="OctopusControlPanel" InternalType="GUI">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="tools">
+    <VirtualDirectory Name="OctopusControlPanel">
+      <File Name="main_frame_impl.cpp"/>
+      <File Name="main_frame_impl.h"/>
+      <File Name="octopus_control_panel_gui.cpp"/>
+      <File Name="octopus_control_panel_gui.h"/>
+      <File Name="octopus_control_panel_app.cpp"/>
+      <File Name="octopus_control_panel_app.h"/>
+      <File Name="panel_properties_impl.h"/>
+      <File Name="panel_properties_impl.cpp"/>
+      <File Name="dashboard_panel.h"/>
+      <File Name="dashboard_panel.cpp"/>
+      <File Name="dashboard_property.h"/>
+      <File Name="dashboard_property.cpp"/>
+      <File Name="serial_port_property.h"/>
+      <File Name="serial_port_property.cpp"/>
+      <File Name="OctopusControlPanel.fbp"/>
+      <File Name="wx_property_boolean.h"/>
+      <File Name="wx_property_boolean.cpp"/>
+      <File Name="wx_property_number.h"/>
+      <File Name="wx_property_number.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Dependencies Name="Release">
+    <Project Name="OctopusLinux"/>
+  </Dependencies>
+  <Dependencies Name="Debug">
+    <Project Name="OctopusLinux"/>
+  </Dependencies>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="-Wall" C_Options="-Wall">
+        <IncludePath Value="."/>
+        <IncludePath Value="$(WorkspacePath)/libs/common"/>
+        <IncludePath Value="$(WorkspacePath)/libs/linux"/>
+        <Preprocessor Value="__WX__"/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="$(WorkspacePath)/out/OctopusLinux/$(ConfigurationName)"/>
+        <Library Value="OctopusLinux"/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" C_Options="-g;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-mwindows;$(shell wx-config --debug=yes --libs --unicode=yes)" Required="yes">
+        <Library Value="wx_gtk2u_plotctrl-2.8"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;$(shell wx-config --cxxflags --unicode=yes --debug=no)" C_Options="-O2;$(shell wx-config --cxxflags --unicode=yes --debug=no)" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-mwindows;-s;$(shell wx-config --debug=no --libs --unicode=yes)" Required="yes">
+        <Library Value="wx_gtk2u_plotctrl-2.8"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

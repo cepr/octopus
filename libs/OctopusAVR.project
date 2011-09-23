@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="OctopusAVR" InternalType="Library">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="libs">
+    <VirtualDirectory Name="sensors">
+      <VirtualDirectory Name="hmc6352">
+        <File Name="sensors/hmc6352/hmc6352.h"/>
+        <File Name="sensors/hmc6352/hmc6352.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="avr">
+      <VirtualDirectory Name="PrincetonRf">
+        <File Name="avr/PrincetonRf/PrincetonRfEncoder.h"/>
+        <File Name="avr/PrincetonRf/PrincetonRfDecoder.h"/>
+        <File Name="avr/PrincetonRf/PrincetonRfEncoder.cpp"/>
+        <File Name="avr/PrincetonRf/PrincetonRf.h"/>
+        <File Name="avr/PrincetonRf/PrincetonRfDecoder.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="pwm">
+        <File Name="avr/pwm/avr_timer0.cpp"/>
+        <File Name="avr/pwm/avr_timer0.h"/>
+        <File Name="avr/pwm/pwm_channel.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="SwitchingRegulator">
+        <File Name="avr/SwitchingRegulator/SwitchingRegulator.h"/>
+        <File Name="avr/SwitchingRegulator/SwitchingRegulator.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="RfRemote">
+        <File Name="avr/RfRemote/RfRemote.h"/>
+        <File Name="avr/RfRemote/RfRemote.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Timer">
+        <File Name="avr/Timer/timer_listener.h"/>
+        <File Name="avr/Timer/Timer.h"/>
+        <File Name="avr/Timer/Timer.cpp"/>
+        <File Name="avr/Timer/timer_listener.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="ADC">
+        <File Name="avr/ADC/Temperature.h"/>
+        <File Name="avr/ADC/avr_adc_documentation.h"/>
+        <File Name="avr/ADC/AnalogToDigitalConverter.cpp"/>
+        <File Name="avr/ADC/AnalogChannel.cpp"/>
+        <File Name="avr/ADC/AnalogToDigitalConverter.h"/>
+        <File Name="avr/ADC/AnalogChannel.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Range">
+        <File Name="avr/Range/range_listener.h"/>
+        <File Name="avr/Range/lv_max_sonar_ez.cpp"/>
+        <File Name="avr/Range/range_provider.h"/>
+        <File Name="avr/Range/lv_max_sonar_ez.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Blink">
+        <File Name="avr/Blink/Blink.cpp"/>
+        <File Name="avr/Blink/PropertyBlinkEnabled.h"/>
+        <File Name="avr/Blink/Blink.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Robot">
+        <File Name="avr/Robot/Robot.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Servo">
+        <File Name="avr/Servo/Servo.cpp"/>
+        <File Name="avr/Servo/Servo.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="twi">
+        <File Name="avr/twi/AvrTwoWireInterface.h"/>
+        <File Name="avr/twi/AvrTwoWireInterface.cpp"/>
+        <File Name="avr/twi/avr_twi_documentation.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="AvrUsart">
+        <File Name="avr/AvrUsart/UsartBuffer.cpp"/>
+        <File Name="avr/AvrUsart/UsartBuffer.h"/>
+        <File Name="avr/AvrUsart/AvrUsart.h"/>
+        <File Name="avr/AvrUsart/AvrUsart.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Stepper">
+        <File Name="avr/Stepper/Stepper.h"/>
+        <File Name="avr/Stepper/StepperListener.h"/>
+        <File Name="avr/Stepper/AccelerationTable.h"/>
+        <File Name="avr/Stepper/Stepper4B.cpp"/>
+        <File Name="avr/Stepper/Stepper4D.h"/>
+        <File Name="avr/Stepper/Stepper4C.cpp"/>
+        <File Name="avr/Stepper/Stepper4C.h"/>
+        <File Name="avr/Stepper/Stepper.cpp"/>
+        <File Name="avr/Stepper/Stepper4D.cpp"/>
+        <File Name="avr/Stepper/Stepper4B.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="imu">
+        <File Name="avr/imu/inertial_data_listener.h"/>
+        <File Name="avr/imu/imu3000.h"/>
+        <File Name="avr/imu/adxl345.h"/>
+        <File Name="avr/imu/adxl345.cpp"/>
+        <File Name="avr/imu/adxl345_register.cpp"/>
+        <File Name="avr/imu/AccelerationListener.h"/>
+        <File Name="avr/imu/inertial_data_provider.h"/>
+        <File Name="avr/imu/imu3000.cpp"/>
+        <File Name="avr/imu/adxl345_register.h"/>
+      </VirtualDirectory>
+      <File Name="avr/Looper.cpp"/>
+      <File Name="avr/Looper.h"/>
+      <File Name="avr/fatal.h"/>
+      <File Name="avr/AvrFlash.h"/>
+      <File Name="avr/Module.h"/>
+      <File Name="avr/fatal.cpp"/>
+      <File Name="avr/AvrFlash.cpp"/>
+      <File Name="avr/event.h"/>
+      <File Name="avr/event.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="common">
+      <File Name="common/PropertyListener.h"/>
+      <File Name="common/PropertyPacketListener.h"/>
+      <File Name="common/Property.cpp"/>
+      <File Name="common/PropertyPacket.h"/>
+      <File Name="common/RemotePropertyServer.h"/>
+      <File Name="common/property_record.h"/>
+      <File Name="common/PropertyPacket.cpp"/>
+      <File Name="common/RemotePropertyServer.cpp"/>
+      <File Name="common/compass_provider.h"/>
+      <File Name="common/PacketListener.h"/>
+      <File Name="common/Property.h"/>
+      <File Name="common/Usart.cpp"/>
+      <File Name="common/Usart.h"/>
+      <File Name="common/Handler.h"/>
+      <File Name="common/compass_listener.h"/>
+      <File Name="common/Listener.h"/>
+      <File Name="common/i2c_driver.h"/>
+      <File Name="common/i2c_device.h"/>
+      <File Name="common/PropertyAddress.cpp"/>
+      <File Name="common/Packet.h"/>
+      <File Name="common/Packet.cpp"/>
+      <File Name="common/RemoteProperty.h"/>
+      <File Name="common/PropertyAddress.h"/>
+      <File Name="common/UsartListener.h"/>
+      <File Name="common/Object.h"/>
+      <File Name="common/property_data.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L" C_Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L">
+        <IncludePath Value="."/>
+        <IncludePath Value="$(WorkspacePath)/libs/avr"/>
+        <IncludePath Value="$(WorkspacePath)/libs/common"/>
+        <IncludePath Value="/usr/lib/avr/include/"/>
+      </Compiler>
+      <Linker Options="-Os;-Wl,--gc-sections;-mmcu=atmega328p;-Wl,-Map=$(OutDir)/$(ProjectName).map;-Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu avr-g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" C_Options="-g" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu avr-g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="" C_Options="" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
+</CodeLite_Project>

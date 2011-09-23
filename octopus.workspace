@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="octopus-sdk" Database="./octopus-sdk.tags">
+  <Project Name="Eve" Path="robots/Eve/Eve.project" Active="No"/>
+  <Project Name="rp" Path="tools/rp/rp.project" Active="No"/>
+  <Project Name="OctopusControlPanel" Path="tools/OctopusControlPanel/OctopusControlPanel.project" Active="Yes"/>
+  <Project Name="RangeFinder" Path="robots/RangeFinder/RangeFinder.project" Active="No"/>
+  <Project Name="Compass" Path="robots/Compass/Compass.project" Active="No"/>
+  <Project Name="Documentation" Path="doc/Documentation.project" Active="No"/>
+  <Project Name="Template" Path="robots/Template/Template.project" Active="No"/>
+  <Project Name="TwoChannelsCar" Path="robots/TwoChannelsCar/TwoChannelsCar.project" Active="No"/>
+  <Project Name="LoopBack" Path="robots/LoopBack/LoopBack.project" Active="No"/>
+  <Project Name="OctopusAVR" Path="libs/OctopusAVR.project" Active="No"/>
+  <Project Name="OctopusLinux" Path="libs/OctopusLinux.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="TwoChannelsCar" ConfigName="Debug"/>
+      <Project Name="Template" ConfigName="Debug"/>
+      <Project Name="rp" ConfigName="Debug"/>
+      <Project Name="RangeFinder" ConfigName="Debug"/>
+      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
+      <Project Name="OctopusAVR" ConfigName="Debug"/>
+      <Project Name="LoopBack" ConfigName="Debug"/>
+      <Project Name="Eve" ConfigName="Debug"/>
+      <Project Name="Documentation" ConfigName="Debug"/>
+      <Project Name="Compass" ConfigName="Debug"/>
+      <Project Name="OctopusLinux" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="Eve" ConfigName="Release"/>
+      <Project Name="rp" ConfigName="Release"/>
+      <Project Name="OctopusControlPanel" ConfigName="Release"/>
+      <Project Name="RangeFinder" ConfigName="Release"/>
+      <Project Name="Compass" ConfigName="Release"/>
+      <Project Name="Documentation" ConfigName="Debug"/>
+      <Project Name="Template" ConfigName="Release"/>
+      <Project Name="TwoChannelsCar" ConfigName="Release"/>
+      <Project Name="LoopBack" ConfigName="Release"/>
+      <Project Name="OctopusAVR" ConfigName="Release"/>
+      <Project Name="OctopusLinux" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release WIN32" Selected="yes">
+      <Project Name="Eve" ConfigName="Release"/>
+      <Project Name="rp" ConfigName="Debug"/>
+      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
+      <Project Name="RangeFinder" ConfigName="Debug"/>
+      <Project Name="Compass" ConfigName="Debug"/>
+      <Project Name="Documentation" ConfigName="Debug"/>
+      <Project Name="Template" ConfigName="Debug"/>
+      <Project Name="TwoChannelsCar" ConfigName="Debug"/>
+      <Project Name="LoopBack" ConfigName="Debug"/>
+      <Project Name="OctopusAVR" ConfigName="Debug"/>
+      <Project Name="OctopusLinux" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

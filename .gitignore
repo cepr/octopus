@@ -1,0 +1,6 @@
+/out
+*.mk
+octopus.batch_build
+octopus.workspace.session
+octopus-sdk.tags
+
