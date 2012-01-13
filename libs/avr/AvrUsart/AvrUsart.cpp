@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -22,46 +22,136 @@
 #include "AvrUsart.h"
 #include "UsartBuffer.h"
 #include "Handler.h"
-#include "fatal.h"
 #include "Looper.h"
 
-static UsartBuffer mRxBuffer;
-static UsartBuffer mTxBuffer;
-static Handler* mHandler;
+namespace {
+	// Warning: mRxBuffer and mTxBuffer must be accessed with masked interrupts to avoid concurrent access.
+	UsartBuffer mRxBuffer;
+	UsartBuffer mTxBuffer;
+	Handler* mHandler = 0;
 
-//#define CROSS_TEST
+	// Uplink
+	bool isRemoteSuspended = false;		// true if XOFF has been received
+	bool isEscapedBytePending = false;	// true if ESC has been sent, and a XOR must be done on next byte
+	bool isXOFFPending = false;			// true if XOFF must be send as soon as possible
+	bool isXONPending = true;			// true if XON must be send as soon as possible
+	unsigned char mEscapedByte = 0;		// byte to send if isEscapedBytePending is set
+
+	// Downlink
+	bool isLocalSuspended = false; 		// true if we have nothing to send
+	bool isEscapeReceived = false;		// true if ESC has been received
+
+	inline void resetBuffersUnsafe(void) {
+		mRxBuffer.reset();
+		mTxBuffer.reset();
+		isRemoteSuspended = false;
+		isEscapedBytePending = false;
+		isXOFFPending = false;
+		isXONPending = true;
+		isLocalSuspended = false;
+		isEscapeReceived = false;
+		mEscapedByte = 0;
+	}
+
+	inline void resumeTransmission(void) {
+		UCSR0B |= _BV(UDRIE0); // USART Data Register Empty Interrupt Enable
+	}
+
+	inline void suspendTransmission(void) {
+		UCSR0B &= ~_BV(UDRIE0); // USART Data Register Empty Interrupt Enable
+	}
+
+	inline void sendByteUnsafe(unsigned char c) {
+		if (!mTxBuffer.PutChar(c)) {
+			resetBuffersUnsafe();
+			mTxBuffer.PutChar(Usart::NAK);
+		}
+		if (!isRemoteSuspended) {
+			resumeTransmission();
+		}
+	}
+}
 
 /* USART Rx Complete */
 ISR(USART_RX_vect) {
+	
     while(UCSR0A & _BV(RXC0)) {
-#ifdef CROSS_TEST
-		unsigned char tmp = UDR0;
-		UDR0 = tmp;
-#else
-        if (!mRxBuffer.PutChar(UDR0)) {
-            fatal(FATAL_USART_RX_OVERFLOW);
-        }
-#endif
-    }
-    PostEvent(mHandler, 0);
-}
+		unsigned char b = UDR0;
+		if (isEscapeReceived) {
+			// b is a modified data byte
+			b ^= Usart::ESC_XOR_MASK;
+			isEscapeReceived = false;
+		} else if (b < Usart::DATA_MIN_VALUE) {
+			// special command byte
+			switch(b) {
+				case Usart::XON:
+					isRemoteSuspended = false;
+					resumeTransmission();
+					break;
+				case Usart::XOFF:
+					isRemoteSuspended = true;
+					break;
+				case Usart::ESC:
+					isEscapeReceived = true;
+					break;
+				case Usart::NAK:
+					resetBuffersUnsafe();
+					break;
+			}
+			continue;
+		}
 
-static void trysend() {
-    /* Try to send data now if possible */
-    while((UCSR0A & _BV(UDRE0)) && (mTxBuffer.mCount > 0)) {
-        UDR0 = mTxBuffer.GetChar();
+		// Data byte
+		if (mRxBuffer.PutChar(b)) {
+			// Success, check if an XOFF is needed
+			if ((!isLocalSuspended) && (mRxBuffer.mCount >= UsartBuffer::USARTBUFFER_HIGH_THRESHOLD)) {
+				isLocalSuspended = true;
+				isXOFFPending = true;
+				resumeTransmission();
+			}
+		} else {
+			// Buffer overflow: reset buffers and send a NAK
+			resetBuffersUnsafe();
+			sendByteUnsafe(Usart::NAK);
+		}
     }
-    /* If not everything has been send, activate the interrupt */
-    if (mTxBuffer.mCount > 0) {
-        UCSR0B |= _BV(UDRIE0); // USART Data Register Empty Interrupt Enable
-    } else {
-        UCSR0B &=~_BV(UDRIE0); // USART Data Register Empty Interrupt Enable
-    }
+	PostEvent(mHandler, 0);
 }
 
 /* USART, Data Register Empty */
 ISR(USART_UDRE_vect) {
-    trysend();
+    /* Try to send data now if possible */
+	while(UCSR0A & _BV(UDRE0)) {
+		if (isEscapedBytePending) {
+			// The escape byte has been send, we MUST send the escaped data now
+			UDR0 = mEscapedByte ^ Usart::ESC_XOR_MASK;
+			isEscapedBytePending = false;
+		} else if (isXOFFPending) {
+			UDR0 = Usart::XOFF;
+			isXOFFPending = false;
+		} else if (isXONPending) {
+			UDR0 = Usart::XON;
+			isXONPending = false;
+		} else if ((mTxBuffer.mCount > 0) && (!isRemoteSuspended)) {
+			unsigned char c = mTxBuffer.GetChar();
+			if (c < Usart::DATA_MIN_VALUE)
+			{
+				// The byte cannot be send as-is, it must be escaped
+				mEscapedByte = c;
+				isEscapedBytePending = true;
+				UDR0 = Usart::ESC;
+			}
+			else
+			{
+				// The byte can be send as-is
+				UDR0 = c;
+			}
+		} else {
+			/* If everything has been send or if remote is overloaded (XOFF received), deactivate the interrupt */
+			suspendTransmission();
+			break;
+		}
+	}
 }
 
 AvrUsart::AvrUsart(UsartBaudrate baudrate) : Usart() {
@@ -99,18 +189,21 @@ AvrUsart::AvrUsart(UsartBaudrate baudrate) : Usart() {
 }
 
 void AvrUsart::sendByte(unsigned char c) {
-    cli();
-    if (!mTxBuffer.PutChar(c)) {
-        fatal(FATAL_USART_TX_OVERFLOW);
-    }
-    trysend();
-    sei();
+	cli();
+	sendByteUnsafe(c);
+	sei();
 }
 
 void AvrUsart::onEvent(char what) {
     while(mRxBuffer.mCount > 0) {
         cli();
         unsigned char c = mRxBuffer.GetChar();
+		if (isLocalSuspended && (mRxBuffer.mCount <= UsartBuffer::USARTBUFFER_LOW_THRESHOLD)) {
+			// We can receive more bytes now
+			isLocalSuspended = false;
+			isXONPending = true;
+			resumeTransmission();
+		}
         sei();
         if (mListener) {
             mListener->onUsartReceived(c);

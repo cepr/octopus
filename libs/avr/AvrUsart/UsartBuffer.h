@@ -28,10 +28,44 @@ class UsartBuffer {
     int mPutIndex;
     int mGetIndex;
 public:
+	/**
+	 * \brief Constructor.
+	 */
     UsartBuffer();
+
+	/**
+	 * \brief Clear buffer content
+	 */
+	void reset(void);
+
+	/**
+	 * \brief Number of bytes stored in the buffer
+	 */
     unsigned char mCount;
+
+	/**
+	 * \brief Append a byte to the buffer
+	 * \param[in] b Byte to append to the buffer
+	 * \return Returns \a true if successful, \a false otherwise.
+	 */
     bool PutChar(unsigned char b);
+
+	/**
+	 * \brief Returns 
+	 */
     unsigned char GetChar();
+
+	/**
+	 * \brief Buffer full threshold for software flow-control
+	 * Defines the threshold at which an XOFF should be send to suspend transmission
+	 */
+	static const unsigned char USARTBUFFER_HIGH_THRESHOLD = 48;
+
+	/**
+	 * \brief Buffer ready threshold for software flow-control
+	 * Defines the threshold at which an XON should be send to resume transmission
+	 */
+	static const unsigned char USARTBUFFER_LOW_THRESHOLD = 32;
 };
 
 #endif /* USARTBUFFER_H_ */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -24,7 +24,18 @@
 #include "Handler.h"
 
 /**
- * @brief Implementation of Usart class for the USART port of an ATMEGA328P.
+ * @brief USART port of an ATMEGA328P.
+ *
+ * This class is an implementation of Usart class for the ATMEGA328P and similar.
+ *
+ * The communication protocol is as follow:
+ * - baudrate can be choosen
+ * - 8 bits per byte
+ * - no parity
+ * - 1 stop bit
+ * - software flow control XON/XOFF
+ *
+ * It is recommended to use the LinuxSerialPort class to handle the communication protocol correctly.
  */
 class AvrUsart: public Usart, public Handler {
 
@@ -39,18 +50,28 @@ public:
 
 	/**
 	 * @brief Constructor.
-	 * AVR USART is setup as 115200,N,8,1
+	 *
+	 * @param[in] baudrate Baudrate:
+	 *                     - B115200
+	 *                     - B38400
+	 *                     - B9600
+	 *                     - B2400
 	 */
 	AvrUsart(UsartBaudrate baudrate = B115200);
 
 	/**
-	 * @brief Send a single byte on the AVR USART controller.
+	 * @brief Send a single byte to the AVR USART controller.
+	 *
 	 * @param c Byte to send.
 	 */
 	void sendByte(unsigned char c);
 
+private:
+
 	/**
-	 * @copydoc Handler::onEvent()
+	 * @brief Internal event handler.
+	 * 
+	 * @param[in] what Unused
 	 */
 	void onEvent(char what);
 };

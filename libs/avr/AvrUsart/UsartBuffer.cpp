@@ -45,3 +45,10 @@ unsigned char UsartBuffer::GetChar() {
     mCount--;
     return c;
 }
+
+void UsartBuffer::reset(void)
+{
+    mCount = 0;
+    mPutIndex = 0;
+    mGetIndex = 0;
+}
