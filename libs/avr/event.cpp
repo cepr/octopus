@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -27,16 +27,25 @@ Event* Event::mpLastEvent = 0;
 
 Event::Event() {
 	mpNextEvent = 0;
+	isPending = false;
 }
 
 void Event::Post()
 {
 	cli();
-	if (mpLastEvent) {
-		mpLastEvent->mpNextEvent = this;
+	if (!isPending) {
+		// The event is not already pending, we can append it to the list
+		isPending = true;
+		mpNextEvent = 0;
+		if (mpLastEvent) {
+			// The list is not empty, we must modify the last element of the list
+			mpLastEvent->mpNextEvent = this;
+		} else {
+			// The list is empty, we must modify the first element of the list
+			mpFirstEvent = this;
+		}
+		// The last element of the list is this event
 		mpLastEvent = this;
-	} else {
-		mpFirstEvent = this;
 	}
 	sei();
 }
@@ -55,6 +64,7 @@ void Event::startLooper(void) {
 			sei();
 
 			// Call onEvent method
+			ev->isPending = false;
 			ev->onEvent();
 		} else {
 			// No pending event, we can go to sleep

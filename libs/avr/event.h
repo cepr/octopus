@@ -37,10 +37,8 @@ public:
 	/**
 	 * \brief Posts this event to the event queue
 	 *
-	 * This method appends the event to the event queue.
+	 * This method appends the event to the event queue if it is not already pending.
 	 * The event queue looper will call the method #onEvent() in application context.
-	 *
-	 * \warning An event can be present only once in the event queue
 	 */
 	void Post();
 
@@ -73,6 +71,12 @@ private:
 	 * \brief Last event of the linked-list of events
 	 */
 	static class Event* mpLastEvent;
+	
+	/**
+	 * \brief Whether the event is pending or not
+	 * An event is pending if it is present in the linked-list mpFirstEvent..mpNextEvent..mpLastEvent
+	 */
+	bool isPending;
 };
 
 #endif // EVENT_H
