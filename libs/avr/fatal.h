@@ -22,14 +22,24 @@
 
 typedef enum {
 	FATAL_LOOPER_OVERFLOW=1,
-	FATAL_TIMER_CLIENTS_OVERFLOW=2,
-	FATAL_USART_RX_OVERFLOW=3,
-	FATAL_USART_TX_OVERFLOW=4,
-	FATAL_CXA_PURE_VIRTUAL=5,
-	FATAL_PENDING_ADC_OVERFLOW=6,
-	FATAL_DEBUG=7,
+	FATAL_CXA_PURE_VIRTUAL=2,
+	FATAL_PENDING_ADC_OVERFLOW=3,
+	FATAL_USART_RX_OVERRUN=4,
+	FATAL_DEBUG=5,
 } ERRORCODE;
 
-void fatal(ERRORCODE errorcode);
+void fatal(ERRORCODE errorcode) __attribute__ ((noreturn));
+
+/**
+ * @brief Reboot the device
+ *
+ * This function activates de watchdog and waits for the device to reset.
+ */
+void reboot(void) __attribute__ ((noreturn));
+
+/**
+ * @brief Enter the bootloader
+ */
+void enter_boot_loader(void);
 
 #endif /* FATAL_H_ */

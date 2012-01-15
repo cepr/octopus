@@ -102,6 +102,57 @@ public:
 	 * This methods sends a NULL-terminated char string. The NULL character is not send.
 	 */
     void sendString(const char *txt);
+
+	/**
+	 * \brief Enquiry
+	 * Signal intended to trigger a response at the receiving end, to see if it is still present.
+	 */
+	static const unsigned char ENQ = 0x5;
+
+	/**
+	 * \brief Software flow control XON
+	 * Sent to suspend transmission.
+	 */
+	static const unsigned char XON = 0x11;
+
+	/**
+	 * \brief Software flow control XON
+	 * Sent to resume transmission.
+	 */
+	static const unsigned char XOFF = 0x13;
+
+	/**
+	 * \brief Negative Acknowledge
+	 * Sent by a station as a negative response to the station with which the connection has been set up.
+	 * In binary synchronous communication protocol, the NAK is used to indicate that an error was detected
+	 * in the previously received block and that the receiver is ready to accept retransmission of that block.
+	 * In multipoint systems, the NAK is used as the not-ready reply to a poll.
+	 */
+	static const unsigned char NAK = 0x15;
+
+	/**
+	 * \brief Data link escape
+	 */
+	static const unsigned char ESC = 0x1b;
+
+	/**
+	 * \brief AVRDUDE synchronization
+	 * 0x30 is the first byte sent by avrdude to flash a new firmware.
+	 */
+	static const unsigned char AVRDUDE = 0x30;
+
+	/**
+	 * \brief Minimum data byte value
+	 * All non-escaped bytes less than this value are considered as control bytes,
+	 * whereas all bytes equal or higher than this value are considered as data bytes.
+	 * A data byte less than this value should be escaped with \ref Usart#ESC.
+	 */
+	static const unsigned char DATA_MIN_VALUE = 32;
+
+	/**
+	 * \brief XOR mask for escaped bytes
+	 */
+	static const unsigned char ESC_XOR_MASK = 0x80;
 };
 
 #endif /* USART_H_ */

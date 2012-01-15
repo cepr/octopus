@@ -20,6 +20,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <avr/wdt.h>
 
 #include "fatal.h"
 
@@ -36,6 +37,21 @@ void fatal(ERRORCODE errorcode) {
         }
         _delay_ms(1000);
     }
+}
+
+void reboot(void) {
+	cli();
+	// Enable watchdog
+	wdt_enable(WDTO_15MS);
+	for(;;) {
+		// Wait for reboot
+	}
+}
+
+void enter_boot_loader(void) {
+	cli();
+	SREG = 0x00;
+	__asm__ __volatile__ ("jmp 0x3800" ::: "memory");
 }
 
 /**

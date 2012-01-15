@@ -17,6 +17,9 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO An optimization break the code somewhere... need to figure out
+#pragma GCC optimize ("O0")
+
 #include "event.h"
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
@@ -25,13 +28,16 @@
 Event* Event::mpFirstEvent = 0;
 Event* Event::mpLastEvent = 0;
 
-Event::Event() {
-	mpNextEvent = 0;
-	isPending = false;
+Event::Event() :
+		mpNextEvent(0),
+		isPending(false),
+		mWhat(0)
+{
 }
 
 void Event::Post(char what)
 {
+	unsigned char sreg = SREG;
 	cli();
 	mWhat = what;
 	if (!isPending) {
@@ -48,7 +54,7 @@ void Event::Post(char what)
 		// The last element of the list is this event
 		mpLastEvent = this;
 	}
-	sei();
+	SREG = sreg;
 }
 
 void Event::startLooper(void) {

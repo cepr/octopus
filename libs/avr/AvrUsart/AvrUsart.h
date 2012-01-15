@@ -21,7 +21,7 @@
 #define AVRUSART_H_
 
 #include "Usart.h"
-#include "Handler.h"
+#include "event.h"
 
 /**
  * @brief USART port of an ATMEGA328P.
@@ -37,12 +37,13 @@
  *
  * It is recommended to use the LinuxSerialPort class to handle the communication protocol correctly.
  */
-class AvrUsart: public Usart, public Handler {
+class AvrUsart: public Usart, public Event {
 
 public:
 
 	typedef enum {
 		B115200,
+		B57600,
 		B38400,
 		B9600,
 		B2400
@@ -53,11 +54,12 @@ public:
 	 *
 	 * @param[in] baudrate Baudrate:
 	 *                     - B115200
+	 *                     - B57600
 	 *                     - B38400
 	 *                     - B9600
 	 *                     - B2400
 	 */
-	AvrUsart(UsartBaudrate baudrate = B115200);
+	AvrUsart(UsartBaudrate baudrate = B57600);
 
 	/**
 	 * @brief Send a single byte to the AVR USART controller.

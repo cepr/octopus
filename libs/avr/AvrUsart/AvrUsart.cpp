@@ -21,20 +21,20 @@
 #include <avr/interrupt.h>
 #include "AvrUsart.h"
 #include "UsartBuffer.h"
-#include "Handler.h"
-#include "Looper.h"
+#include "fatal.h"
 
 namespace {
 	// Warning: mRxBuffer and mTxBuffer must be accessed with masked interrupts to avoid concurrent access.
 	UsartBuffer mRxBuffer;
 	UsartBuffer mTxBuffer;
-	Handler* mHandler = 0;
+	Event* mEvent = 0;
 
 	// Uplink
 	bool isRemoteSuspended = false;		// true if XOFF has been received
 	bool isEscapedBytePending = false;	// true if ESC has been sent, and a XOR must be done on next byte
 	bool isXOFFPending = false;			// true if XOFF must be send as soon as possible
 	bool isXONPending = true;			// true if XON must be send as soon as possible
+	bool isNAKPending = false;			// true if NAK must be send as soon as possible
 	unsigned char mEscapedByte = 0;		// byte to send if isEscapedBytePending is set
 
 	// Downlink
@@ -48,6 +48,7 @@ namespace {
 		isEscapedBytePending = false;
 		isXOFFPending = false;
 		isXONPending = true;
+		isNAKPending = false;
 		isLocalSuspended = false;
 		isEscapeReceived = false;
 		mEscapedByte = 0;
@@ -64,7 +65,8 @@ namespace {
 	inline void sendByteUnsafe(unsigned char c) {
 		if (!mTxBuffer.PutChar(c)) {
 			resetBuffersUnsafe();
-			mTxBuffer.PutChar(Usart::NAK);
+			isNAKPending = true;
+			resumeTransmission();
 		}
 		if (!isRemoteSuspended) {
 			resumeTransmission();
@@ -74,14 +76,21 @@ namespace {
 
 /* USART Rx Complete */
 ISR(USART_RX_vect) {
-	
+
     while(UCSR0A & _BV(RXC0)) {
+		// At first we check for data overrun
+		if (UCSR0A & _BV(DOR0)) {
+			fatal(FATAL_USART_RX_OVERRUN);
+		}
+
+		// Get the received byte
 		unsigned char b = UDR0;
+
 		if (isEscapeReceived) {
 			// b is a modified data byte
 			b ^= Usart::ESC_XOR_MASK;
 			isEscapeReceived = false;
-		} else if (b < Usart::DATA_MIN_VALUE) {
+		} else if ((b < Usart::DATA_MIN_VALUE) || (b == Usart::AVRDUDE)) {
 			// special command byte
 			switch(b) {
 				case Usart::XON:
@@ -96,6 +105,9 @@ ISR(USART_RX_vect) {
 					break;
 				case Usart::NAK:
 					resetBuffersUnsafe();
+					break;
+				case Usart::AVRDUDE:
+					enter_boot_loader();
 					break;
 			}
 			continue;
@@ -112,10 +124,12 @@ ISR(USART_RX_vect) {
 		} else {
 			// Buffer overflow: reset buffers and send a NAK
 			resetBuffersUnsafe();
-			sendByteUnsafe(Usart::NAK);
+			isNAKPending = true;
+			resumeTransmission();
 		}
     }
-	PostEvent(mHandler, 0);
+
+	mEvent->Post(0);
 }
 
 /* USART, Data Register Empty */
@@ -126,6 +140,9 @@ ISR(USART_UDRE_vect) {
 			// The escape byte has been send, we MUST send the escaped data now
 			UDR0 = mEscapedByte ^ Usart::ESC_XOR_MASK;
 			isEscapedBytePending = false;
+		} else if (isNAKPending) {
+			UDR0 = Usart::NAK;
+			isNAKPending = false;
 		} else if (isXOFFPending) {
 			UDR0 = Usart::XOFF;
 			isXOFFPending = false;
@@ -134,7 +151,7 @@ ISR(USART_UDRE_vect) {
 			isXONPending = false;
 		} else if ((mTxBuffer.mCount > 0) && (!isRemoteSuspended)) {
 			unsigned char c = mTxBuffer.GetChar();
-			if (c < Usart::DATA_MIN_VALUE)
+			if ((c < Usart::DATA_MIN_VALUE) || (c == Usart::AVRDUDE))
 			{
 				// The byte cannot be send as-is, it must be escaped
 				mEscapedByte = c;
@@ -155,13 +172,17 @@ ISR(USART_UDRE_vect) {
 }
 
 AvrUsart::AvrUsart(UsartBaudrate baudrate) : Usart() {
-    mHandler = this;
+    mEvent = this;
 
 	switch(baudrate) {
 #if (F_CPU == 8000000L)
 		case B115200:
 			UCSR0A = _BV(U2X0);
 			UBRR0 = 8;
+			break;
+		case B57600:
+			UCSR0A = _BV(U2X0);
+			UBRR0 = 16;
 			break;
 		case B38400:
 			UCSR0A = 0;
@@ -181,11 +202,12 @@ AvrUsart::AvrUsart(UsartBaudrate baudrate) : Usart() {
 	}
 
     /* Set options, stop bits, etc */
+    UCSR0C = _BV(UCSZ01) | // 8 bits, 1 stop bit, no parity
+             _BV(UCSZ00);
     UCSR0B = _BV(RXCIE0) | // RX Complete Interrupt Enable
+			 _BV(UDRIE0) | // USART Data Register Empty Interrupt Enable
              _BV(RXEN0)  | // Receiver Enable
              _BV(TXEN0);   // Transmitter Enable
-    UCSR0C = _BV(UCSZ01) |
-             _BV(UCSZ00);
 }
 
 void AvrUsart::sendByte(unsigned char c) {
