@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -20,7 +20,7 @@
 #ifndef BLINK_H_
 #define BLINK_H_
 
-#include "Timer/timer_listener.h"
+#include "Timer/system_timer.h"
 #include "property_record.h"
 #include "property_data.h"
 
@@ -31,19 +31,6 @@
  * (GPIO B5 of ATMEGA328) blink at a 2 seconds period.
  */
 class Blink: public PropertyRecord, public PropertyListener {
-
-private:
-    char mRequestId;
-
-	class Timer: public TimerListener {
-	public:
-		Timer(Blink *parent);
-		void onTimer(char what);
-	private:
-		Blink* mParent;
-		unsigned short mTimeMs;
-	};
-	Timer mTimer;
 
 public:
     /**
@@ -56,7 +43,7 @@ public:
 
     class PropertyBlinkEnabled : public PropertyBoolean {
     private:
-        const char* getName() {return "enabled";}
+        const char* getName() const {return "enabled";}
         const char* getDescription() {return "";}
         PropertyListener* mListener;
         void setValue(const PROPERTY_VALUE & value) {
@@ -81,8 +68,20 @@ public:
     PropertyBlinkEnabled mEnabled;
 
 private:
+    char mRequestId;
+
+	class Timer: public SystemTimer {
+	public:
+		Timer(Blink *parent);
+		void onTimerLISR(unsigned short when, char what);
+	private:
+		Blink* mParent;
+		unsigned short mTimeMs;
+	};
+	Timer mTimer;
+
     // PropertyRecord pure virtual functions
-	const char* getName() { return "Blink"; }
+	const char* getName() const { return "Blink"; }
 	const char* getDescription() { return "LED blinking"; }
     Property* getChild(unsigned char index);
 

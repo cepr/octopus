@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -19,8 +19,9 @@
 
 #include <avr/io.h>
 #include "Blink.h"
+#include "fatal.h"
 
-Blink::Blink() : mTimer(this), mEnabled(this) {
+Blink::Blink() : mEnabled(this), mTimer(this) {
     DDRB |= _BV(DDB5);
     mRequestId = 0;
 }
@@ -29,11 +30,11 @@ Blink::Timer::Timer(Blink* parent) : mParent(parent) {
 	mTimeMs = 0;
 }
 
-void Blink::Timer::onTimer(char what) {
+void Blink::Timer::onTimerLISR(unsigned short when, char what) {
 	// In order to only take into account the last call to setEnabled(), we
 	// check if this timer was scheduled from the same instance.
 	if (what == mParent->mRequestId) {
-		schedule(now()+1000, what);
+		scheduleUnsafe(when+1000, what);
 		mTimeMs++;
 		if (mTimeMs == 1000) {
 			PORTB ^= _BV(PORTB5);
@@ -52,7 +53,9 @@ Property* Blink::getChild(unsigned char index) {
 void Blink::onPropertyChanged(class Property* prop) {
 	mRequestId++;
 	if (mEnabled) {
-		mTimer.onTimer(mRequestId);
+		cli();
+		mTimer.onTimerLISR(SystemTimer::now(), mRequestId);
+		sei();
 	} else {
 		// We do not need to stop the timer, onTimer will detect that
 		// mRequestId has changed, and will not reschedule.
