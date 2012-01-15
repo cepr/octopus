@@ -37,17 +37,12 @@ public:
 	/**
 	 * \brief Posts this event to the event queue
 	 *
+	 * \param[in] what User parameter
+	 *
 	 * This method appends the event to the event queue if it is not already pending.
 	 * The event queue looper will call the method #onEvent() in application context.
 	 */
-	void Post();
-
-	/**
-	 * \brief Virtual event handler
-	 *
-	 * Implement this method in order to handle the event.
-	 */
-	virtual void onEvent()=0;
+	void Post(char what = 0);
 
 	/**
 	 * \brief Starts the event queue looper
@@ -57,6 +52,15 @@ public:
 	static void startLooper(void);
 
 private:
+	/**
+	 * \brief Virtual event handler
+	 *
+	 * \param[in] what User parameter
+	 *
+	 * Implement this method in order to handle the event.
+	 */
+	virtual void onEvent(char what)=0;
+
 	/**
 	 * \brief First event of the linked-list of events
 	 */
@@ -77,6 +81,11 @@ private:
 	 * An event is pending if it is present in the linked-list mpFirstEvent..mpNextEvent..mpLastEvent
 	 */
 	bool isPending;
+
+	/**
+	 * \brief User parameter
+	 */
+	char mWhat;
 };
 
 #endif // EVENT_H

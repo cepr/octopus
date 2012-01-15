@@ -30,9 +30,10 @@ Event::Event() {
 	isPending = false;
 }
 
-void Event::Post()
+void Event::Post(char what)
 {
 	cli();
+	mWhat = what;
 	if (!isPending) {
 		// The event is not already pending, we can append it to the list
 		isPending = true;
@@ -61,11 +62,12 @@ void Event::startLooper(void) {
 				// List is empty
 				mpLastEvent = 0;
 			}
+			ev->isPending = false;
+			char what = ev->mWhat;
 			sei();
 
 			// Call onEvent method
-			ev->isPending = false;
-			ev->onEvent();
+			ev->onEvent(what);
 		} else {
 			// No pending event, we can go to sleep
 //			set_sleep_mode(SLEEP_MODE_IDLE);
