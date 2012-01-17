@@ -20,12 +20,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+
 #include <avr/wdt.h>
 
 #include "fatal.h"
 
 void fatal(ERRORCODE errorcode) {
     cli();
+	wdt_disable();
     DDRB |= _BV(5);
     for(;;) {
         char i;

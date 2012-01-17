@@ -92,12 +92,15 @@ void SystemTimer::cancelUnsafe(void) {
 
 }
 
-void SystemTimer::scheduleUnsafe(unsigned short when, char what) {
+void SystemTimer::schedule(unsigned short when, char what) {
 
 	// We anticipate the wakeup and interrupt treatment
 	when -= TIMER_OVERHEAD;
 
 	unsigned short _now = now();
+
+	unsigned char sreg = SREG;
+	cli();
 
 	cancelUnsafe();
 	mTimerWhen = when;
@@ -139,4 +142,6 @@ void SystemTimer::scheduleUnsafe(unsigned short when, char what) {
 		}
 	}
 
+	// Restore interrupt mask
+	SREG = sreg;
 }

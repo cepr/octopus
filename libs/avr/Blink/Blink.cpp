@@ -34,7 +34,7 @@ void Blink::Timer::onTimerLISR(unsigned short when, char what) {
 	// In order to only take into account the last call to setEnabled(), we
 	// check if this timer was scheduled from the same instance.
 	if (what == mParent->mRequestId) {
-		scheduleUnsafe(when+1000, what);
+		schedule(when+1000, what);
 		mTimeMs++;
 		if (mTimeMs == 1000) {
 			PORTB ^= _BV(PORTB5);

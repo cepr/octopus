@@ -51,32 +51,8 @@ public:
 	 * Call this method to trigger a timer event. The method #onTimerLISR() will be called
 	 * to trigger this timer event.
 	 * Any pending scheduling of this timer will be replaced by this new one.
-	 *
-	 * \warning This method must be called with enabled interrupt.
-	 *
-	 * \see #scheduleUnsafe()
 	 */
-	inline void schedule(unsigned short when, char what = 0) {
-		cli();
-		scheduleUnsafe(when, what);
-		sei();
-	}
-
-	/**
-	 * \brief Schedules the timer
-	 *
-	 * \param[in] when Timer event absolute time in microseconds. It should not be higher than now() + MAX_DELAY.
-	 * \param[in] what User parameter to pass to #onTimerLISR().
-	 *
-	 * Call this method to trigger a timer event. The method #onTimerLISR() will be called
-	 * to trigger this timer event.
-	 * Any pending scheduling of this timer will be replaced by this new one.
-	 *
-	 * \warning This method must be called with masked interrupt.
-	 *
-	 * \see #schedule()
-	 */
-	void scheduleUnsafe(unsigned short when, char what = 0);
+	void schedule(unsigned short when, char what = 0);
 
 	/**
 	 * \brief Maximum delay of a timer event in microseconds

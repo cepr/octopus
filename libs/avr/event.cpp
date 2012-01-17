@@ -17,9 +17,6 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO An optimization break the code somewhere... need to figure out
-#pragma GCC optimize ("O0")
-
 #include "event.h"
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
@@ -60,7 +57,7 @@ void Event::Post(char what)
 void Event::startLooper(void) {
 	// For ad vitam aeternam:
 	for(;;) {
-		if (mpFirstEvent) {
+		if (const_cast<volatile Event*>(mpFirstEvent)) {
 			// Remove first event from list
 			cli();
 			Event* ev = mpFirstEvent;
@@ -76,10 +73,10 @@ void Event::startLooper(void) {
 			ev->onEvent(what);
 		} else {
 			// No pending event, we can go to sleep
-//			set_sleep_mode(SLEEP_MODE_IDLE);
-//          sleep_enable();
-//          sleep_cpu();
-//          sleep_disable();
+			set_sleep_mode(SLEEP_MODE_IDLE);
+			sleep_enable();
+			sleep_cpu();
+			sleep_disable();
 		}
 	}
 }

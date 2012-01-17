@@ -51,7 +51,7 @@ private:
 
 	class Throttle : public PropertyS8 {
 	private:
-		const char* getName() {	return "Throttle"; }
+		const char* getName() const  { return "Throttle"; }
 		const char* getDescription() { return "Throttle"; }
         void setValue(const PROPERTY_VALUE & value) {
             operator=(value.s8);
@@ -81,7 +81,7 @@ private:
 
 	class Direction : public PropertyS8 {
 	private:
-		const char* getName() { return "Direction"; }
+		const char* getName() const { return "Direction"; }
 		const char* getDescription() { return "Direction"; }
         void setValue(const PROPERTY_VALUE & value) {
             operator=(value.s8);
@@ -121,7 +121,7 @@ public:
                  // Modules
                  mBlink(),
                  // Remote control
-                 mAvrUsart(AvrUsart::B9600),
+                 mAvrUsart(AvrUsart::B57600),
                  mPacket(&mAvrUsart),
                  mBridge(&mPacket),
                  mServer(this, &mBridge)
@@ -147,7 +147,7 @@ public:
     }
 
     // Property definition
-	const char* getName() {
+	const char* getName() const {
         return "TwoChannelsCar";
     }
 
@@ -172,5 +172,11 @@ public:
     }
 };
 
-static TwoChannelsCar myRobot;
-Robot* gRobot = &myRobot;
+static TwoChannelsCar gTwoChannelsCar;
+
+int main(void)
+{
+	gTwoChannelsCar.onStart();
+	Event::startLooper();
+	return 0;
+}
