@@ -48,14 +48,45 @@
  */
 
 	/**
-	 * \defgroup COM_STACK Communication stack
+	 * \defgroup COM_STACK Octopus Communication Stack
 	 * \dot
 	 *   digraph G {
-	 *     node [ shape=record, fontname=Helvetica, fontsize=10 ];
-	 *     
-	 *     Packet [ label="class Packet" URL="\ref Packet" ];
-	 *     Usart [ label="class Usart" URL="\ref Usart" ];
-	 *     Packet -> Usart;
+	 *
+     *     ranksep=0.3;
+     *
+     *     // OSI layers
+     *     node [ style="", shape=plaintext, fontsize=9 ];
+     *     Layer1         [ label="Layer 1: physical layer", URL="http://en.wikipedia.org/wiki/Physical_layer" ];
+     *     Layer2         [ label="Layer 2: data link layer", URL="http://en.wikipedia.org/wiki/Data_link_layer" ];
+     *
+     *     // Titles
+     *     node [ style="", shape=plaintext, fontsize=12 ];
+     *     Title1         [ label="Slave device" ];
+     *     Title2         [ label="Master device" ];
+     *
+     *     // Components
+     *     node [ style="filled", fillcolor=wheat, shape=component, fontsize=10, width=3 ];
+     *     LocalProperty    [ label="LocalProperty",    URL="\ref LocalProperty"    ];
+     *     Packet1          [ label="Packet",           URL="\ref Packet"           ];
+     *     Usart1           [ label="Usart",            URL="\ref Usart"            ];
+     *     RemoteProperty   [ label="RemoteProperty",   URL="\ref RemoteProperty"   ];
+     *     Packet2          [ label="Packet",           URL="\ref Packet"           ];
+     *     Usart2           [ label="Usart",            URL="\ref Usart"            ];
+	 *
+     *     { rank=same; Title1; Title2; }
+     *     { rank=same; LocalProperty; RemoteProperty; }
+     *     { rank=same; Layer2; Packet1; Packet2; }
+     *     { rank=same; Layer1; Usart1; Usart2; }
+     *
+     *     edge [ style=invis ];
+     *     Title1 -> LocalProperty;
+	 *     Title2 -> RemoteProperty;
+     *
+     *     edge [ style=solid, arrowhead=odot, fontsize=8 ];
+     *     LocalProperty    -> Packet1  [ label="PacketListener", URL="\ref PacketListener" ];
+     *     Packet1          -> Usart1   [ label="UsartListener",  URL="\ref UsartListener"  ];
+     *     RemoteProperty   -> Packet2  [ label="PacketListener", URL="\ref PacketListener" ];
+     *     Packet2          -> Usart2   [ label="UsartListener",  URL="\ref UsartListener"  ];
 	 *   }
 	 * \enddot
 	 */
