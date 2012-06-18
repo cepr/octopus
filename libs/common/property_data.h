@@ -20,14 +20,14 @@
 #ifndef PROPERTYDATA_H
 #define PROPERTYDATA_H
 
-#include "Property.h" // Base class: Property
+#include "local_property.h"
 
 /**
  * \brief Base abstract class for all properties containing a data variable, as opposite to a PropertyRecord.
  * \see PropertyBoolean, PropertyU8, PropertyS8, PropertyU16, PropertyS16.
  */
 template <class T> 
-class PropertyData : public Property {
+class PropertyData : public LocalProperty {
 
 protected:
     T mValue;
@@ -36,7 +36,7 @@ protected:
 	/**
 	 * \brief Constructor.
 	 */
-	PropertyData(T value) : mValue(value) {
+	PropertyData(T value, Packet* packet) : LocalProperty(packet), mValue(value) {
     }
 
 private:
@@ -68,7 +68,7 @@ public:
  */
 class PropertyBoolean: public PropertyData<bool> {
 public:
-    PropertyBoolean(bool value = false) : PropertyData<bool>(value){}
+    PropertyBoolean(bool value, Packet* packet) : PropertyData<bool>(value, packet){}
     PROPERTY_TYPE getType() { return PROPERTY_TYPE_BOOL; }
     void getValue(PROPERTY_VALUE & value) { value.boolean = mValue; }
     virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.boolean; }
@@ -84,7 +84,7 @@ public:
  */
 class PropertyU8: public PropertyData<unsigned char> {
 public:
-    PropertyU8(unsigned char value = 0) : PropertyData<unsigned char>(value){}
+    PropertyU8(unsigned char value, Packet* packet) : PropertyData<unsigned char>(value, packet){}
     PROPERTY_TYPE getType() { return PROPERTY_TYPE_U8; }
     void getValue(PROPERTY_VALUE & value) { value.u8 = mValue; }
     virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.u8; }
@@ -100,7 +100,7 @@ public:
  */
 class PropertyS8: public PropertyData<signed char> {
 public:
-    PropertyS8(signed char value = 0) : PropertyData<signed char>(value){}
+    PropertyS8(signed char value, Packet* packet) : PropertyData<signed char>(value, packet){}
     PROPERTY_TYPE getType() { return PROPERTY_TYPE_S8; }
     void getValue(PROPERTY_VALUE & value) { value.s8 = mValue; }
     virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.s8; }
@@ -116,7 +116,7 @@ public:
  */
 class PropertyU16: public PropertyData<unsigned short> {
 public:
-    PropertyU16(unsigned short value = 0) : PropertyData<unsigned short>(value){}
+    PropertyU16(unsigned short value, Packet* packet) : PropertyData<unsigned short>(value, packet){}
     PROPERTY_TYPE getType() { return PROPERTY_TYPE_U16; }
     void getValue(PROPERTY_VALUE & value) { value.u16 = mValue; }
     virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.u16; }
@@ -132,7 +132,7 @@ public:
  */
 class PropertyS16: public PropertyData<signed short> {
 public:
-    PropertyS16(signed short value = 0) : PropertyData<signed short>(value){}
+    PropertyS16(signed short value, Packet* packet) : PropertyData<signed short>(value, packet){}
     PROPERTY_TYPE getType() { return PROPERTY_TYPE_S16; }
     void getValue(PROPERTY_VALUE & value) { value.s16 = mValue; }
     virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.s16; }

@@ -10,9 +10,6 @@
   <VirtualDirectory Name="src">
     <File Name="Eve.cpp"/>
   </VirtualDirectory>
-  <VirtualDirectory Name="include">
-    <File Name="Eve.h"/>
-  </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L" C_Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L">
@@ -85,10 +82,10 @@
       </AdditionalRules>
     </Configuration>
   </Settings>
-  <Dependencies Name="Release">
+  <Dependencies Name="Debug">
     <Project Name="OctopusAVR"/>
   </Dependencies>
-  <Dependencies Name="Debug">
+  <Dependencies Name="Release">
     <Project Name="OctopusAVR"/>
   </Dependencies>
 </CodeLite_Project>

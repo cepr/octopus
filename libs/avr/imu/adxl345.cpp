@@ -19,7 +19,7 @@
 
 #include "adxl345.h"
 
-Adxl345::Adxl345()/* : mRegDEVID(REG_DEVID)*/ {
+Adxl345::Adxl345(Packet* packet) : PropertyRecord(packet) /*mRegDEVID(REG_DEVID)*/ {
 }
 
 Adxl345::~Adxl345() {
@@ -29,7 +29,7 @@ const char* Adxl345::getDescription() {
     return "Accelerometer";
 }
 
-const char* Adxl345::getName() {
+const char* Adxl345::getName() const {
     return "ADXL345";
 }
 Property* Adxl345::getChild(unsigned char index) {

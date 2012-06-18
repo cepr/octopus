@@ -55,13 +55,13 @@ bool PropertyAddress::isEqual(PropertyAddress *addr) {
 			);
 }
 
-PropertyAddress::PropertyAddress(PropertyAddress* parent, unsigned char* data, char size) :
+PropertyAddress::PropertyAddress(const PropertyAddress* parent, unsigned char* data, char size) :
 	mParent(parent),
 	mData(data),
 	mSize(size) {
 }
 
-PropertyAddress* PropertyAddress::getChild(unsigned char addr) {
+PropertyAddress* PropertyAddress::getChild(unsigned char addr) const {
 	unsigned char* data = new unsigned char[mSize + 1];
 	if (mSize > 0 ) {
 		memcpy(data, mData, mSize);
@@ -70,6 +70,6 @@ PropertyAddress* PropertyAddress::getChild(unsigned char addr) {
 	return new PropertyAddress(this, data, mSize+1);
 }
 
-PropertyAddress* PropertyAddress::getParent() {
+const PropertyAddress* PropertyAddress::getParent() {
 	return mParent;
 }

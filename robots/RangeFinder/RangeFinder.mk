@@ -7,19 +7,19 @@ ProjectName            :=RangeFinder
 ConfigurationName      :=Debug
 IntermediateDirectory  :=../../out/$(ProjectName)/$(ConfigurationName)
 OutDir                 := $(IntermediateDirectory)
-WorkspacePath          := "/home/cedric/octopus/src"
-ProjectPath            := "/home/cedric/octopus/src/robots/RangeFinder"
+WorkspacePath          := "/home/cedric/octopus/git/octopus"
+ProjectPath            := "/home/cedric/octopus/git/octopus/robots/RangeFinder"
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Cédric
-Date                   :=18/09/2011
+Date                   :=18/06/2012
 CodeLitePath           :="/home/cedric/.codelite"
 LinkerName             :=avr-g++
-ArchiveTool            :=avr-ar rcus
+ArchiveTool            :=ar rcus
 SharedObjectLinkerName :=avr-g++ -shared -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=.d
+DependSuffix           :=
 PreprocessSuffix       :=.o.i
 DebugSwitch            :=-gstab
 IncludeSwitch          :=-I
@@ -35,14 +35,16 @@ Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E 
-ObjectsFileList        :="/home/cedric/octopus/src/robots/RangeFinder/RangeFinder.txt"
+ObjectsFileList        :="/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.txt"
+PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
 CmpOptions             :=-Wall -Os -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
 C_CmpOptions           :=-Wall -Os -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
 LinkOptions            := -Os -Wl,--gc-sections -mmcu=atmega328p -Wl,-Map=$(OutDir)/$(ProjectName).map -Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x 
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)$(WorkspacePath)/libs/avr $(IncludeSwitch)$(WorkspacePath)/libs/common 
-RcIncludePath          :=
-Libs                   :=$(LibrarySwitch)OctopusAVR 
+IncludePCH             := 
+RcIncludePath          := 
+Libs                   := $(LibrarySwitch)OctopusAVR 
 LibPath                := $(LibraryPathSwitch)$(WorkspacePath)/out/OctopusAVR/$(ConfigurationName) 
 
 
@@ -56,19 +58,27 @@ Objects=$(IntermediateDirectory)/RangeFinder$(ObjectSuffix)
 ##
 ## Main Build Targets 
 ##
+.PHONY: all clean PreBuild PrePreBuild PostBuild
 all: $(OutputFile)
 
-$(OutputFile): makeDirStep $(Objects)
+$(OutputFile): $(IntermediateDirectory)/.d ../../.build-debug/OctopusAVR $(Objects) 
 	@$(MakeDirCommand) $(@D)
-	$(LinkerName) $(OutputSwitch)$(OutputFile) $(Objects) $(LibPath) $(Libs) $(LinkOptions)
+	@echo "" > $(IntermediateDirectory)/.d
+	@echo $(Objects) > $(ObjectsFileList)
+	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+../../.build-debug/OctopusAVR:
+	@echo stam > "../../.build-debug/OctopusAVR"
+
+
+
+
+PostBuild:
 	@echo Executing Post Build commands ...
 	avr-objcopy -O ihex -R .eeprom $(OutDir)/$(ProjectName).out $(OutDir)/$(ProjectName).hex
 	@echo Done
 
-objects_file:
-	@echo $(Objects) > $(ObjectsFileList)
-
-makeDirStep:
+$(IntermediateDirectory)/.d:
 	@test -d ../../out/$(ProjectName)/$(ConfigurationName) || $(MakeDirCommand) ../../out/$(ProjectName)/$(ConfigurationName)
 
 PreBuild:
@@ -77,16 +87,11 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/RangeFinder$(ObjectSuffix): RangeFinder.cpp $(IntermediateDirectory)/RangeFinder$(DependSuffix)
-	$(CompilerName) $(SourceSwitch) "/home/cedric/octopus/src/robots/RangeFinder/RangeFinder.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/RangeFinder$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/RangeFinder$(DependSuffix): RangeFinder.cpp
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/RangeFinder$(ObjectSuffix) -MF$(IntermediateDirectory)/RangeFinder$(DependSuffix) -MM "/home/cedric/octopus/src/robots/RangeFinder/RangeFinder.cpp"
-
+$(IntermediateDirectory)/RangeFinder$(ObjectSuffix): RangeFinder.cpp 
+	$(CompilerName) $(IncludePCH) $(SourceSwitch) "/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/RangeFinder$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix): RangeFinder.cpp
-	@$(CompilerName) $(CmpOptions) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix) "/home/cedric/octopus/src/robots/RangeFinder/RangeFinder.cpp"
+	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix) "/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.cpp"
 
-
--include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##
@@ -95,5 +100,6 @@ clean:
 	$(RM) $(IntermediateDirectory)/RangeFinder$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix)
 	$(RM) $(OutputFile)
+	$(RM) "/home/cedric/octopus/git/octopus/.build-debug/RangeFinder"
 
 

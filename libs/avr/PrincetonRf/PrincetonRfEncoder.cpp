@@ -75,10 +75,10 @@ void PrincetonRfEncoder::send(tristate address, tristate data) {
     mIndex = 0;
     mRepeat = 50;
     mCode++;
-    onTimer(mCode, now());
+    onTimerLISR(mCode, now());
 }
 
-void PrincetonRfEncoder::onTimer(unsigned short when, char what) {
+void PrincetonRfEncoder::onTimerLISR(unsigned short when, char what) {
     if (what == mCode) {
         /* Switch output */
         PORTD ^= _BV(mPin);

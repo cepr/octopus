@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Cedric Priscal
+ * Copyright 2011-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -18,13 +18,10 @@
  */
 
 #include "Robot/Robot.h"
-#include "property_record.h"
+#include "octopus_comm_stack.h"
 #include "AvrUsart/AvrUsart.h"
-#include "UsartListener.h"
-#include "Packet.h"
+#include "property_record.h"
 #include "Blink/Blink.h"
-#include "PropertyPacket.h"
-#include "RemotePropertyServer.h"
 
 /**
  * @brief RC Car with one DC motor for throttle and one coil for direction
@@ -43,140 +40,125 @@
  * <TR><TD> 8           </TD><TD> PB0            </TD><TD> STBY							</TD></TR>
  * </TABLE>
  */
-class TwoChannelsCar : public Robot, public PropertyRecord {
+class TwoChannelsCar : public Robot, public OctopusCommStack<AvrUsart, PropertyRecord> {
 
 private:
     // List of modules
-    Blink 					mBlink;
+    Blink mBlink;
 
-	class Throttle : public PropertyS8 {
-	private:
-		const char* getName() const  { return "Throttle"; }
-		const char* getDescription() { return "Throttle"; }
+    class Throttle : public PropertyS8 {
+    private:
+        const char* getName() const  { return "Throttle"; }
+        const char* getDescription() { return "Throttle"; }
         void setValue(const PROPERTY_VALUE & value) {
             operator=(value.s8);
         }
-	public:
-		signed char operator=(signed char value) {
-			mValue = value;
-			if (value > 0) {
-				// go forward
-				OCR0A = ((unsigned char)value) << 1;
-				PORTD = (PORTD & (~_BV(PD2))) | _BV(PD3);
-			} else if (value < 0) {
-				// go backward
-				if (value > -128)
-					OCR0A = ((unsigned char)(-value)) << 1;
-				else
-					OCR0A = 0xff;
-				PORTD = (PORTD & (~_BV(PD3))) | _BV(PD2);
-			} else {
-				// stop engine
-				OCR0A = 0;
-				PORTD = PORTD & (~(_BV(PD2) | _BV(PD3)));
-			}
-			return value;
-		}
-	};
+    public:
+        Throttle(Packet* packet) : PropertyS8(0, packet) {}
+        signed char operator=(signed char value) {
+            mValue = value;
+            if (value > 0) {
+                // go forward
+                OCR0A = ((unsigned char)value) << 1;
+                PORTD = (PORTD & (~_BV(PD2))) | _BV(PD3);
+            } else if (value < 0) {
+                // go backward
+                if (value > -128)
+                    OCR0A = ((unsigned char)(-value)) << 1;
+                else
+                    OCR0A = 0xff;
+                PORTD = (PORTD & (~_BV(PD3))) | _BV(PD2);
+            } else {
+                // stop engine
+                OCR0A = 0;
+                PORTD = PORTD & (~(_BV(PD2) | _BV(PD3)));
+            }
+            return value;
+        }
+    } mThrottle;
 
-	class Direction : public PropertyS8 {
-	private:
-		const char* getName() const { return "Direction"; }
-		const char* getDescription() { return "Direction"; }
+    class Direction : public PropertyS8 {
+    private:
+        const char* getName() const { return "Direction"; }
+        const char* getDescription() { return "Direction"; }
         void setValue(const PROPERTY_VALUE & value) {
             operator=(value.s8);
         }
-	public:
-		signed char operator=(signed char value) {
-			mValue = value;
-			if (value > 0) {
-				// go right
-				OCR0B = value;
-				PORTD = (PORTD & (~_BV(PD7))) | _BV(PD4);
-			} else if (value < 0) {
-				// go left
-				OCR0B = -value;
-				PORTD = (PORTD & (~_BV(PD4))) | _BV(PD7);
-			} else {
-				// stop engine
-				OCR0B = 0;
-				PORTD = PORTD & (~(_BV(PD4) | _BV(PD7)));
-			}
-			return value;
-		}
-	};
-
-	Throttle				mThrottle;
-	Direction				mDirection;
-
-    // Remote control
-	AvrUsart 				mAvrUsart;
-	Packet 					mPacket;
-	PropertyPacket 			mBridge;
-	RemotePropertyServer 	mServer;
+    public:
+        Direction(Packet* packet) : PropertyS8(0, packet) {}
+        signed char operator=(signed char value) {
+            mValue = value;
+            if (value > 0) {
+                // go right
+                OCR0B = value;
+                PORTD = (PORTD & (~_BV(PD7))) | _BV(PD4);
+            } else if (value < 0) {
+                // go left
+                OCR0B = -value;
+                PORTD = (PORTD & (~_BV(PD4))) | _BV(PD7);
+            } else {
+                // stop engine
+                OCR0B = 0;
+                PORTD = PORTD & (~(_BV(PD4) | _BV(PD7)));
+            }
+            return value;
+        }
+    } mDirection;
 
 public:
     // Constructor
-    TwoChannelsCar() : PropertyRecord(),
-                 // Modules
-                 mBlink(),
-                 // Remote control
-                 mAvrUsart(AvrUsart::B57600),
-                 mPacket(&mAvrUsart),
-                 mBridge(&mPacket),
-                 mServer(this, &mBridge)
+    TwoChannelsCar() :
+            mBlink(&mPacket),
+            mThrottle(&mPacket),
+            mDirection(&mPacket)
     {
-        mBridge.registerServer(&mServer);
-		// Set pins to zero
-		PORTD &= ~(_BV(DDD2) | _BV(DDD3) | _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7));
-		PORTB &= ~_BV(PB0);
-		// Set pins in output
-		DDRD |= _BV(DDD2) | _BV(DDD3) | _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7);
-		DDRB |= _BV(DDB0);
-		// Configure OC0A and OC0B pins
-		TCCR0A = _BV(COM0A1) | _BV(COM0B1) | _BV(WGM01) | _BV(WGM00);
-		// Set prescaler to 1:1
-		TCCR0B = _BV(CS00);
 
-		// Set 
-		mThrottle = 0;
-		mDirection = 0;
+        // Set pins to zero
+        PORTD &= ~(_BV(DDD2) | _BV(DDD3) | _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7));
+        PORTB &= ~_BV(PB0);
+        // Set pins in output
+        DDRD |= _BV(DDD2) | _BV(DDD3) | _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7);
+        DDRB |= _BV(DDB0);
+        // Configure OC0A and OC0B pins
+        TCCR0A = _BV(COM0A1) | _BV(COM0B1) | _BV(WGM01) | _BV(WGM00);
+        // Set prescaler to 1:1
+        TCCR0B = _BV(CS00);
 
-		// Activate STBY
-		PORTB |= _BV(PB0);
+        // Set 
+        mThrottle = 0;
+        mDirection = 0;
+
+        // Activate STBY
+        PORTB |= _BV(PB0);
     }
 
     // Property definition
-	const char* getName() const {
+    const char* getName() const {
         return "TwoChannelsCar";
     }
 
-	const char* getDescription() {
+    const char* getDescription() {
         return "TwoChannelsCar robot";
     }
 
     void onStart() {
         mBlink.mEnabled = true;
-		mAvrUsart.sendString("Hello !\n");
-		//for (;;)
-			//mAvrUsart.sendByte(0xAA);
     }
 
     Property* getChild(unsigned char index) {
        	switch(index) {
             case 0: return &mBlink;
-			case 1: return &mThrottle;
-			case 2: return &mDirection;
+            case 1: return &mThrottle;
+            case 2: return &mDirection;
             default: return 0;
         }
     }
 };
 
-static TwoChannelsCar gTwoChannelsCar;
-
 int main(void)
 {
-	gTwoChannelsCar.onStart();
-	Event::startLooper();
-	return 0;
+    TwoChannelsCar car;
+    car.onStart();
+    Event::startLooper();
+    return 0;
 }

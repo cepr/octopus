@@ -36,10 +36,12 @@ public:
     /**
      * @brief Constructor.
      *
+	 * @param[in,out] packet Packet class to report modifications to
+	 *
      * Blinking is not activated in this constructor.
      * @see setEnabled()
      */
-    Blink();
+    Blink(Packet* packet);
 
     class PropertyBlinkEnabled : public PropertyBoolean {
     private:
@@ -50,12 +52,12 @@ public:
             operator=(value.boolean);
         }
     public:
-        PropertyBlinkEnabled(PropertyListener* listener) : PropertyBoolean(), mListener(listener) {};
+        PropertyBlinkEnabled(PropertyListener* listener, Packet* packet) : PropertyBoolean(false, packet), mListener(listener) {};
         bool operator=(bool value) {
             if (value != mValue) {
                 mValue = value;
                 if (mListener) {
-                    mListener->onPropertyChanged(this);
+                    mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
                 }
             }
             return value;
@@ -86,7 +88,7 @@ private:
     Property* getChild(unsigned char index);
 
     // PropertyListener implementation
-    void onPropertyChanged(class Property* prop);
+    void onPropertyChanged(class Property* prop, PROPERTY_INFO what);
 };
 
 #endif /* BLINK_H_ */

@@ -26,7 +26,7 @@
 #define AVRTWOWIREINTERFACE_H_
 
 #include "i2c_driver.h"
-#include "Handler.h"
+#include "event.h"
 #include "i2c_device.h"
 
 /**
@@ -36,7 +36,7 @@
  *
  * \ingroup AVR_TWI
  */
-class AvrTwoWireInterface: public I2CDriver, private Handler {
+class AvrTwoWireInterface: public I2CDriver, private Event {
 
 public:
     /**

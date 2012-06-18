@@ -21,8 +21,7 @@
 #define ANALOGCHANNEL_H_
 
 #include <avr/io.h>
-#include "Timer/Timer.h"
-#include "Timer/timer_listener.h"
+#include "Timer/application_timer.h"
 
 /**
  * \brief Enumeration of the available analog channels.
@@ -69,12 +68,12 @@ private:
     unsigned short mMs;
     void onTimer(char what, unsigned short when);
 
-	class Timer : public TimerListener {
+	class Timer : public ApplicationTimer {
 	public:
 		Timer(AnalogChannel* parent);
 	private:
 		AnalogChannel* mParent;
-		void onTimer(void);
+		void onTimer(char what);
 	};
 	Timer mTimer;
 

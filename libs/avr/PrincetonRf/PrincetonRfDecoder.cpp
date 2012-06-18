@@ -21,7 +21,7 @@
 #include <avr/io.h>
 #include "PrincetonRf.h"
 #include "PrincetonRfDecoder.h"
-#include "Looper.h"
+#include "event.h"
 
 //#define DBG
 
@@ -83,7 +83,7 @@ const STATE NewStateTable[STATES_COUNT][EVENTS_COUNT] = {
     /* STATE_BIT1 */    {   STATE_INIT, STATE_S,    STATE_INIT, STATE_L,    STATE_INIT}
 };
 
-static Handler* _this;
+static Event* _this;
 
 /* Pin Change Interrupt Request 0 */
 ISR(INT0_vect) {
@@ -103,7 +103,7 @@ ISR(INT0_vect) {
         } else {
             what = EVENT_INVALID;
         }
-        PostEvent(_this, what);
+        _this->Post(what);
         previousvalue = value;
         start = now;
     }

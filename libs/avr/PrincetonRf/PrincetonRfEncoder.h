@@ -21,9 +21,9 @@
 #define PT2262_H_
 
 #include "PrincetonRf.h"
-#include "Timer/timer_listener.h"
+#include "Timer/system_timer.h"
 
-class PrincetonRfEncoder : public TimerListener {
+class PrincetonRfEncoder : public SystemTimer {
 private:
     char mPin;
     // Address is 8 bits long, which corresponds to 8*4=32 pulses.
@@ -43,7 +43,7 @@ private:
 public:
     PrincetonRfEncoder(char pin);
     void send(tristate address, tristate data);
-    void onTimer(unsigned short when, char what);
+    void onTimerLISR(unsigned short when, char what);
 };
 
 #endif /* PT2262_H_ */

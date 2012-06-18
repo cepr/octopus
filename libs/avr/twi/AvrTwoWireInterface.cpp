@@ -20,7 +20,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "AvrTwoWireInterface.h"
-#include "Looper.h"
 #include "fatal.h"
 
 AvrTwoWireInterface AvrTwoWireInterface::mInstance;
@@ -156,7 +155,7 @@ inline void onTwiInterrupt(void)
                 // No more data to write, send STOP condition
                 _stop();
                 // Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-                PostEvent(&AvrTwoWireInterface::mInstance, AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
+                AvrTwoWireInterface::mInstance.Post(AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
             }
             break;
 
@@ -165,7 +164,7 @@ inline void onTwiInterrupt(void)
             // The I2C device does not accept any more bytes, send STOP condition
             _stop();
             // Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-            PostEvent(&AvrTwoWireInterface::mInstance, AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
+            AvrTwoWireInterface::mInstance.Post(AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
             break;
 
         case 0x20:
@@ -175,13 +174,13 @@ inline void onTwiInterrupt(void)
             // send STOP condition
             _stop();
             // Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-            PostEvent(&AvrTwoWireInterface::mInstance, AvrTwoWireInterface::EVENT_DEVICE_NACK);
+            AvrTwoWireInterface::mInstance.Post(AvrTwoWireInterface::EVENT_DEVICE_NACK);
             break;
 
         case 0x38:
             // Arbitration lost
             TWCR = _BV(TWINT); // TWINT must be written to one to clear the TWINT Flag
-            PostEvent(&AvrTwoWireInterface::mInstance, AvrTwoWireInterface::EVENT_ARBITRATION_LOST);
+            AvrTwoWireInterface::mInstance.Post(AvrTwoWireInterface::EVENT_ARBITRATION_LOST);
             break;
 
         case 0x50:
@@ -207,7 +206,7 @@ inline void onTwiInterrupt(void)
                 // I2C Master (AVR) has sent a NACK to indicate it was the last byte to receive,
                 // we just sent a STOP and notify reception is over.
                 _stop();
-                PostEvent(&AvrTwoWireInterface::mInstance, AvrTwoWireInterface::EVENT_RECEIVE_COMPLETE);
+                AvrTwoWireInterface::mInstance.Post(AvrTwoWireInterface::EVENT_RECEIVE_COMPLETE);
             }
             break;
     }

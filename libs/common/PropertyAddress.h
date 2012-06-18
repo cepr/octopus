@@ -26,8 +26,8 @@
 class PropertyAddress {
 
 private:
-	PropertyAddress(PropertyAddress* parent, unsigned char* data, char size);
-	PropertyAddress*	mParent;
+	PropertyAddress(const PropertyAddress* parent, unsigned char* data, char size);
+	const PropertyAddress*	mParent;
 
 public:
 	unsigned char*		mData;
@@ -35,8 +35,8 @@ public:
 
 	PropertyAddress();
 	bool isEqual(PropertyAddress *addr);
-	PropertyAddress* getChild(unsigned char addr);
-	PropertyAddress* getParent();
+	PropertyAddress* getChild(unsigned char addr) const;
+	const PropertyAddress* getParent();
 
 };
 

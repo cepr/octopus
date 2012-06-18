@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -23,15 +23,30 @@
 #include "Listener.h"
 
 /**
- * @brief USART listener.
+ * @brief USART listener
+ *
+ * @ingroup COM_STACK
  */
 class UsartListener : public Listener {
 public:
 	/**
-	 * @brief Listener called when a new byte is received on the USART port.
+	 * @brief Listener called when a new byte is received on the USART port
+	 *
 	 * @param byte Incoming byte.
+	 *
+	 * You should override this method in order to receive bytes from an Usart instance.
+	 * In addition, you should register your class using Usart::registerListener().
 	 */
     virtual void onUsartReceived(unsigned char byte) = 0;
+
+	/**
+	 * @brief Listener called when output buffer is empty
+     *
+	 * You should override this method in order to be notified when the output buffer is
+	 * ready to receive new data.
+	 * In addition, you should register your class using Usart::registerListener().
+	 */
+    virtual void onUsartBufferEmpty() = 0;
 };
 
 #endif /* USARTLISTENER_H_ */

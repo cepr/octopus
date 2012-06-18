@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -35,12 +35,13 @@ public:
      * Create a new step motor driver for a motor plugged into @a pinA1, @a pinA2, @a pinB1, and @a pinB2 of ATMEGA328 port C.
      * If specified, the @a pinEN will be used to put automatically the motor in standby.
      *
-     * @param[in] pinA1 		GPIO of port C on which the first coil is plugged
-     * @param[in] pinA2 		GPIO of port C on which the first coil is plugged
-     * @param[in] pinB1 		GPIO of port C on which the second coil is plugged
-     * @param[in] pinB2 		GPIO of port C on which the second coil is plugged
+     * @param[in]     pinA1  GPIO of port C on which the first coil is plugged
+     * @param[in]     pinA2  GPIO of port C on which the first coil is plugged
+     * @param[in]     pinB1  GPIO of port C on which the second coil is plugged
+     * @param[in]     pinB2  GPIO of port C on which the second coil is plugged
+     * @param[in,out] packet Packet class to report modifications to
      */
-    Stepper4C(char pinA1, char pinA2, char pinB1, char pinB2);
+    Stepper4C(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet);
 };
 
 #endif /* STEPPER4C_H_ */

@@ -2,7 +2,7 @@
 <CodeLite_Project Name="OctopusAVR" InternalType="Library">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+      <![CDATA[00030001N0005Debug0000000000000001N0013Documentation0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="libs">
@@ -34,10 +34,10 @@
         <File Name="avr/RfRemote/RfRemote.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Timer">
-        <File Name="avr/Timer/timer_listener.h"/>
-        <File Name="avr/Timer/Timer.h"/>
-        <File Name="avr/Timer/Timer.cpp"/>
-        <File Name="avr/Timer/timer_listener.cpp"/>
+        <File Name="avr/Timer/system_timer.cpp"/>
+        <File Name="avr/Timer/system_timer.h"/>
+        <File Name="avr/Timer/application_timer.h"/>
+        <File Name="avr/Timer/application_timer.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="ADC">
         <File Name="avr/ADC/Temperature.h"/>
@@ -71,8 +71,6 @@
         <File Name="avr/twi/avr_twi_documentation.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="AvrUsart">
-        <File Name="avr/AvrUsart/UsartBuffer.cpp"/>
-        <File Name="avr/AvrUsart/UsartBuffer.h"/>
         <File Name="avr/AvrUsart/AvrUsart.h"/>
         <File Name="avr/AvrUsart/AvrUsart.cpp"/>
       </VirtualDirectory>
@@ -99,25 +97,17 @@
         <File Name="avr/imu/imu3000.cpp"/>
         <File Name="avr/imu/adxl345_register.h"/>
       </VirtualDirectory>
-      <File Name="avr/Looper.cpp"/>
-      <File Name="avr/Looper.h"/>
       <File Name="avr/fatal.h"/>
       <File Name="avr/AvrFlash.h"/>
       <File Name="avr/Module.h"/>
       <File Name="avr/fatal.cpp"/>
       <File Name="avr/AvrFlash.cpp"/>
-      <File Name="avr/event.h"/>
-      <File Name="avr/event.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="common">
       <File Name="common/PropertyListener.h"/>
       <File Name="common/PropertyPacketListener.h"/>
-      <File Name="common/Property.cpp"/>
       <File Name="common/PropertyPacket.h"/>
-      <File Name="common/RemotePropertyServer.h"/>
       <File Name="common/property_record.h"/>
-      <File Name="common/PropertyPacket.cpp"/>
-      <File Name="common/RemotePropertyServer.cpp"/>
       <File Name="common/compass_provider.h"/>
       <File Name="common/PacketListener.h"/>
       <File Name="common/Property.h"/>
@@ -131,34 +121,54 @@
       <File Name="common/PropertyAddress.cpp"/>
       <File Name="common/Packet.h"/>
       <File Name="common/Packet.cpp"/>
-      <File Name="common/RemoteProperty.h"/>
       <File Name="common/PropertyAddress.h"/>
       <File Name="common/UsartListener.h"/>
       <File Name="common/Object.h"/>
       <File Name="common/property_data.h"/>
+      <File Name="common/local_property.h"/>
+      <File Name="common/local_property.cpp"/>
+      <File Name="common/event.cpp"/>
+      <File Name="common/event.h"/>
+      <File Name="common/octopus_comm_stack.h"/>
+      <File Name="common/Property.cpp"/>
+      <File Name="common/UsartBuffer.cpp"/>
+      <File Name="common/UsartBuffer.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <Settings Type="Static Library">
     <GlobalSettings>
-      <Compiler Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L" C_Options="-Wall;-Os;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L">
+      <Compiler Options="-g;-Wall;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L" C_Options="-g;-Wall;-fno-exceptions;-fno-threadsafe-statics;-ffunction-sections;-fdata-sections;-fshort-enums;-mmcu=atmega328p;-DF_CPU=8000000L">
         <IncludePath Value="."/>
         <IncludePath Value="$(WorkspacePath)/libs/avr"/>
         <IncludePath Value="$(WorkspacePath)/libs/common"/>
         <IncludePath Value="/usr/lib/avr/include/"/>
       </Compiler>
-      <Linker Options="-Os;-Wl,--gc-sections;-mmcu=atmega328p;-Wl,-Map=$(OutDir)/$(ProjectName).map;-Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x">
+      <Linker Options="-g;-Wl,--gc-sections;-mmcu=atmega328p;-Wl,-Map=$(OutDir)/$(ProjectName).map;-Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x">
         <LibraryPath Value="."/>
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu avr-g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g" C_Options="-g" Required="yes" PreCompiledHeader=""/>
+      <Compiler Options="" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags=""/>
       <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -179,13 +189,85 @@
         <CustomPostBuild/>
         <CustomPreBuild/>
       </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Documentation" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -Wall" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O0" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="./Debug" PauseExecWhenProcTerminates="no"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand/>
+        <CleanCommand>rm -rf html</CleanCommand>
+        <BuildCommand>doxygen</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory>$(WorkspacePath)/doc</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu avr-g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="" C_Options="" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="" Required="yes"/>
+      <Compiler Options="-Os" C_Options="-Os" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags=""/>
+      <Linker Options="-Os" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -206,8 +288,14 @@
         <CustomPostBuild/>
         <CustomPreBuild/>
       </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
+  <Dependencies Name="Documentation"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

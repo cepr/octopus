@@ -26,8 +26,12 @@
 #define NB_DELAYS (sizeof(DELAYS)/sizeof(DELAYS[0]))
 #define MAX_SPEED ((short)(NB_DELAYS - 1))
 
-Stepper::Stepper(char pinA1, char pinA2, char pinB1, char pinB2) :
-	mCurrentLocation(), mTargetLocation(this), mManual(this) {
+Stepper::Stepper(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet) :
+		PropertyRecord(packet),
+		mCurrentLocation(packet),
+		mTargetLocation(this, packet),
+		mManual(this, packet)
+{
 
 	mFinishListener = 0;
 	PinsMask        = _BV(pinA1) | _BV(pinA2) | _BV(pinB1) | _BV(pinB2);
@@ -65,7 +69,7 @@ void Stepper::registerListener(StepperListener *finishListener) {
     mFinishListener = finishListener;
 }
 
-void Stepper::onTimer(char what, unsigned short when) {
+void Stepper::onTimerLISR(unsigned short when, char what) {
 
 	/* Update location according to current speed */
 	if (mCurrentSpeed > 0) {
@@ -104,10 +108,11 @@ void Stepper::onTimer(char what, unsigned short when) {
 		}
 	} else {
 		if (mCurrentSpeed == 0) {
-			/* We have reached out destination */
+			/* We have reached destination */
 			mTimerStarted = false;
 			setEnabled(false);
 			if (mFinishListener) {
+				// TODO Listener should be called on user thread
 				mFinishListener->onStepperStopped(this, mCurrentLocation);
 			}
 			return;
@@ -139,10 +144,12 @@ Property* Stepper::getChild(unsigned char index) {
 	}
 }
 
-void Stepper::onPropertyChanged(class Property* prop) {
+void Stepper::onPropertyChanged(Property* prop, PROPERTY_INFO what) {
 	if (!mTimerStarted) {
 		mTimerStarted = true;
 		setEnabled(true);
-		onTimer(now(), 0);
+		cli();
+		onTimerLISR(now(), 0);
+		sei();
 	}
 }

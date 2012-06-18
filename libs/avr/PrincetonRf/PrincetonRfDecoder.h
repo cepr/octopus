@@ -20,7 +20,7 @@
 #ifndef PT2272_H_
 #define PT2272_H_
 
-#include "Handler.h"
+#include "event.h"
 
 class PrincetonRfListener {
 public:
@@ -42,7 +42,7 @@ typedef enum {
     STATES_COUNT
 } STATE;
 
-class PrincetonRfDecoder: public Handler {
+class PrincetonRfDecoder: public Event {
 	STATE mState;
     char mBit;
     char mCode[13];

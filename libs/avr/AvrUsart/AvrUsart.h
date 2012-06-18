@@ -36,17 +36,20 @@
  * - software flow control XON/XOFF
  *
  * It is recommended to use the LinuxSerialPort class to handle the communication protocol correctly.
+ *
+ * @ingroup COM_STACK
  */
-class AvrUsart: public Usart, public Event {
+class AvrUsart: public Usart, public Event
+{
 
 public:
 
 	typedef enum {
-		B115200,
-		B57600,
-		B38400,
-		B9600,
-		B2400
+	    B115200,
+	    B57600,
+	    B38400,
+	    B9600,
+	    B2400
 	} UsartBaudrate;
 
 	/**
@@ -68,11 +71,16 @@ public:
 	 */
 	void sendByte(unsigned char c);
 
+	/**
+	 * @copydoc Usart#isUsartBufferEmpty()
+	 */
+	virtual bool isUsartBufferEmpty();
+
 private:
 
 	/**
 	 * @brief Internal event handler.
-	 * 
+	 *
 	 * @param[in] what Unused
 	 */
 	void onEvent(char what);

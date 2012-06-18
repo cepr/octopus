@@ -19,8 +19,7 @@
 
 #include "Usart.h"
 
-Usart::Usart() {
-    mListener = 0;
+Usart::Usart() : mListener(0) {
 }
 
 void Usart::registerListener(UsartListener *listener) {

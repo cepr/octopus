@@ -35,12 +35,13 @@ public:
      * Create a new step motor driver for a motor plugged into @a pinA1, @a pinA2, @a pinB1, and @a pinB2 of ATMEGA328 port B.
      * If specified, the @a pinEN will be used to put automatically the motor in standby.
      *
-     * @param pinA1 [in] GPIO of port B on which the first coil is plugged
-     * @param pinA2 [in] GPIO of port B on which the first coil is plugged
-     * @param pinB1 [in] GPIO of port B on which the second coil is plugged
-     * @param pinB2 [in] GPIO of port B on which the second coil is plugged
+     * @param[in]     pinA1  GPIO of port B on which the first coil is plugged
+     * @param[in]     pinA2  GPIO of port B on which the first coil is plugged
+     * @param[in]     pinB1  GPIO of port B on which the second coil is plugged
+     * @param[in]     pinB2  GPIO of port B on which the second coil is plugged
+	 * @param[in,out] packet Packet class to report modifications to
      */
-    Stepper4B(char pinA1, char pinA2, char pinB1, char pinB2);
+    Stepper4B(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet);
 
 	const char* getDescription() { return "Step motor on port B"; }
 };

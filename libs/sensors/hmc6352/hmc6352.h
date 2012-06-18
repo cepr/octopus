@@ -23,7 +23,7 @@
 #include "compass_provider.h" // Base class: CompassProvider
 #include "i2c_device.h"
 #include "i2c_driver.h"
-#include "Timer/timer_listener.h"
+#include "Timer/application_timer.h"
 
 /**
  * \defgroup HMC6352 Honeywell HMC6252 Digital Compass
@@ -36,7 +36,7 @@
  *
  * This chip is an I2C digital compass.
  */
-class Hmc6352 : public CompassProvider, private I2CDevice, private TimerListener {
+class Hmc6352 : public CompassProvider, private I2CDevice, private ApplicationTimer {
 
 public:
 
@@ -58,7 +58,7 @@ private:
     void onDeviceNotResponding(void);
     void onReceiveFinished(unsigned char received);
     void onTransmitFinished(unsigned char transmitted);
-    void onTimer(char what, unsigned short when);
+    void onTimer(char what);
 
     unsigned char mBuffer[2];
     I2CTransfer mTransfer;

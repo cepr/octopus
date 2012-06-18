@@ -35,9 +35,9 @@ extern "C" void TIMER1_COMPA_vect(void);
  *
  * SystemTimer#onTimerLISR() will be called in interrupt context, so
  * you should avoid any time consumming treatment. To execute such
- * time-consumming functions, you should use an AppTimer instead.
+ * time-consumming functions, you should use an ApplicationTimer instead.
  *
- * \see AppTimer
+ * \see ApplicationTimer
  */
 class SystemTimer {
 

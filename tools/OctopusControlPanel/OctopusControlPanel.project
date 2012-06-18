@@ -5,41 +5,93 @@
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="src">
+    <VirtualDirectory Name="controller">
+      <VirtualDirectory Name="keyboard">
+        <VirtualDirectory Name="settings">
+          <File Name="src/controller/keyboard/settings/KeyboardControllerSettingsPanel.fbp"/>
+          <File Name="src/controller/keyboard/settings/keyboard_controller_settings_panel.cpp"/>
+          <File Name="src/controller/keyboard/settings/keyboard_controller_settings_panel.h"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+      <VirtualDirectory Name="dashboard">
+        <VirtualDirectory Name="gauge">
+          <File Name="src/controller/dashboard/gauge/wx_property_number.cpp"/>
+          <File Name="src/controller/dashboard/gauge/wx_property_boolean.cpp"/>
+          <File Name="src/controller/dashboard/gauge/wx_property_boolean.h"/>
+          <File Name="src/controller/dashboard/gauge/wx_property_number.h"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="res">
+          <File Name="src/controller/dashboard/res/preferences.png.h"/>
+          <File Name="src/controller/dashboard/res/reload.png.h"/>
+        </VirtualDirectory>
+        <File Name="src/controller/dashboard/dashboard_property.fbp"/>
+        <File Name="src/controller/dashboard/dashboard_property.h"/>
+        <File Name="src/controller/dashboard/dashboard_property_impl.cpp"/>
+        <File Name="src/controller/dashboard/dashboard_property_impl.h"/>
+        <File Name="src/controller/dashboard/wx_auto_grid_sizer.h"/>
+        <File Name="src/controller/dashboard/wx_auto_grid_sizer.cpp"/>
+        <File Name="src/controller/dashboard/dashboard_property.cpp"/>
+        <VirtualDirectory Name="settings">
+          <File Name="src/controller/dashboard/settings/dashboard_property_settings_panel.h"/>
+          <File Name="src/controller/dashboard/settings/dashboard_property_settings_panel.cpp"/>
+          <File Name="src/controller/dashboard/settings/dashboard_property_settings_panel.fbp"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+      <VirtualDirectory Name="joystick">
+        <VirtualDirectory Name="settings">
+          <File Name="src/controller/joystick/settings/joystick_settings_panel.fbp"/>
+          <File Name="src/controller/joystick/settings/joystick_settings_panel.h"/>
+          <File Name="src/controller/joystick/settings/joystick_settings_panel.cpp"/>
+          <File Name="src/joystick_settings.h"/>
+          <File Name="src/joystick_settings.cpp"/>
+          <File Name="src/controller/joystick/settings/joystick_settings_panel_impl.h"/>
+          <File Name="src/controller/joystick/settings/joystick_settings_panel_impl.cpp"/>
+          <File Name="src/controller/joystick/settings/joystick_panel_impl.h"/>
+          <File Name="src/controller/joystick/settings/joystick_panel_impl.cpp"/>
+        </VirtualDirectory>
+        <File Name="src/controller/joystick/property_controller_joystick.h"/>
+        <File Name="src/controller/joystick/property_controller_joystick.cpp"/>
+        <File Name="src/controller/joystick/joystick_virtual_axe.h"/>
+        <File Name="src/controller/joystick/joystick_virtual_axe.cpp"/>
+      </VirtualDirectory>
+      <File Name="src/controller/property_controller.cpp"/>
+      <File Name="src/controller/property_controller.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="property">
+      <File Name="src/property/serial_port_property.cpp"/>
+      <File Name="src/property/serial_port_property.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="settings">
+      <File Name="src/settings/settings_dialog.fbp"/>
+      <File Name="src/settings/settings_dialog_impl.h"/>
+      <File Name="src/settings/wx_numeric_text_ctrl.cpp"/>
+      <File Name="src/settings/wx_numeric_text_ctrl.h"/>
+      <File Name="src/settings/settings_dialog.cpp"/>
+      <File Name="src/settings/settings_dialog_impl.cpp"/>
+      <File Name="src/settings/setting.h"/>
+    </VirtualDirectory>
+    <File Name="src/main_frame.fbp"/>
+    <File Name="src/property_manager.cpp"/>
+    <File Name="src/property_configuration.cpp"/>
+    <File Name="src/dashboard_panel.h"/>
+    <File Name="src/octopus_control_panel_app.h"/>
+    <File Name="src/octopus_control_panel_app.cpp"/>
+    <File Name="src/settings_dialog.h"/>
+    <File Name="src/main_frame_impl.cpp"/>
+    <File Name="src/main_frame.cpp"/>
+    <File Name="src/property_manager.h"/>
+    <File Name="src/main_frame_impl.h"/>
+    <File Name="src/property_configuration.h"/>
+    <File Name="src/dashboard_panel.cpp"/>
+    <File Name="src/main_frame.h"/>
+  </VirtualDirectory>
   <Description/>
   <Dependencies/>
-  <VirtualDirectory Name="tools">
-    <VirtualDirectory Name="OctopusControlPanel">
-      <File Name="main_frame_impl.cpp"/>
-      <File Name="main_frame_impl.h"/>
-      <File Name="octopus_control_panel_gui.cpp"/>
-      <File Name="octopus_control_panel_gui.h"/>
-      <File Name="octopus_control_panel_app.cpp"/>
-      <File Name="octopus_control_panel_app.h"/>
-      <File Name="panel_properties_impl.h"/>
-      <File Name="panel_properties_impl.cpp"/>
-      <File Name="dashboard_panel.h"/>
-      <File Name="dashboard_panel.cpp"/>
-      <File Name="dashboard_property.h"/>
-      <File Name="dashboard_property.cpp"/>
-      <File Name="serial_port_property.h"/>
-      <File Name="serial_port_property.cpp"/>
-      <File Name="OctopusControlPanel.fbp"/>
-      <File Name="wx_property_boolean.h"/>
-      <File Name="wx_property_boolean.cpp"/>
-      <File Name="wx_property_number.h"/>
-      <File Name="wx_property_number.cpp"/>
-    </VirtualDirectory>
-  </VirtualDirectory>
-  <Dependencies Name="Release">
-    <Project Name="OctopusLinux"/>
-  </Dependencies>
-  <Dependencies Name="Debug">
-    <Project Name="OctopusLinux"/>
-  </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="-Wall" C_Options="-Wall">
-        <IncludePath Value="."/>
+        <IncludePath Value="src"/>
         <IncludePath Value="$(WorkspacePath)/libs/common"/>
         <IncludePath Value="$(WorkspacePath)/libs/linux"/>
         <Preprocessor Value="__WX__"/>
@@ -51,13 +103,18 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" C_Options="-g;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-mwindows;$(shell wx-config --debug=yes --libs --unicode=yes)" Required="yes">
-        <Library Value="wx_gtk2u_plotctrl-2.8"/>
-      </Linker>
+      <Compiler Options="-g;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --cxxflags --unicode=yes --debug=yes)" C_Options="-g;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --cxxflags --unicode=yes --debug=yes)" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags=""/>
+      <Linker Options="-mwindows;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --debug=yes --libs std,aui --unicode=yes)" Required="yes"/>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -78,15 +135,38 @@
         <CustomPostBuild/>
         <CustomPreBuild/>
       </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;$(shell wx-config --cxxflags --unicode=yes --debug=no)" C_Options="-O2;$(shell wx-config --cxxflags --unicode=yes --debug=no)" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-mwindows;-s;$(shell wx-config --debug=no --libs --unicode=yes)" Required="yes">
-        <Library Value="wx_gtk2u_plotctrl-2.8"/>
-      </Linker>
+      <Compiler Options="-O2;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --cxxflags --unicode=yes --debug=no)" C_Options="-O2;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --cxxflags --unicode=yes --debug=no)" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags=""/>
+      <Linker Options="-mwindows;-s;$(shell $(WorkspacePath)/out/wxWidgets/$(ConfigurationName)/wx-config --debug=no --libs std,aui --unicode=yes)" Required="yes"/>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -107,6 +187,17 @@
         <CustomPostBuild/>
         <CustomPreBuild/>
       </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug">
+    <Project Name="OctopusLinux"/>
+  </Dependencies>
+  <Dependencies Name="Release">
+    <Project Name="OctopusLinux"/>
+  </Dependencies>
 </CodeLite_Project>

@@ -22,15 +22,33 @@
 
 #include "Listener.h"
 
+/**
+ * @brief Packet listener
+ *
+ * @ingroup COM_STACK
+ */
 class PacketListener : public Listener {
 public:
 	/**
-	 * @brief Listener called when a new packet is received on the USART port.
+	 * @brief Listener called when a new packet is received
 	 *
 	 * @param[in] data Incoming packet bytes, excluding START and STOP bytes.
 	 * @param[in] size Size of @a data.
 	 */
-    virtual void onPacketReceived(unsigned char *data, char size) = 0;
+    virtual void onPacketReceived(const unsigned char *data, unsigned char size) = 0;
+
+	/**
+	 * @brief Listener called when new packets can be sent
+	 *
+	 * @param[in,out] data     Packet data
+	 * @param[in,out] size     Packet size
+	 * @param[in]     capacity Capacity of @a data
+	 *
+	 * @return @a true if a packet should be sent with content of @a data, @a false otherwise.
+	 *
+	 * This method is called recursively by itself, starting from the root remote property.
+	 */
+	virtual bool onReadyToSend(unsigned char* data, unsigned char & size, unsigned char capacity) = 0;
 };
 
 #endif /* PACKETLISTENER_H_ */

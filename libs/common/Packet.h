@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -23,35 +23,21 @@
 #include "Usart.h"
 #include "UsartListener.h"
 #include "PacketListener.h"
+#include "event.h"
 
 /**
- * \brief Class that listens to incoming bytes from an Usart, and formats complete packets.
+ * @brief Data link layer of the Octopus Communication Stack
  *
- * \ingroup COM_STACK
+ * This class handle the data link layer of the Octopus Communication Stack. Its role is
+ * to transfer data-link frames between two devices.
+ *
+ * The data link layer is the layer 2 of the seven-layer OSI model of computer networking.
+ * <a href="http://en.wikipedia.org/wiki/Data_link_layer">Read more on Wikipedia...</a>
+ *
+ * @ingroup COM_STACK
  */
-class Packet : private UsartListener {
-
-private:
-	static const unsigned char ESCAPE	= 0x80;
-	static const unsigned char START	= 's';
-	static const unsigned char STOP		= '\n';
-
-	Usart* 			mUsart;
-#ifdef linux
-	unsigned char 	mBuffer[512];
-#else
-	unsigned char 	mBuffer[64];
-#endif
-	unsigned char	mSize;
-	bool 			mStarted;
-	bool 			mEscape;
-	PacketListener* mListener;
-
-	/**
-	 * \copydoc UsartListener::onUsartReceived()
-	 */
-	void onUsartReceived(unsigned char byte);
-
+class Packet : private UsartListener, private Event
+{
 public:
 	/**
 	 * \brief Constructor
@@ -68,12 +54,36 @@ public:
 	void registerListener(PacketListener* listener);
 
 	/**
-	 * \brief Sends a packet
-	 *
-	 * \param[in] buffer Data to send
-	 * \param[in] size   Size of \a buffer
+	 * @brief Request to send a packet
 	 */
-	void sendPacket(const unsigned char *buffer, char size);
+	void requestToSend();
+
+private:
+	static const unsigned char ESCAPE	= 0x80;
+	static const unsigned char START	= 's';
+	static const unsigned char STOP		= '\n';
+
+	Usart* 			mUsart;
+	unsigned char 	mBuffer[64];
+	unsigned char	mSize;
+	bool 			mStarted;
+	bool 			mEscape;
+	PacketListener* mListener;
+
+	/**
+	 * @copydoc UsartListener::onUsartReceived()
+	 */
+	void onUsartReceived(unsigned char byte);
+
+	/**
+	 * @copydoc UsartListener::onUsartBufferEmpty()
+	 */
+	virtual void onUsartBufferEmpty();
+
+	/**
+	 * @copydoc Event::onEvent()
+	 */
+	virtual void onEvent(char what);
 };
 
 #endif /* PACKET_H_ */

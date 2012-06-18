@@ -20,7 +20,7 @@
 #ifndef STEPPER_H_
 #define STEPPER_H_
 
-#include "Timer/timer_listener.h"
+#include "Timer/system_timer.h"
 #include "StepperListener.h"
 #include "Module.h"
 #include "Property.h"
@@ -29,19 +29,19 @@
 
 class PropertyStepperTargetLocation: public PropertyS16 {
 private:
-    const char* getName() {return "target";}
+    const char* getName() const {return "target";}
     const char* getDescription() {return "Target location in absolute steps.";}
     PropertyListener* mListener;
     void setValue(const PROPERTY_VALUE* value) {
         if (value->s16 != mValue) {
             mValue = value->s16;
             if (mListener) {
-                mListener->onPropertyChanged(this);
+                mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
             }
         }
     }
 public:
-    PropertyStepperTargetLocation(PropertyListener* listener) : PropertyS16(), mListener(listener) {}
+    PropertyStepperTargetLocation(PropertyListener* listener, Packet* packet) : PropertyS16(0, packet), mListener(listener) {}
 //    short operator= (short value) {
 //    	return PropertyS16::operator=(value);
 //	}
@@ -49,10 +49,10 @@ public:
 
 class PropertyStepperCurrentLocation: public PropertyS16 {
 private:
-    const char* getName() {return "current";}
+    const char* getName() const {return "current";}
     const char* getDescription() {return "Current location in absolute steps.";}
 public:
-    PropertyStepperCurrentLocation() : PropertyS16() {}
+    PropertyStepperCurrentLocation(Packet* packet) : PropertyS16(0, packet) {}
     using PropertyS16::operator =;
     using PropertyS16::operator ++;
     using PropertyS16::operator --;
@@ -60,17 +60,17 @@ public:
 
 class PropertyStepperManual: public PropertyBoolean {
 private:
-    const char* getName() {return "manual";}
+    const char* getName() const {return "manual";}
     const char* getDescription() {return "";}
     PropertyListener* mListener;
     void setValue(const PROPERTY_VALUE* value) {
         if (value->boolean != mValue) {
             mValue = value->boolean;
-            mListener->onPropertyChanged(this);
+            mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
         }
     }
 public:
-    PropertyStepperManual(PropertyListener* listener) : PropertyBoolean(), mListener(listener) {}
+    PropertyStepperManual(PropertyListener* listener, Packet* packet) : PropertyBoolean(false, packet), mListener(listener) {}
 //    bool operator= (bool value) {
 //    	return PropertyBoolean::operator=(value);
 //	}
@@ -83,18 +83,18 @@ public:
  * @see Stepper4C
  * @see Stepper4D
  */
-class Stepper : public TimerListener, public Module, public PropertyRecord, public PropertyListener {
+class Stepper : public SystemTimer, public Module, public PropertyRecord, public PropertyListener {
 
 private:
     short mCurrentSpeed;						/**< current speed in steps/(second/8) */
     StepperListener *mFinishListener;			/**< listener to be called when stepper has reached its target */
     bool mTimerStarted;
-    void onTimer(char what, unsigned short when); // for TimerListener
+    void onTimerLISR(unsigned short when, char what = 0);
     virtual void tick()=0;
     virtual void setEnabled(bool enable)=0;
 
 protected:
-    Stepper(char pinA1, char pinA2, char pinB1, char pinB2);
+    Stepper(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet);
 #ifdef HALF_STEP
     unsigned char PinsSequence[8];
 #else
@@ -136,10 +136,10 @@ public:
     PROPERTY_TYPE getType();
     Property* getChild(unsigned char index);
 
-    virtual const char* getName()=0;
+    virtual const char* getName() const = 0;
     virtual const char* getDescription()=0;
 
-    void onPropertyChanged(class Property* prop);
+    void onPropertyChanged(class Property* prop, PROPERTY_INFO what);
 };
 
 #endif /* STEPPER_H_ */

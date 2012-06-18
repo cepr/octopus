@@ -25,8 +25,8 @@
 class LVMaxSonarEZ : public RangeProvider {
 
 public:
-	LVMaxSonarEZ();
-	void getRange(RangeListener* listener);
+    LVMaxSonarEZ();
+    void getRange(RangeListener* listener);
 
 private:
     RangeListener* mListener;

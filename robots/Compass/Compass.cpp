@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -18,59 +18,46 @@
  */
 
 #include "Robot/Robot.h"
-#include "property_record.h"
+#include "octopus_comm_stack.h"
 #include "AvrUsart/AvrUsart.h"
-#include "UsartListener.h"
-#include "Packet.h"
+#include "property_record.h"
 #include "Blink/Blink.h"
-#include "PropertyPacket.h"
-#include "RemotePropertyServer.h"
 #include "compass_listener.h"
 #include "hmc6352/hmc6352.h"
 #include "property_data.h"
 
-class HeadingProperty: public PropertyU16 {
-    const char* getName() {
-        return "Heading";
-    }
-    const char* getDescription() {
-        return "Compass heading in 1/10 degrees, from 0 to 3600";
-    }
-public:
-    using PropertyData<unsigned short>::operator =;
-};
-
-class Compass : public Robot, public PropertyRecord, public CompassListener {
+class Compass : public Robot, public OctopusCommStack<AvrUsart, PropertyRecord>, public CompassListener {
 
 private:
+    // Inner classes
+    class HeadingProperty: public PropertyU16 {
+    public:
+        HeadingProperty(Packet* packet) : PropertyU16(0, packet) {}
+        const char* getName() const {
+            return "Heading";
+        }
+        const char* getDescription() {
+            return "Compass heading in 1/10 degrees, from 0 to 3600";
+        }
+        using PropertyData<unsigned short>::operator =;
+    };
+
     // List of modules
     Blink                   mBlink;
     Hmc6352                 mCompass;
     HeadingProperty         mHeading;
 
-    // Remote control
-    AvrUsart                mAvrUsart;
-    Packet                  mPacket;
-    PropertyPacket          mBridge;
-    RemotePropertyServer    mServer;
-
 public:
     // Constructor
-    Compass() : PropertyRecord(),
-                 // Modules
-                 mBlink(),
-                 mCompass(),
-                 // Remote control
-                 mAvrUsart(),
-                 mPacket(&mAvrUsart),
-                 mBridge(&mPacket),
-                 mServer(this, &mBridge)
+    Compass() : // Modules
+            mBlink(&mPacket),
+            mCompass(),
+            mHeading(&mPacket)
     {
-        mBridge.registerServer(&mServer);
     }
 
     // Property definition
-    const char* getName() {
+    const char* getName() const {
         return "Compass";
     }
 
@@ -80,7 +67,6 @@ public:
 
     void onStart() {
         mBlink.mEnabled = true;
-        mAvrUsart.sendString("Compass starting!");
         mCompass.getHeading(this);
     }
 
@@ -98,5 +84,10 @@ public:
     }
 };
 
-static Compass myRobot;
-Robot* gRobot = &myRobot;
+int main(void)
+{
+    Compass c;
+    c.onStart();
+    Event::startLooper();
+    return 0;
+}

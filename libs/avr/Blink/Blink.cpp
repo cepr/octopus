@@ -21,7 +21,7 @@
 #include "Blink.h"
 #include "fatal.h"
 
-Blink::Blink() : mEnabled(this), mTimer(this) {
+Blink::Blink(Packet* packet) : PropertyRecord(packet), mEnabled(this, packet), mTimer(this) {
     DDRB |= _BV(DDB5);
     mRequestId = 0;
 }
@@ -50,7 +50,7 @@ Property* Blink::getChild(unsigned char index) {
 	}
 }
 
-void Blink::onPropertyChanged(class Property* prop) {
+void Blink::onPropertyChanged(class Property* prop, PROPERTY_INFO what) {
 	mRequestId++;
 	if (mEnabled) {
 		cli();

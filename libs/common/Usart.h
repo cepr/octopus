@@ -23,7 +23,9 @@
 #include "UsartListener.h"
 
 /**
- * @brief Abstract base class for all serial communication channels (serial ports, sockets, pipes, etc).
+ * @brief Physical layer of the Octopus Communication Stack
+ *
+ * Abstract base class for all serial communication channels (serial ports, sockets, pipes, etc).
  *
  * This class is an abstract class for all asynchronous serial communication channels. In order to send data,
  * you can use one the following methods:
@@ -34,6 +36,9 @@
  * - Usart#sendString()
  *
  * In order to receive data, you have to implement an UsartListener and register it using registerListener().
+ *
+ * The data link layer is the layer 1 of the seven-layer OSI model of computer networking.
+ * <a href="http://en.wikipedia.org/wiki/Physical_layer">Read more on Wikipedia...</a>
  *
  * @ingroup COM_STACK
  */
@@ -102,6 +107,15 @@ public:
 	 * This methods sends a NULL-terminated char string. The NULL character is not send.
 	 */
     void sendString(const char *txt);
+
+	/**
+	 * @brief Returns whether or not the output buffer is empty
+	 *
+	 * This method returns the status of the output buffer.
+	 *
+	 * @return @a true if buffer is empty, @a false otherwise.
+	 */
+	virtual bool isUsartBufferEmpty() = 0;
 
 	/**
 	 * \brief Enquiry

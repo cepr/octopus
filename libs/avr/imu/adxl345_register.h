@@ -62,7 +62,7 @@ class Adxl345Register : public PropertyU8 {
 
 public:
 
-	Adxl345Register(ADXL345_REGISTER reg);
+	Adxl345Register(ADXL345_REGISTER reg, Packet* packet);
 	~Adxl345Register();
     const char* getDescription();
 

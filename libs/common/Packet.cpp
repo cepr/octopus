@@ -18,8 +18,12 @@
  */
 
 #include "Packet.h"
+#if !defined(AVR)
+#include <wx/log.h>
+#endif
 
-Packet::Packet(Usart *usart) {
+Packet::Packet(Usart *usart)
+{
 	mSize = 0;
 	mStarted = false;
 	mEscape = false;
@@ -28,31 +32,45 @@ Packet::Packet(Usart *usart) {
 	usart->registerListener(this);
 }
 
-void Packet::registerListener(PacketListener* listener) {
+void Packet::registerListener(PacketListener* listener)
+{
 	mListener = listener;
 }
 
-void Packet::onUsartReceived(unsigned char byte) {
+void Packet::onUsartReceived(unsigned char byte)
+{
 
 	if (byte == ESCAPE) {
 		mEscape = true;
 	} else if (byte == START) {
 		mStarted = true;
-        mEscape = false;
+		mEscape = false;
 		mSize = 0;
 	} else if (byte == STOP) {
 		// Packet complete, send it to listener.
-		if (mStarted && mListener) {
-			mListener->onPacketReceived(mBuffer, mSize);
+		if (mStarted) {
+#if !defined(AVR) && defined(DEBUG)
+			{
+				wxString msg = "\033[0;32m[I]";
+				for (int i=0; i<mSize; i++) {
+					msg.Append(wxString::Format(" %02x", mBuffer[i]));
+				}
+				msg.Append("\033[0m");
+				wxLogDebug(msg);
+			}
+#endif
+			if (mListener) {
+				mListener->onPacketReceived(mBuffer, mSize);
+			}
 		}
 		mStarted = false;
-        mEscape = false;
+		mEscape = false;
 	} else {
 		// This is not a special byte
 		if (mEscape) {
-            byte ^= ESCAPE;
-            mEscape = false;
-        }
+			byte ^= ESCAPE;
+			mEscape = false;
+		}
 		if (mStarted) {
 			mBuffer[mSize++] = byte;
 			if (mSize > sizeof(mBuffer)) {
@@ -63,17 +81,54 @@ void Packet::onUsartReceived(unsigned char byte) {
 	}
 }
 
-void Packet::sendPacket(const unsigned char *buffer, char size) {
-	mUsart->sendByte(START);
-	while(size > 0) {
-		unsigned char byte = *buffer++;
-		if ((byte == START) || (byte == ESCAPE) || (byte == STOP)) {
-			mUsart->sendByte(ESCAPE);
-            mUsart->sendByte(byte ^ ESCAPE);
-		} else {
-        	mUsart->sendByte(byte);
-        }
-		size--;
+void Packet::onUsartBufferEmpty()
+{
+	if (mListener) {
+
+		// Packet buffer is a local array
+		unsigned char buffer[32];
+		unsigned char size = 0;
+
+		// Retrieve packet content from listener
+		if (mListener->onReadyToSend(buffer, size, sizeof(buffer))) {
+
+#if !defined(AVR) && defined(DEBUG)
+			{
+				wxString msg = "\033[0;34m[O]";
+				for (int i=0; i<size; i++) {
+					msg.Append(wxString::Format(" %02x", buffer[i]));
+				}
+				msg.Append("\033[0m");
+				wxLogDebug(msg);
+			}
+#endif
+
+			// Send packet
+			mUsart->sendByte(START);
+			unsigned char* ptr = buffer;
+			while(size > 0) {
+				unsigned char byte = *ptr++;
+				if ((byte == START) || (byte == ESCAPE) || (byte == STOP)) {
+					mUsart->sendByte(ESCAPE);
+					mUsart->sendByte(byte ^ ESCAPE);
+				} else {
+					mUsart->sendByte(byte);
+				}
+				size--;
+			}
+			mUsart->sendByte(STOP);
+		}
 	}
-	mUsart->sendByte(STOP);
+}
+
+void Packet::requestToSend()
+{
+	if ((mUsart) && (mUsart->isUsartBufferEmpty())) {
+		Post();
+	}
+}
+
+void Packet::onEvent(char what)
+{
+	onUsartBufferEmpty();
 }

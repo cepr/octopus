@@ -1,60 +1,49 @@
 
 #include "Robot/Robot.h"
+#include "octopus_comm_stack.h"
 #include "property_record.h"
 #include "AvrUsart/AvrUsart.h"
 #include "UsartListener.h"
 #include "Packet.h"
 #include "Blink/Blink.h"
-#include "PropertyPacket.h"
-#include "RemotePropertyServer.h"
 
-class Template : public Robot, public PropertyRecord {
+class Template : public Robot, public OctopusCommStack<AvrUsart, PropertyRecord> {
 
 private:
     // List of modules
-    Blink 					mBlink;
-
-    // Remote control
-	AvrUsart 				mAvrUsart;
-	Packet 					mPacket;
-	PropertyPacket 			mBridge;
-	RemotePropertyServer 	mServer;
+    Blink           mBlink;
 
 public:
     // Constructor
-    Template() : PropertyRecord(),
-                 // Modules
-                 mBlink(),
-                 // Remote control
-                 mAvrUsart(),
-                 mPacket(&mAvrUsart),
-                 mBridge(&mPacket),
-                 mServer(this, &mBridge)
-    {
-        mBridge.registerServer(&mServer);
+    Template() : mBlink(&mPacket) {
     }
 
     // Property definition
-	const char* getName() {
+    const char* getName() const {
         return "Template";
     }
 
-	const char* getDescription() {
+    const char* getDescription() {
         return "Template robot";
     }
 
     void onStart() {
         mBlink.mEnabled = true;
-        mAvrUsart.sendString("Template starting!");
     }
 
     Property* getChild(unsigned char index) {
-       	switch(index) {
+        switch(index) {
             case 0: return &mBlink;
             default: return 0;
         }
     }
 };
 
-static Template myRobot;
-Robot* gRobot = &myRobot;
+
+int main(void)
+{
+    Template robot;
+    robot.onStart();
+    Event::startLooper();
+    return 0;
+}

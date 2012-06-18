@@ -28,7 +28,7 @@ while [ "${HEX_ARRAY[i]}" != "" ]; do
  else
   echo -n "  "
  fi
- echo "$i: `basename ${HEX_ARRAY[i]}`"
+ echo -e "$i: `basename ${HEX_ARRAY[i]}`\t(`dirname ${HEX_ARRAY[i]}`)"
  (( i=i+1 ))
 done
 

@@ -21,7 +21,6 @@
 #define RFREMOTE_H_
 
 #include "PrincetonRf/PrincetonRfEncoder.h"
-#include "Timer/Timer.h"
 
 typedef enum {
     RF_REMOTE_A1,

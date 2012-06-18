@@ -19,7 +19,6 @@
 
 #include "AnalogChannel.h"
 #include "AnalogToDigitalConverter.h"
-#include "Timer/Timer.h"
 
 AnalogChannel::AnalogChannel(CHANNEL channel, VREF vref) : mTimer(this) {
     mChannel = channel;
@@ -54,7 +53,7 @@ void AnalogChannel::stop() {
     mMs = mPeriod = 0;
 }
 
-void AnalogChannel::Timer::onTimer() {
+void AnalogChannel::Timer::onTimer(char what) {
     if (mParent->mPeriod) {
         /* 1ms has been elapsed */
         mParent->mMs--;

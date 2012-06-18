@@ -19,7 +19,7 @@
 
 #include "adxl345_register.h"
 
-Adxl345Register::Adxl345Register(ADXL345_REGISTER reg)
+Adxl345Register::Adxl345Register(ADXL345_REGISTER reg, Packet* packet) : PropertyU8(0, packet)
 {
     mReg = reg;
 }
@@ -27,4 +27,3 @@ Adxl345Register::Adxl345Register(ADXL345_REGISTER reg)
 Adxl345Register::~Adxl345Register()
 {
 }
-

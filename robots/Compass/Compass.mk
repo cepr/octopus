@@ -7,19 +7,19 @@ ProjectName            :=Compass
 ConfigurationName      :=Debug
 IntermediateDirectory  :=../../out/$(ProjectName)/$(ConfigurationName)
 OutDir                 := $(IntermediateDirectory)
-WorkspacePath          := "/home/cedric/octopus/src"
-ProjectPath            := "/home/cedric/octopus/src/robots/Compass"
+WorkspacePath          := "/home/cedric/octopus/git/octopus"
+ProjectPath            := "/home/cedric/octopus/git/octopus/robots/Compass"
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Cédric
-Date                   :=18/09/2011
+Date                   :=18/06/2012
 CodeLitePath           :="/home/cedric/.codelite"
 LinkerName             :=avr-g++
-ArchiveTool            :=avr-ar rcus
+ArchiveTool            :=ar rcus
 SharedObjectLinkerName :=avr-g++ -shared -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=.d
+DependSuffix           :=
 PreprocessSuffix       :=.o.i
 DebugSwitch            :=-gstab
 IncludeSwitch          :=-I
@@ -35,14 +35,16 @@ Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E 
-ObjectsFileList        :="/home/cedric/octopus/src/robots/Compass/Compass.txt"
+ObjectsFileList        :="/home/cedric/octopus/git/octopus/robots/Compass/Compass.txt"
+PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
-CmpOptions             :=-Wall -Os -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
-C_CmpOptions           :=-Wall -Os -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
-LinkOptions            := -Os -Wl,--gc-sections -mmcu=atmega328p -Wl,-Map=$(OutDir)/$(ProjectName).map -Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x 
+CmpOptions             :=-g -Wall -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
+C_CmpOptions           :=-g -Wall -fno-exceptions -fno-threadsafe-statics -ffunction-sections -fdata-sections -fshort-enums -mmcu=atmega328p -DF_CPU=8000000L  $(Preprocessors)
+LinkOptions            := -g -Wl,--gc-sections -mmcu=atmega328p -Wl,-Map=$(OutDir)/$(ProjectName).map -Wl,--script=$(WorkspacePath)/ldscripts/ldscript_atmega328p.x 
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)$(WorkspacePath)/libs/avr $(IncludeSwitch)$(WorkspacePath)/libs/common $(IncludeSwitch)$(WorkspacePath)/libs/sensors 
-RcIncludePath          :=
-Libs                   :=$(LibrarySwitch)OctopusAVR 
+IncludePCH             := 
+RcIncludePath          := 
+Libs                   := $(LibrarySwitch)OctopusAVR 
 LibPath                := $(LibraryPathSwitch)$(WorkspacePath)/out/OctopusAVR/$(ConfigurationName) 
 
 
@@ -56,19 +58,27 @@ Objects=$(IntermediateDirectory)/Compass$(ObjectSuffix)
 ##
 ## Main Build Targets 
 ##
+.PHONY: all clean PreBuild PrePreBuild PostBuild
 all: $(OutputFile)
 
-$(OutputFile): makeDirStep $(Objects)
+$(OutputFile): $(IntermediateDirectory)/.d ../../.build-debug/OctopusAVR $(Objects) 
 	@$(MakeDirCommand) $(@D)
-	$(LinkerName) $(OutputSwitch)$(OutputFile) $(Objects) $(LibPath) $(Libs) $(LinkOptions)
+	@echo "" > $(IntermediateDirectory)/.d
+	@echo $(Objects) > $(ObjectsFileList)
+	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+../../.build-debug/OctopusAVR:
+	@echo stam > "../../.build-debug/OctopusAVR"
+
+
+
+
+PostBuild:
 	@echo Executing Post Build commands ...
 	avr-objcopy -O ihex -R .eeprom $(OutDir)/$(ProjectName).out $(OutDir)/$(ProjectName).hex
 	@echo Done
 
-objects_file:
-	@echo $(Objects) > $(ObjectsFileList)
-
-makeDirStep:
+$(IntermediateDirectory)/.d:
 	@test -d ../../out/$(ProjectName)/$(ConfigurationName) || $(MakeDirCommand) ../../out/$(ProjectName)/$(ConfigurationName)
 
 PreBuild:
@@ -77,16 +87,11 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/Compass$(ObjectSuffix): Compass.cpp $(IntermediateDirectory)/Compass$(DependSuffix)
-	$(CompilerName) $(SourceSwitch) "/home/cedric/octopus/src/robots/Compass/Compass.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/Compass$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/Compass$(DependSuffix): Compass.cpp
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/Compass$(ObjectSuffix) -MF$(IntermediateDirectory)/Compass$(DependSuffix) -MM "/home/cedric/octopus/src/robots/Compass/Compass.cpp"
-
+$(IntermediateDirectory)/Compass$(ObjectSuffix): Compass.cpp 
+	$(CompilerName) $(IncludePCH) $(SourceSwitch) "/home/cedric/octopus/git/octopus/robots/Compass/Compass.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/Compass$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/Compass$(PreprocessSuffix): Compass.cpp
-	@$(CompilerName) $(CmpOptions) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/Compass$(PreprocessSuffix) "/home/cedric/octopus/src/robots/Compass/Compass.cpp"
+	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/Compass$(PreprocessSuffix) "/home/cedric/octopus/git/octopus/robots/Compass/Compass.cpp"
 
-
--include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##
@@ -95,5 +100,6 @@ clean:
 	$(RM) $(IntermediateDirectory)/Compass$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/Compass$(PreprocessSuffix)
 	$(RM) $(OutputFile)
+	$(RM) "/home/cedric/octopus/git/octopus/.build-debug/Compass"
 
 

@@ -20,9 +20,8 @@
 #ifndef ANALOGTODIGITALCONVERTER_H_
 #define ANALOGTODIGITALCONVERTER_H_
 
-#include "Timer/Timer.h"
-#include "Timer/timer_listener.h"
-#include "Handler.h"
+#include "Timer/system_timer.h"
+#include "event.h"
 
 #define MAX_PENDING_CONVERTIONS 8
 
@@ -34,7 +33,7 @@
  *
  * \ingroup AVR_ADC
  */
-class AnalogToDigitalConverter : public Handler {
+class AnalogToDigitalConverter : public Event {
 
 private:
     class AnalogChannel* mList[MAX_PENDING_CONVERTIONS];
@@ -45,12 +44,12 @@ private:
     bool mRunning;
     AnalogToDigitalConverter();
 
-	class Timer : public TimerListener {
+	class Timer : public SystemTimer {
 	public:
 		Timer(AnalogToDigitalConverter *parent);
 	private:
 		AnalogToDigitalConverter* mParent;
-		void onTimerLISR(unsigned short when);
+		void onTimerLISR(unsigned short when, char what);
 	};
 	Timer mTimer;
 

@@ -20,6 +20,8 @@
 #ifndef PROPERTYLISTENER_H_
 #define PROPERTYLISTENER_H_
 
+class PropertyListener;
+
 #include "Property.h"
 #include "Listener.h"
 
@@ -29,10 +31,28 @@
 class PropertyListener : public Listener {
 public:
 	/**
-	 * @brief Listener called when a property has been changed.
-	 * @param prop The changed property.
+	 * @brief Method called when a property has changed
+	 *
+	 * @param[in,out] prop The changed property
+	 * @param[in,out] what Elements that have changed
 	 */
-	virtual void onPropertyChanged(class Property* prop) = 0;
+	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) {};
+
+	/**
+	 * @brief Method called when a property has a new child
+	 *
+	 * @param[in,out] prop  The parent property
+	 * @param[in,out] child The new-born child
+	 * @param[in]     index The index of the child in the parent children list
+	 */
+	virtual void onNewChild(Property* prop, Property* child, unsigned char index) {};
+
+	/**
+	 * @brief Method called when a property has deleted its child
+	 *
+	 * @param[in,out] prop The deleted property
+	 */
+	virtual void onPropertyDeleted(Property* prop) {};
 };
 
 #endif /* PROPERTYLISTENER_H_ */

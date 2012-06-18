@@ -1,14 +1,17 @@
 #ifndef PROPERTYRECORD_H
 #define PROPERTYRECORD_H
 
-#include "Property.h" // Base class: Property
+#include "local_property.h"
 
 /**
  * \brief Base abstract class for all properties records.
  */
-class PropertyRecord : public Property {
+class PropertyRecord : public LocalProperty {
 
 public:
+
+	PropertyRecord(Packet* packet) : LocalProperty(packet) {
+	}
 
 	PROPERTY_TYPE getType() {
         return PROPERTY_TYPE_VOID;

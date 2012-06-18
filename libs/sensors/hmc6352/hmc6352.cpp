@@ -18,7 +18,6 @@
  */
 
 #include "hmc6352.h"
-#include "Timer/Timer.h"
 #include "twi/AvrTwoWireInterface.h"
 
 #ifdef FAST_I2C
@@ -44,7 +43,7 @@ void Hmc6352::onTransmitFinished(unsigned char transmitted) {
     schedule(now() + 6000, 0);
 }
 
-void Hmc6352::onTimer(char what, unsigned short when) {
+void Hmc6352::onTimer(char what) {
     mTransfer.type = I2C_RECEIVE;
     mTransfer.size = 2;
     mTransfer.next = 0;

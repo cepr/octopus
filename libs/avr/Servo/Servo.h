@@ -21,7 +21,7 @@
 #define SERVO_H_
 
 #include "Handler.h"
-#include "Timer/timer_listener.h"
+#include "Timer/system_timer.h"
 #include "property_record.h"
 #include "property_data.h"
 #include "Module.h"
@@ -29,7 +29,7 @@
 class PropertyServoPosition : public PropertyU16 {
 
 protected:
-    const char* getName() {return "position";}
+    const char* getName() const {return "position";}
     const char* getDescription() {return "Absolute position between 1310 and 2100.";}
     void setValue(const PROPERTY_VALUE & value) {
         operator=(value.u16);
@@ -40,7 +40,7 @@ public:
      * @brief Constructor.
      * The initial position of the servomotor is set to SERVO_DEFAULT_PULSE.
      */
-    PropertyServoPosition();
+    PropertyServoPosition(Packet* packet);
 
     /**
      * @brief Minimum pulse duration, in microseconds.
@@ -73,32 +73,32 @@ public:
 
 class PropertyServoEnabled : public PropertyBoolean {
 private:
-    const char* getName() {return "enabled";}
+    const char* getName() const {return "enabled";}
     const char* getDescription() {return "";}
     PropertyListener* mListener;
     void setValue(const PROPERTY_VALUE & value) {
         if (mValue != value.boolean) {
             mValue = value.boolean;
             if (mListener) {
-                mListener->onPropertyChanged(this);
+                mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
             }
         }
     }
 public:
-    PropertyServoEnabled(PropertyListener* listener) : PropertyBoolean(), mListener(listener) {}
+    PropertyServoEnabled(PropertyListener* listener, Packet* packet) : PropertyBoolean(false, packet), mListener(listener) {}
 };
 
 /**
  * @brief Servomotor driver using 1 GPIO of port D.
  */
-class Servo: private TimerListener, public PropertyRecord, public PropertyListener, public Module {
+class Servo: private SystemTimer, public PropertyRecord, public PropertyListener, public Module {
 
 private:
 	char mPin;
-    void onTimer(char what, unsigned short when);
+    void onTimerLISR(unsigned short when, char what = 0);
 
 protected:
-    virtual const char* getName() {return "servo";}
+    virtual const char* getName() const {return "servo";}
     virtual const char* getDescription() {return "";}
 	Property* getChild(unsigned char index);
 
@@ -106,9 +106,10 @@ public:
     /**
      * @brief Constructor.
      *
-     * @param pin GPIO of port D on which the servomotor is plugged
+     * @param[in]     pin    GPIO of port D on which the servomotor is plugged
+	 * @param[in,out] packet Packet class to report modifications to
      */
-    Servo(char pin);
+    Servo(char pin, Packet* packet);
 
     /**
      * @brief Enable or disable the servomotor.
@@ -135,7 +136,7 @@ public:
     /**
      * @copydoc PropertyListener::onPropertyChanged()
      */
-    void onPropertyChanged(Property* prop);
+    void onPropertyChanged(Property* prop, PROPERTY_INFO what);
 };
 
 #endif /* SERVO_H_ */

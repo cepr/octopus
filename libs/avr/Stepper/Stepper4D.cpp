@@ -22,8 +22,8 @@
 #define PORT PORTD
 #define DDR DDRD
 
-Stepper4D::Stepper4D(char pinA1, char pinA2, char pinB1, char pinB2) :
-		Stepper(pinA1, pinA2, pinB1, pinB2) {
+Stepper4D::Stepper4D(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet) :
+		Stepper(pinA1, pinA2, pinB1, pinB2, packet) {
     PORT = PORT & ~PinsMask;
     DDR |= PinsMask;
 }

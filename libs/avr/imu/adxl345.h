@@ -21,17 +21,17 @@
 #define ADXL345_H
 
 #include "i2c_device.h" // Base class: I2CDevice
-#include "Property.h"
+#include "property_record.h"
 #include "adxl345_register.h"
 
-class Adxl345 : public I2CDevice, Property {
+class Adxl345 : public I2CDevice, PropertyRecord {
     Property* getChild(unsigned char index);
     PROPERTY_TYPE getType();
     const char* getDescription();
-    const char* getName();
+    const char* getName() const;
 
 public:
-    Adxl345();
+    Adxl345(Packet* packet);
     ~Adxl345();
 
     /**

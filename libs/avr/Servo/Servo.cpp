@@ -28,10 +28,10 @@
 #define PORT PORTD
 #define DDR DDRD
 
-PropertyServoPosition::PropertyServoPosition() : PropertyU16(DEFAULT) {
+PropertyServoPosition::PropertyServoPosition(Packet* packet) : PropertyU16(DEFAULT, packet) {
 }
 
-Servo::Servo(char pin) : PropertyRecord(), mEnabled(this) {
+Servo::Servo(char pin, Packet* packet) : PropertyRecord(packet), mEnabled(this, packet), mPosition(packet) {
     mPin = pin;
     DDR |= _BV(mPin);
 }
@@ -40,7 +40,7 @@ void Servo::go(unsigned short position) {
 	mPosition = position;
 }
 
-void Servo::onTimer(char what, unsigned short when) {
+void Servo::onTimerLISR(unsigned short when, char what) {
 	if (mEnabled) {
 		if (what == EVENT_50HZ) {
 			/* 50Hz tick */
@@ -63,8 +63,10 @@ Property* Servo::getChild(unsigned char index) {
 	}
 }
 
-void Servo::onPropertyChanged(Property* prop) {
+void Servo::onPropertyChanged(Property* prop, PROPERTY_INFO what) {
 	if (mEnabled) {
-        onTimer(now(), EVENT_50HZ);
+		cli();
+        onTimerLISR(now(), EVENT_50HZ);
+		sei();
     }
 }

@@ -23,7 +23,6 @@
 #include "AnalogToDigitalConverter.h"
 #include "AnalogChannel.h"
 #include "fatal.h"
-#include "Looper.h"
 
 #define ADC_PRESCALER_2   (                          _BV(ADPS0))
 #define ADC_PRESCALER_4   (             _BV(ADPS1)             )
@@ -111,7 +110,7 @@ void AnalogToDigitalConverter::programNextADC() {
 #endif
 }
 
-void AnalogToDigitalConverter::Timer::onTimerLISR(unsigned short when) {
+void AnalogToDigitalConverter::Timer::onTimerLISR(unsigned short when, char what) {
 	/* Stabilization if finished, we can launch conversion */
 	ADCSRA |= _BV(ADSC);
 }
@@ -121,7 +120,7 @@ void AnalogToDigitalConverter::Timer::onTimerLISR(unsigned short when) {
  * Interrupt context, we make it the shortest as possible
  */
 ISR(ADC_vect) {
-	PostEvent(gAnalogToDigitalConverter, 0);
+	gAnalogToDigitalConverter->Post(0);
 }
 
 /*
