@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Octopus SDK by cepr</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/cepr/octopus">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/cepr/octopus/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/cepr/octopus/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Octopus SDK</h1>
+          <p>Open-source C++ development framework for micro-controllers</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/cepr">cepr</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Octopus SDK</h1>
+
+<p><img src="//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Panneau_travaux.svg/128px-Panneau_travaux.svg.png" alt="Work in progress"></p>
+
+<h2>Presentation</h2>
+
+<p>Octopus SDK is an open-source C++ development framework for
+micro-controllers. It is compatible with AVR micro-controllers,
+including the famous Arduino boards.</p>
+
+<h2>Why not Arduino software ?</h2>
+
+<p>Arduino is a good framework and is quite simple to learn, but has a
+limitation: you can use only one execution flow, which can be
+problematic if you want to handle a lot of incoming events (GPIOs
+modifications, timers, incoming byte on the serial port, etc).</p>
+
+<p>Octopus framework uses an event-queue to handle incoming events. As
+a consequence the CPU stays in idle mode as long as no event arises.
+If you want to simply blink a led, you just have to code an timer
+event handler which will toggle the GPIO output, and start a timer
+for 1 second with this event handler. </p>
+
+<p>Another advantage of Octopus SDK is its remote control and telemetry
+framework. Simply change the type of your C++ variables to the
+<code>RemoteProperty</code> type, and you will be able to monitor and modify
+in real-time the variable with the GUI application <em>OctopusControlPanel</em>.
+This application is available for Windows, Linux and MacOS X, and an
+Android version is coming.</p>
+
+<h2>Supported boards</h2>
+
+<p>For the moment, Octopus SDK is compatible with AVR ATmega328P, which
+is used in the following board:</p>
+
+<ul>
+<li>Arduino Uno</li>
+<li>Arduino Ethernet</li>
+<li>Arduino Pro boards</li>
+<li>Arduino BT</li>
+<li>LilyPad Arduino</li>
+<li>Arduino Fio</li>
+<li>Arduino Pro</li>
+<li>Arduino Nano</li>
+<li>Arduino Mini</li>
+<li>Arduino Pro Mini</li>
+</ul><h2>License</h2>
+
+<p>Copyright (C) 2010-2012 PRISCAL Cedric</p>
+
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
