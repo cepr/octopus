@@ -1,18 +1,13 @@
 
-Octopus SDK
-===========
+# Octopus SDK
 
-![Work in progress](//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Panneau_travaux.svg/128px-Panneau_travaux.svg.png)
-
-Presentation
-------------
+## Presentation
 
 Octopus SDK is an open-source C++ development framework for
 micro-controllers. It is compatible with AVR micro-controllers,
 including the famous Arduino boards.
 
-Why not Arduino software ?
---------------------------
+## Why not Arduino software ?
 
 Arduino is a good framework and is quite simple to learn, but has a
 limitation: you can use only one execution flow, which can be
@@ -32,8 +27,7 @@ in real-time the variable with the GUI application *OctopusControlPanel*.
 This application is available for Windows, Linux and MacOS X, and an
 Android version is coming.
 
-Supported boards
-----------------
+## Supported boards
 
 For the moment, Octopus SDK is compatible with AVR ATmega328P, which
 is used in the following board:
@@ -48,8 +42,7 @@ is used in the following board:
 * Arduino Mini
 * Arduino Pro Mini
 
-License
--------
+## License
 
 Copyright (C) 2010-2012 PRISCAL Cedric
 
