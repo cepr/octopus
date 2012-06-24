@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 12 2011)
+// C++ code generated with wxFormBuilder (version Apr 11 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -24,8 +24,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menuFile->Append( m_menuItemDetach );
 	m_menuItemDetach->Enable( false );
 	
-	wxMenuItem* m_separator1;
-	m_separator1 = m_menuFile->AppendSeparator();
+	m_menuFile->AppendSeparator();
 	
 	wxMenuItem* m_menuItemExit;
 	m_menuItemExit = new wxMenuItem( m_menuFile, wxID_EXIT, wxString( wxT("E&xit") ) + wxT('\t') + wxT("ALT+F4"), wxEmptyString, wxITEM_NORMAL );
@@ -42,14 +41,23 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	
 	this->SetMenuBar( m_menubar );
 	
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bSizer1;
+	bSizer1 = new wxBoxSizer( wxVERTICAL );
 	
-	m_auinotebook2 = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_CLOSE_ON_ACTIVE_TAB|wxAUI_NB_DEFAULT_STYLE|wxAUI_NB_WINDOWLIST_BUTTON );
+	m_scrolledWindow1 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow1->SetScrollRate( 5, 5 );
+	m_scrolledWindow1->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
 	
-	bSizer2->Add( m_auinotebook2, 1, wxEXPAND, 5 );
+	m_RootPropertySizer = new wxBoxSizer( wxVERTICAL );
 	
-	this->SetSizer( bSizer2 );
+	
+	m_scrolledWindow1->SetSizer( m_RootPropertySizer );
+	m_scrolledWindow1->Layout();
+	m_RootPropertySizer->Fit( m_scrolledWindow1 );
+	bSizer1->Add( m_scrolledWindow1, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer1 );
 	this->Layout();
 	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
 	

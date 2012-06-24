@@ -18,13 +18,20 @@
  */
 
 #include "main_frame_impl.h"
-#include "dashboard_panel.h"
+#include "controller/dashboard/dashboard_property_impl.h"
+#include "controller/joystick/property_controller_joystick.h"
 
 MainFrameImpl::MainFrameImpl() : MainFrame(NULL, wxID_ANY, wxT("Octopus Control Panel")), mRootProperty("/dev/ttyUSB0")
 {
-    // Add a properties panel for device on serial port
-    DashboardPanel *panel2 = new DashboardPanel(m_auinotebook2, &mRootProperty);
-    m_auinotebook2->AddPage(panel2, wxT("Dashboard view"));
+	// Create a property manager
+	PropertyManager* manager = new PropertyManager(&mRootProperty);
+
+	// Attach all controllers
+	manager->registerController(new PropertyControllerJoystick(manager));
+
+    DashboardPropertyImpl* bRootDashboardProperty = new DashboardPropertyImpl(this, manager);
+    m_RootPropertySizer->Add(bRootDashboardProperty, 1, wxEXPAND | wxALL, 10);
+    this->Layout();
 }
 
 MainFrameImpl::~MainFrameImpl()

@@ -1,13 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 12 2011)
+// C++ code generated with wxFormBuilder (version Apr 11 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __main_frame__
-#define __main_frame__
+#ifndef __MAIN_FRAME_H__
+#define __MAIN_FRAME_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/string.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
@@ -17,8 +19,8 @@
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/aui/auibook.h>
 #include <wx/sizer.h>
+#include <wx/scrolwin.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
 
@@ -36,7 +38,8 @@ class MainFrame : public wxFrame
 		wxMenuBar* m_menubar;
 		wxMenu* m_menuFile;
 		wxMenu* m_menuHelp;
-		wxAuiNotebook* m_auinotebook2;
+		wxScrolledWindow* m_scrolledWindow1;
+		wxBoxSizer* m_RootPropertySizer;
 		wxStatusBar* m_statusBar1;
 	
 	public:
@@ -47,4 +50,4 @@ class MainFrame : public wxFrame
 	
 };
 
-#endif //__main_frame__
+#endif //__MAIN_FRAME_H__
