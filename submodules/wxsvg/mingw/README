@@ -1,0 +1,8 @@
+To compile WXSVG with mingw and msys on windows platform, use the render agg23 given in the following CVS :
+
+AGG23 :
+
+cvs -d:pserver:anonymous@lolitech.dyndns.org:/iae login
+type "return" when asking for password
+
+cvs -z3 -d:pserver:anonymous@lolitech.dyndns.org:/iae co -P agg23

@@ -1,0 +1,8 @@
+Makefile
+Makefile.in
+.deps
+.libs
+*.l*
+svgview
+*.exe
+svg

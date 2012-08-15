@@ -1,0 +1,1 @@
+?package(wxsvg):needs="X11" section="libs"

@@ -1,0 +1,7 @@
+wxsvg (1.0b10-lenny1) stable; urgency=low
+
+  * packages for Debian Lenny, Sid and Ubuntu Hardy Heron
+  * packages are split now in shared and devel libraries
+  * invoked quilt and patch as dependencies
+
+ -- Uwe Bugla <uwe.bugla@gmx.de>  Thu, 10 Jul 2008 20:27:00 +0200
