@@ -20,6 +20,10 @@
 #ifndef PROPERTY_H_
 #define PROPERTY_H_
 
+#ifndef AVR
+#include <list>
+#endif
+
 /**
  * @brief Property type
  *
@@ -88,7 +92,7 @@ public:
 	/**
 	 * @brief Register a listener
 	 *
-	 * @param[in] listener Listener to be called when the property changed
+	 * @param[in] listener Listener to be called when the property is modified
 	 *
 	 * @a listener will be called each time a new piece of information is received
 	 * from the remote property, like its name, description, type or value.
@@ -161,10 +165,10 @@ public:
 	 */
 	virtual void refresh() = 0;
 
-	static const PROPERTY_INFO PROPERTY_INFO_NAME         	= (1<<0);
-	static const PROPERTY_INFO PROPERTY_INFO_DESCRIPTION  	= (1<<1);
-	static const PROPERTY_INFO PROPERTY_INFO_TYPE         	= (1<<2);
-	static const PROPERTY_INFO PROPERTY_INFO_VALUE  		= (1<<3);
+	static const PROPERTY_INFO PROPERTY_INFO_NAME           = (1<<0);
+	static const PROPERTY_INFO PROPERTY_INFO_DESCRIPTION    = (1<<1);
+	static const PROPERTY_INFO PROPERTY_INFO_TYPE           = (1<<2);
+	static const PROPERTY_INFO PROPERTY_INFO_VALUE          = (1<<3);
 	static const PROPERTY_INFO PROPERTY_INFO_CHILDREN       = (1<<4);	// reserved for dynamic creation of children
 
 protected:
@@ -190,7 +194,12 @@ protected:
 	static const unsigned char CMD_CUSTOM_FF		= 0xff;
 
 	Packet*	mPacket;
+public:
+#ifdef AVR
 	PropertyListener *mListener;
+#else
+    std::list<PropertyListener*> mListeners;
+#endif
 };
 
 #endif /* PROPERTY_H_ */

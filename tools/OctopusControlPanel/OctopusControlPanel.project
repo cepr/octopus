@@ -55,7 +55,6 @@
         <File Name="src/controller/joystick/joystick_virtual_axe.h"/>
         <File Name="src/controller/joystick/joystick_virtual_axe.cpp"/>
       </VirtualDirectory>
-      <File Name="src/controller/property_controller.cpp"/>
       <File Name="src/controller/property_controller.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="property">
@@ -70,13 +69,13 @@
       <File Name="src/settings/settings_dialog.cpp"/>
       <File Name="src/settings/settings_dialog_impl.cpp"/>
       <File Name="src/settings/setting.h"/>
+      <File Name="src/settings/settings_dialog.h"/>
     </VirtualDirectory>
     <File Name="src/main_frame.fbp"/>
     <File Name="src/property_manager.cpp"/>
     <File Name="src/property_configuration.cpp"/>
     <File Name="src/octopus_control_panel_app.h"/>
     <File Name="src/octopus_control_panel_app.cpp"/>
-    <File Name="src/settings_dialog.h"/>
     <File Name="src/main_frame_impl.cpp"/>
     <File Name="src/main_frame.cpp"/>
     <File Name="src/property_manager.h"/>
@@ -107,6 +106,9 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
+      
       
       
       
@@ -148,6 +150,9 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
+      
       
       
       

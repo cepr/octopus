@@ -19,29 +19,29 @@
 
 #include "serial_port_property.h"
 
+using std::string;
+
 // constructor
-SerialPortProperty::SerialPortProperty(const wxString & devicepath) :
+SerialPortProperty::SerialPortProperty(const std::string & devicepath) :
 	PropertyRecord(0),
+    mDevicePath(devicepath),
 	mSerialPort(devicepath),
 	mPacket(&mSerialPort),
-	mRootProperty(&mPacket)
+    mRootProperty(&mPacket)
 {
-	mDevicePath = new char[devicepath.length() + 1];
-	strcpy(mDevicePath, devicepath.ToAscii());
-	mPacket.registerListener(&mRootProperty);
+    mPacket.registerListener(&mRootProperty);
 }
 
 // destructor
 SerialPortProperty::~SerialPortProperty()
 {
-	delete mDevicePath;
 }
 
 // Property inherited virtual functions
 
 const char* SerialPortProperty::getName() const
 {
-	return mDevicePath;
+	return mDevicePath.c_str();
 }
 
 const char* SerialPortProperty::getDescription()

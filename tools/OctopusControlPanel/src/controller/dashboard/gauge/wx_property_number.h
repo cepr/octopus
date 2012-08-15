@@ -31,7 +31,7 @@ public:
 	~wxPropertyNumber();
 	void onPropertyChanged(Property* prop, PROPERTY_INFO what);
 	void onNewChild(Property* prop, Property* child, unsigned char index);
-	void onPropertyDeleted(Property* prop);
+	void onPropertyDeleted();
 
 private:
 	Property* mProperty;

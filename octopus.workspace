@@ -9,7 +9,7 @@
   <Project Name="OctopusAVR" Path="libs/OctopusAVR.project" Active="No"/>
   <Project Name="OctopusLinux" Path="libs/OctopusLinux.project" Active="No"/>
   <Project Name="wxWidgets" Path="wxWidgets.project" Active="No"/>
-  <Project Name="OctopusControlPanel" Path="tools/OctopusControlPanel/OctopusControlPanel.project" Active="Yes"/>
+  <Project Name="OctopusControlPanel" Path="tools/OctopusControlPanel/OctopusControlPanel.project" Active="No"/>
   <Environment>
     <![CDATA[
   
@@ -17,23 +17,36 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   ]]>
   </Environment>
+  <Project Name="OctopusXCopter" Path="robots/OctopusXCopter/OctopusXCopter.project" Active="No"/>
+  <Project Name="wxSVG" Path="wxSVG.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="wxWidgets" ConfigName="Debug"/>
       <Project Name="TwoChannelsCar" ConfigName="Debug"/>
       <Project Name="Template" ConfigName="Debug"/>
       <Project Name="RangeFinder" ConfigName="Debug"/>
+      <Project Name="OctopusXCopter" ConfigName="Debug"/>
       <Project Name="OctopusLinux" ConfigName="Debug"/>
+      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
       <Project Name="OctopusAVR" ConfigName="Debug"/>
       <Project Name="LoopBack" ConfigName="Debug"/>
       <Project Name="Eve" ConfigName="Debug"/>
       <Project Name="Compass" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
+      <Project Name="wxSVG" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Project Name="TwoChannelsCar" ConfigName="Release"/>
       <Project Name="Template" ConfigName="Release"/>
       <Project Name="RangeFinder" ConfigName="Release"/>
@@ -45,32 +58,8 @@
       <Project Name="wxWidgets" ConfigName="Release"/>
       <Project Name="wxWidgets" ConfigName="Release"/>
       <Project Name="OctopusControlPanel" ConfigName="Release"/>
-    </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release WIN32" Selected="yes">
-      <Project Name="Eve" ConfigName="Release"/>
-      <Project Name="RangeFinder" ConfigName="Debug"/>
-      <Project Name="Compass" ConfigName="Debug"/>
-      <Project Name="Template" ConfigName="Debug"/>
-      <Project Name="TwoChannelsCar" ConfigName="Debug"/>
-      <Project Name="LoopBack" ConfigName="Debug"/>
-      <Project Name="OctopusAVR" ConfigName="Debug"/>
-      <Project Name="OctopusLinux" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
-    </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Documentation" Selected="yes">
-      <Project Name="TwoChannelsCar" ConfigName="Debug"/>
-      <Project Name="Template" ConfigName="Debug"/>
-      <Project Name="RangeFinder" ConfigName="Debug"/>
-      <Project Name="OctopusLinux" ConfigName="Debug"/>
-      <Project Name="OctopusAVR" ConfigName="Documentation"/>
-      <Project Name="LoopBack" ConfigName="Debug"/>
-      <Project Name="Eve" ConfigName="Debug"/>
-      <Project Name="Compass" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="wxWidgets" ConfigName="Debug"/>
-      <Project Name="OctopusControlPanel" ConfigName="Debug"/>
+      <Project Name="OctopusXCopter" ConfigName="Release"/>
+      <Project Name="wxSVG" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

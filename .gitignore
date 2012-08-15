@@ -1,6 +1,7 @@
+/.flash
+/.build-debug/
 /out
+/octopus.batch_build
+/octopus.workspace.*
+/octopus-sdk.tags
 *.mk
-octopus.batch_build
-octopus.workspace.session
-octopus-sdk.tags
-

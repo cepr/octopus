@@ -13,13 +13,13 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Cédric
-Date                   :=18/06/2012
+Date                   :=20/06/2012
 CodeLitePath           :="/home/cedric/.codelite"
 LinkerName             :=avr-g++
 ArchiveTool            :=ar rcus
 SharedObjectLinkerName :=avr-g++ -shared -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=
+DependSuffix           :=.o.d
 PreprocessSuffix       :=.o.i
 DebugSwitch            :=-gstab
 IncludeSwitch          :=-I
@@ -61,17 +61,11 @@ Objects=$(IntermediateDirectory)/RangeFinder$(ObjectSuffix)
 .PHONY: all clean PreBuild PrePreBuild PostBuild
 all: $(OutputFile)
 
-$(OutputFile): $(IntermediateDirectory)/.d ../../.build-debug/OctopusAVR $(Objects) 
+$(OutputFile): $(IntermediateDirectory)/.d $(Objects) 
 	@$(MakeDirCommand) $(@D)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects) > $(ObjectsFileList)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
-
-../../.build-debug/OctopusAVR:
-	@echo stam > "../../.build-debug/OctopusAVR"
-
-
-
 
 PostBuild:
 	@echo Executing Post Build commands ...
@@ -87,11 +81,16 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/RangeFinder$(ObjectSuffix): RangeFinder.cpp 
+$(IntermediateDirectory)/RangeFinder$(ObjectSuffix): RangeFinder.cpp $(IntermediateDirectory)/RangeFinder$(DependSuffix)
 	$(CompilerName) $(IncludePCH) $(SourceSwitch) "/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/RangeFinder$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/RangeFinder$(DependSuffix): RangeFinder.cpp
+	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/RangeFinder$(ObjectSuffix) -MF$(IntermediateDirectory)/RangeFinder$(DependSuffix) -MM "/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.cpp"
+
 $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix): RangeFinder.cpp
 	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/RangeFinder$(PreprocessSuffix) "/home/cedric/octopus/git/octopus/robots/RangeFinder/RangeFinder.cpp"
 
+
+-include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##

@@ -157,7 +157,7 @@ public:
 
 int main(void)
 {
-    TwoChannelsCar car;
+    static TwoChannelsCar car;
     car.onStart();
     Event::startLooper();
     return 0;

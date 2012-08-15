@@ -51,7 +51,7 @@ void wxPropertyBoolean::onNewChild(Property* prop, Property* child, unsigned cha
 {
 }
 
-void wxPropertyBoolean::onPropertyDeleted(Property* prop)
+void wxPropertyBoolean::onPropertyDeleted()
 {
 	wxLogDebug("wxPropertyBoolean::onPropertyDeleted");
 }

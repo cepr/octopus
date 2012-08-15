@@ -13,13 +13,13 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Cédric
-Date                   :=18/06/2012
+Date                   :=20/06/2012
 CodeLitePath           :="/home/cedric/.codelite"
 LinkerName             :=avr-g++
 ArchiveTool            :=ar rcus
 SharedObjectLinkerName :=avr-g++ -shared -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=
+DependSuffix           :=.o.d
 PreprocessSuffix       :=.o.i
 DebugSwitch            :=-gstab
 IncludeSwitch          :=-I
@@ -61,11 +61,17 @@ Objects=$(IntermediateDirectory)/Template$(ObjectSuffix)
 .PHONY: all clean PreBuild PrePreBuild PostBuild
 all: $(OutputFile)
 
-$(OutputFile): $(IntermediateDirectory)/.d $(Objects) 
+$(OutputFile): $(IntermediateDirectory)/.d ../../.build-debug/OctopusAVR $(Objects) 
 	@$(MakeDirCommand) $(@D)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects) > $(ObjectsFileList)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+../../.build-debug/OctopusAVR:
+	@echo stam > "../../.build-debug/OctopusAVR"
+
+
+
 
 PostBuild:
 	@echo Executing Post Build commands ...
@@ -81,11 +87,16 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/Template$(ObjectSuffix): Template.cpp 
+$(IntermediateDirectory)/Template$(ObjectSuffix): Template.cpp $(IntermediateDirectory)/Template$(DependSuffix)
 	$(CompilerName) $(IncludePCH) $(SourceSwitch) "/home/cedric/octopus/git/octopus/robots/Template/Template.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/Template$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/Template$(DependSuffix): Template.cpp
+	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/Template$(ObjectSuffix) -MF$(IntermediateDirectory)/Template$(DependSuffix) -MM "/home/cedric/octopus/git/octopus/robots/Template/Template.cpp"
+
 $(IntermediateDirectory)/Template$(PreprocessSuffix): Template.cpp
 	@$(CompilerName) $(CmpOptions) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/Template$(PreprocessSuffix) "/home/cedric/octopus/git/octopus/robots/Template/Template.cpp"
 
+
+-include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##

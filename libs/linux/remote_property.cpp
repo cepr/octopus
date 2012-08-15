@@ -37,8 +37,9 @@ RemoteProperty::RemoteProperty(Packet* packet) :
 
 RemoteProperty::~RemoteProperty()
 {
-	if (mListener) {
-		mListener->onPropertyDeleted(this);
+    std::list<PropertyListener*>::iterator it;
+    for (it = mListeners.begin(); it != mListeners.end(); ++it) {
+        (*it)->onPropertyDeleted();
 	}
 }
 
@@ -53,14 +54,12 @@ Property* RemoteProperty::getChild(unsigned char index)
 
 const char* RemoteProperty::getName() const
 {
-	// TODO getName() should return 0 and application should handle this use case
-	return mName ? mName : "Untitled";
+	return mName;
 }
 
 const char* RemoteProperty::getDescription()
 {
-	// TODO getDescription() should return 0 and application should handle this use case
-	return mDescription ? mDescription : "";
+	return mDescription;
 }
 
 char RemoteProperty::getSize()
@@ -139,11 +138,12 @@ void RemoteProperty::onPacketReceived(const unsigned char* data, unsigned char s
 
 			// Create a new child if necessary
 			if (!mChildren[data[0]]) {
-				mChildren[data[0]] = new RemoteProperty(mPacket);
+				mChildren[data[0]] = createChild();
 				//what_changed |= PROPERTY_INFO_CHILDREN;
-				if (mListener) {
-					mListener->onNewChild(this, mChildren[data[0]], data[0]);
-				}
+                std::list<PropertyListener*>::iterator it;
+                for (it = mListeners.begin(); it != mListeners.end(); ++it) {
+                    (*it)->onNewChild(this, mChildren[data[0]], data[0]);
+                }
 			}
 
 			mChildren[data[0]]->onPacketReceived(&data[1], size-1);
@@ -160,10 +160,9 @@ void RemoteProperty::onPacketReceived(const unsigned char* data, unsigned char s
 				// Extract information according to its type
 				switch(what_changed) {
 				case PROPERTY_INFO_TYPE:
-					mType = PROPERTY_TYPE_VOID;
-					if (size <= sizeof(PROPERTY_TYPE)) {
-						memcpy(&mType, &data[0], size);
-					}
+					if (size >= 1) {
+                        mType = (PROPERTY_TYPE) data[0];
+                    }
 					break;
 				case PROPERTY_INFO_NAME:
 					delete mName;
@@ -191,9 +190,10 @@ void RemoteProperty::onPacketReceived(const unsigned char* data, unsigned char s
 		// Notify listener about property change
 		if (what_changed) {
 			mInfoToRequest &= ~what_changed;
-			if (mListener) {
-				mListener->onPropertyChanged(this, what_changed);
-			}
+            std::list<PropertyListener*>::iterator it;
+            for (it = mListeners.begin(); it != mListeners.end(); ++it) {
+                (*it)->onPropertyChanged(this, what_changed);
+            }
 		}
 	}
 }
@@ -239,8 +239,9 @@ bool RemoteProperty::onReadyToSend(unsigned char* data, unsigned char & size, un
 					data[size++] = CMD_BROADCAST;
 					// Append CMD_GET to packet
 					data[size++] = CMD_GET;
-					// Append PROPERTY_INFO_NAME to packet
-					memcpy(&data[size], &PROPERTY_INFO_NAME, sizeof(PROPERTY_INFO));
+					// Request all information
+                    std_info = PROPERTY_INFO_TYPE | PROPERTY_INFO_NAME | PROPERTY_INFO_DESCRIPTION | PROPERTY_INFO_VALUE;
+					memcpy(&data[size], &std_info, sizeof(PROPERTY_INFO));
 					size += sizeof(PROPERTY_INFO);
 					return true;
 				}
@@ -262,4 +263,8 @@ bool RemoteProperty::onReadyToSend(unsigned char* data, unsigned char & size, un
 	}
 
 	return false;
+}
+
+RemoteProperty* RemoteProperty::createChild() {
+    return new RemoteProperty(mPacket);
 }

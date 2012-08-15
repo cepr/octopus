@@ -68,6 +68,11 @@ void* PipeReceptionThread::Entry()
 			} else if (b == Usart::ESC) {
 				escaping = true;
 				continue;
+            } else if (b == Usart::NAK) {
+                // Buffer overflow from remote device !
+                wxLogWarning("NAK received from remote device");
+                // TODO: reset receive buffer
+                continue;
 			} else if (b < Usart::DATA_MIN_VALUE) {
 				// Unknown special byte
 				continue;

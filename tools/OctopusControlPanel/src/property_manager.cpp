@@ -1,3 +1,6 @@
+
+#if 0
+
 /*
  * Copyright 2012 Cedric Priscal
  *
@@ -62,18 +65,17 @@ void PropertyManager::onNewChild(Property* prop, Property* child, unsigned char 
 	}
 }
 
-void PropertyManager::onPropertyDeleted(Property* prop)
+void PropertyManager::onPropertyDeleted()
 {
 	// Stop listening to property
 	mProperty = 0;
 	// Notify all Controllers about the deleted property
 	std::list<PropertyController*>::iterator it;
-	for (it = mControllers.begin(); it != mControllers.end(); ++it) {
-		(*it)->onPropertyDeleted(this);
+	while (mControllers.size() > 0) {
+        PropertyController* pc = mControllers.front();
+		pc->onPropertyDeleted();
+        delete pc;
 	}
-	// We cannot send anything to Controllers after onPropertyDeleted()
-	// because they probably deleted themselves
-	mControllers.clear();
 	// bye bye
 	delete this;
 }
@@ -105,3 +107,5 @@ void PropertyManager::displaySettingsDialog()
 	SettingsDialogImpl dialog(NULL, this);
 	dialog.ShowModal();
 }
+
+#endif

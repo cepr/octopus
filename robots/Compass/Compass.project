@@ -33,6 +33,7 @@
         <![CDATA[
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -72,6 +73,7 @@
         <![CDATA[
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -103,10 +105,10 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug">
+  <Dependencies Name="Release">
     <Project Name="OctopusAVR"/>
   </Dependencies>
-  <Dependencies Name="Release">
+  <Dependencies Name="Debug">
     <Project Name="OctopusAVR"/>
   </Dependencies>
 </CodeLite_Project>

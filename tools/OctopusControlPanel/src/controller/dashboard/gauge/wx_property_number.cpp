@@ -113,7 +113,7 @@ void wxPropertyNumber::onNewChild(Property* prop, Property* child, unsigned char
 {
 }
 
-void wxPropertyNumber::onPropertyDeleted(Property* prop)
+void wxPropertyNumber::onPropertyDeleted()
 {
 	wxLogDebug("wxPropertyNumber::onPropertyDeleted");
 }

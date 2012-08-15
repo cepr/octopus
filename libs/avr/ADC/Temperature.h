@@ -23,7 +23,7 @@
 #include "AnalogChannel.h"
 
 /**
- * @brief AVR internal temperature sensor driver.
+ * AVR internal temperature sensor driver.
  *
  * TODO Temperature module under development.
  */

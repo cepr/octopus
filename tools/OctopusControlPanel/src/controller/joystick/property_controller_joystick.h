@@ -26,55 +26,51 @@
 #include "joystick_virtual_axe.h"
 
 /**
- * @brief Joystick
+ * Joystick
  *
  * This class reads the value of the axis and buttons of a joystick, and compute an absolute
  * value to apply to the property under control.
  */
 class PropertyControllerJoystick : public PropertyController, private wxTimer
 {
+private:
 	JoystickSettings mSettings;
 	JoystickVirtualAxe mVirtualAxe;
 
 public:
 	/**
-	 * @brief Constructor
+	 * Constructor.
 	 *
-	 * @param[in] manager The PropertyManager associated with a Property
+	 * @param[in] prop The property to control.
 	 */
-	PropertyControllerJoystick(PropertyManager* manager);
+	PropertyControllerJoystick(Property* prop);
 
 	/**
-	 * @copydoc PropertyController::onNewChild
+	 * @brief Destructor
 	 */
-	void onNewChild(PropertyManager* prop, PropertyManager* child, unsigned char index);
+	virtual ~PropertyControllerJoystick();
 
-	/**
-	 * @copydoc PropertyController::onPropertyChanged
-	 */
-	void onPropertyChanged(PropertyManager* prop, PROPERTY_INFO what);
+    /**
+     * @copydoc PropertyListener#onPropertyChanged
+     */
+    virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what);
 
-	/**
-	 * @copydoc PropertyController::onPropertyDeleted
+    /**
+	 * @copydoc PropertyListener#onNewChild
 	 */
-	void onPropertyDeleted(PropertyManager* prop);
-
-	/**
-	 * @brief Desctructor
-	 */
-	~PropertyControllerJoystick();
+	virtual void onNewChild(Property* prop, Property* child, unsigned char index);
 
 	/**
 	 * @brief Returns the controller name
 	 */
-	wxString getName() const;
+	virtual wxString getName() const;
 
 	/**
 	 * @brief Returns the associated configuration panel
 	 *
 	 * @return This function returns a @ref JoystickSettingsPanel object
 	 */
-	wxPanel* getSettingsPanel(wxWindow *parent);
+	virtual wxPanel* getSettingsPanel(wxWindow *parent);
 
 	/**
 	 * @brief Called periodically to read Joystick position.

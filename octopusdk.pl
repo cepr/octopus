@@ -149,17 +149,6 @@ sub update_project($) {
     # Get complete list of source files, with all modules
     my $xmldirs =
         "  <VirtualDirectory Name=\"src\">\n".
-        "    <VirtualDirectory Name=\"libs\">\n".
-        "      <VirtualDirectory Name=\"avr\">\n".
-        get_virtual_directory("        ", "libs/avr", '\.cpp$').
-        "      </VirtualDirectory>\n".
-        "      <VirtualDirectory Name=\"common\">\n".
-        get_virtual_directory("        ", "libs/common", '\.cpp$').
-        "      </VirtualDirectory>\n".
-        "      <VirtualDirectory Name=\"sensors\">\n".
-        get_virtual_directory("        ", "libs/sensors", '\.cpp$').
-        "      </VirtualDirectory>\n".
-        "    </VirtualDirectory>\n".
         "    <VirtualDirectory Name=\"robots\">\n".
         "      <VirtualDirectory Name=\"$name\">\n".
         get_virtual_directory("        ", "robots/$name", '\.cpp$').

@@ -21,7 +21,7 @@
 #define DASHBOARDPROPERTYIMPL_H
 
 #include "dashboard_property.h" // Base class: DashboardProperty
-#include "../property_controller.h"
+#include "controller/property_controller.h" // Base class: PropertyController
 #include <wx/stattext.h>
 #include <wx/event.h>
 #include "Property.h"
@@ -30,8 +30,16 @@
 
 class DashboardPropertyImpl : public DashboardProperty, public PropertyController
 {
+private:
+	wxWindow              *mParent;
+	PROPERTY_VALUE         mPropertyLastKnownValue;
+	PROPERTY_TYPE          mPropertyLastKnownType;
+	wxAutoGridSizer*       mSizerChildren;
+	wxWindow*              mValueCtrl;
+	wxString			   mControllerName;
+
 public:
-	DashboardPropertyImpl(wxWindow *parent, PropertyManager *manager);
+	DashboardPropertyImpl(wxWindow *parent, Property *prop);
 	~DashboardPropertyImpl();
 
 	/**
@@ -40,31 +48,18 @@ public:
 	wxString getName() const;
 
 	/**
-	 * @copydoc PropertyController::onPropertyChildCreated()
-	 */
-	void onNewChild(PropertyManager* parent, PropertyManager* child, unsigned char index);
-
-	/**
 	 * @copydoc PropertyListener#onPropertyChanged
 	 */
-	void onPropertyChanged(PropertyManager* manager, PROPERTY_INFO what);
+	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what);
 
 	/**
-	 * @copydoc PropertyListener#onPropertyDeleted
+	 * @copydoc PropertyListener#onNewChild
 	 */
-	void onPropertyDeleted(PropertyManager* manager);
+	virtual void onNewChild(Property* prop, Property* child, unsigned char index);
 
 protected:
 	void onRefreshClick( wxCommandEvent& event );
 	void onPreferencesClick( wxCommandEvent& event );
-
-private:
-	wxWindow              *mParent;
-	PROPERTY_VALUE         mPropertyLastKnownValue;
-	PROPERTY_TYPE          mPropertyLastKnownType;
-	wxAutoGridSizer*       mSizerChildren;
-	wxWindow*              mValueCtrl;
-	wxString			   mControllerName;
 };
 
 #endif // DASHBOARDPROPERTYIMPL_H

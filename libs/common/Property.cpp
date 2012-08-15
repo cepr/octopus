@@ -26,15 +26,21 @@ const PROPERTY_INFO Property::PROPERTY_INFO_VALUE;
 const PROPERTY_INFO Property::PROPERTY_INFO_CHILDREN;
 
 Property::Property(Packet* packet) :
-		mPacket(packet),
-		mListener(0)
+		mPacket(packet)
+#ifdef AVR
+        ,mListener(0)
+#endif
 {
 }
 
 void Property::registerListener(PropertyListener* listener)
 {
 	// Register the listener
+#ifdef AVR
 	mListener = listener;
+#else
+    mListeners.push_back(listener);
+#endif
 
 	// Report type, value, name and description
 	PROPERTY_INFO infos = PROPERTY_INFO_TYPE | PROPERTY_INFO_VALUE;
@@ -44,17 +50,21 @@ void Property::registerListener(PropertyListener* listener)
 	if (getDescription()) {
 		infos |= PROPERTY_INFO_DESCRIPTION;
 	}
-	mListener->onPropertyChanged(this, infos);
+	listener->onPropertyChanged(this, infos);
 
 	// Report children (if any)
 	unsigned char i;
 	Property* child;
 	for (i=0; (child = getChild(i)) != 0; i++) {
-		mListener->onNewChild(this, child, i);
+		listener->onNewChild(this, child, i);
 	}
 }
 
 void Property::unregisterListener(PropertyListener* listener)
 {
+#ifdef AVR
 	mListener = 0;
+#else
+    mListeners.remove(listener);
+#endif
 }

@@ -105,8 +105,6 @@
     </VirtualDirectory>
     <VirtualDirectory Name="common">
       <File Name="common/PropertyListener.h"/>
-      <File Name="common/PropertyPacketListener.h"/>
-      <File Name="common/PropertyPacket.h"/>
       <File Name="common/property_record.h"/>
       <File Name="common/compass_provider.h"/>
       <File Name="common/PacketListener.h"/>
@@ -157,6 +155,8 @@
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
       
       
       
@@ -221,6 +221,8 @@
       
       
       
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -266,6 +268,8 @@
       
       
       
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -295,7 +299,7 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="Documentation"/>
   <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>

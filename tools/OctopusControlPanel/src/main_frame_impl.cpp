@@ -23,14 +23,12 @@
 
 MainFrameImpl::MainFrameImpl() : MainFrame(NULL, wxID_ANY, wxT("Octopus Control Panel")), mRootProperty("/dev/ttyUSB0")
 {
-	// Create a property manager
-	PropertyManager* manager = new PropertyManager(&mRootProperty);
-
 	// Attach all controllers
-	manager->registerController(new PropertyControllerJoystick(manager));
+    mRootProperty.registerListener(new PropertyControllerJoystick(&mRootProperty));
 
-    DashboardPropertyImpl* bRootDashboardProperty = new DashboardPropertyImpl(this, manager);
+    DashboardPropertyImpl* bRootDashboardProperty = new DashboardPropertyImpl(this, &mRootProperty);
     m_RootPropertySizer->Add(bRootDashboardProperty, 1, wxEXPAND | wxALL, 10);
+    mRootProperty.registerListener(bRootDashboardProperty);
     this->Layout();
 }
 

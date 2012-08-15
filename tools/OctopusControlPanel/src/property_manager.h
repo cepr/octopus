@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if 0
+
 #ifndef PROPERTYMANAGER_H
 #define PROPERTYMANAGER_H
 
@@ -61,7 +63,7 @@ public:
 	/**
 	 * @copydoc PropertyListener::onPropertyDeleted()
 	 */
-	void onPropertyDeleted(Property* prop);
+	void onPropertyDeleted();
 
 	/**
 	 * @brief Register a property controller class
@@ -98,3 +100,5 @@ private:
 };
 
 #endif // PROPERTYMANAGER_H
+
+#endif

@@ -23,7 +23,6 @@
 class PropertyController;
 
 #include "Property.h"
-#include "property_manager.h"
 #include <wx/panel.h>
 
 /**
@@ -32,21 +31,26 @@ class PropertyController;
  * This class is the abstract base class for anything that can control the value of a property
  * like a keyboard, a joystick or a slider on the interface.
  */
-class PropertyController
+class PropertyController : public PropertyListener
 {
-
-public:
+protected:
 	/**
 	 * @brief Constructor
 	 *
-	 * @param[in] manager The property manager associated with a Property
+	 * @param[in] prop The property to monitor and control.
 	 */
-	PropertyController(PropertyManager* manager);
+	PropertyController(Property* prop) : mProperty(prop) {
+    }
 
+public:
 	/**
 	 * @brief Destructor
 	 */
-	virtual ~PropertyController();
+	virtual ~PropertyController() {
+        if (mProperty) {
+            mProperty->unregisterListener(this);
+        }
+    }
 
 	/**
 	 * @brief Returns the controller name
@@ -61,34 +65,30 @@ public:
 	 *
 	 * @return This method returns a settings panel, or NULL if no configuration tab is needed.
 	 */
-	virtual wxPanel* getSettingsPanel(wxWindow *parent);
+	virtual wxPanel* getSettingsPanel(wxWindow *parent) {
+        return NULL;
+    }
+
+    /**
+     * @copydoc PropertyListener#onPropertyChanged
+     */
+    virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) = 0;
+
+    /**
+	 * @copydoc PropertyListener#onNewChild
+	 */
+	virtual void onNewChild(Property* prop, Property* child, unsigned char index) = 0;
 
 	/**
-	 * @brief Method called when a property has changed
-	 *
-	 * @param[in,out] prop The changed property
-	 * @param[in,out] what Elements that have changed
+	 * @copydoc PropertyListener#onPropertyDeleted
 	 */
-	virtual void onPropertyChanged(PropertyManager* prop, PROPERTY_INFO what) = 0;
-
-	/**
-	 * @brief Method called when a property has a new child
-	 *
-	 * @param[in,out] prop  The parent property
-	 * @param[in,out] child The new-born child
-	 * @param[in]     index The index of the child in the parent children list
-	 */
-	virtual void onNewChild(PropertyManager* prop, PropertyManager* child, unsigned char index) = 0;
-
-	/**
-	 * @brief Method called when a property has deleted its child
-	 *
-	 * @param[in,out] prop The deleted property
-	 */
-	virtual void onPropertyDeleted(PropertyManager* prop) = 0;
+	virtual void onPropertyDeleted() {
+        mProperty = NULL;
+        delete this;
+    }
 
 protected:
-	PropertyManager* mManager;
+	Property* mProperty;
 };
 
 #endif // PROPERTYCONTROLLER_H

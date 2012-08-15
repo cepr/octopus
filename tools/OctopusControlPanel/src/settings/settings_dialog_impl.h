@@ -21,15 +21,15 @@
 #define PROPERTIESDIALOGIMPL_H
 
 #include "settings_dialog.h" // Base class: PropertiesDialog
-#include "property_manager.h"
+#include "Property.h"
 
 class SettingsDialogImpl : public SettingsDialog {
 
 private:
-	PropertyManager* mManager;
+	Property* mProperty;
 
 public:
-	SettingsDialogImpl(wxWindow *parent, PropertyManager *manager);
+	SettingsDialogImpl(wxWindow *parent, Property *prop);
 	~SettingsDialogImpl();
 	void onApplyButtonClick(wxCommandEvent& event);
 	void onCancelButtonClick(wxCommandEvent& event);

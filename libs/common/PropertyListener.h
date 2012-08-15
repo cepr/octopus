@@ -36,7 +36,7 @@ public:
 	 * @param[in,out] prop The changed property
 	 * @param[in,out] what Elements that have changed
 	 */
-	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) {};
+	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) = 0;
 
 	/**
 	 * @brief Method called when a property has a new child
@@ -48,11 +48,9 @@ public:
 	virtual void onNewChild(Property* prop, Property* child, unsigned char index) {};
 
 	/**
-	 * @brief Method called when a property has deleted its child
-	 *
-	 * @param[in,out] prop The deleted property
+	 * @brief Method called when a property is no more available
 	 */
-	virtual void onPropertyDeleted(Property* prop) {};
+	virtual void onPropertyDeleted() {};
 };
 
 #endif /* PROPERTYLISTENER_H_ */

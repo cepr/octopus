@@ -30,9 +30,9 @@
 #include "settings/settings_dialog_impl.h"
 #include <math.h>
 
-DashboardPropertyImpl::DashboardPropertyImpl(wxWindow *parent, PropertyManager *manager) :
+DashboardPropertyImpl::DashboardPropertyImpl(wxWindow *parent, Property *prop) :
 	DashboardProperty(parent),
-	PropertyController(manager),
+	PropertyController(prop),
 	mParent(parent),
 	mPropertyLastKnownType(PROPERTY_TYPE_VOID),
 	mSizerChildren(0),
@@ -42,78 +42,73 @@ DashboardPropertyImpl::DashboardPropertyImpl(wxWindow *parent, PropertyManager *
 	// Add a sizer for the children
 	mSizerChildren = new wxAutoGridSizer(10, 10);
 	GetSizer()->Add(mSizerChildren, 1, wxEXPAND | wxALL, 10);
-	mManager->registerController(this);
 }
 
 DashboardPropertyImpl::~DashboardPropertyImpl()
 {
-	if (mManager) {
-		mManager->unregisterController(this);
-	}
 }
 
 void DashboardPropertyImpl::onPreferencesClick(wxCommandEvent& event)
 {
-	if (mManager) {
-		mManager->displaySettingsDialog();
-	}
+    SettingsDialogImpl dialog(NULL, mProperty);
+	dialog.ShowModal();
+	//if (mManager) {
+		//mManager->displaySettingsDialog();
+	//}
 }
 
-void DashboardPropertyImpl::onPropertyChanged(PropertyManager* manager, PROPERTY_INFO what)
+void DashboardPropertyImpl::onPropertyChanged(Property* prop, PROPERTY_INFO what)
 {
-	Property* prop = manager->getProperty();
-	if (prop) {
-		// Property has changed, we should refresh the dashboard
-		if (what & Property::PROPERTY_INFO_NAME) {
-			mStaticTextName->SetLabel(wxString::FromUTF8(prop->getName()));
-		}
-		if (what & Property::PROPERTY_INFO_DESCRIPTION) {
-			mStaticTextDescription->SetLabel(wxString::FromUTF8(prop->getDescription()));
-		}
-		if (what & Property::PROPERTY_INFO_TYPE) {
-			PROPERTY_TYPE new_type = prop->getType();
-			if (new_type != mPropertyLastKnownType) {
-				// Save new type
-				mPropertyLastKnownType = new_type;
-				// Create a new value control
-				wxWindow* newValueCtrl;
-				switch(new_type) {
-				case PROPERTY_TYPE_BOOL:
-					newValueCtrl = new wxPropertyBoolean(this, prop);
-					break;
-				case PROPERTY_TYPE_U8:
-				case PROPERTY_TYPE_S8:
-				case PROPERTY_TYPE_U16:
-				case PROPERTY_TYPE_S16:
-					newValueCtrl = new wxPropertyNumber(this, prop);
-					break;
-				default:
-					newValueCtrl = 0;
-				}
-				// Detach and remove old control
-				if (mValueCtrl) {
-					mSizerChildren->Detach(mValueCtrl);
-					mValueCtrl->Destroy();
-				}
-				// Attach the new one
-				mValueCtrl = newValueCtrl;
-				if (mValueCtrl) {
-					mSizerChildren->Add(mValueCtrl, 1, wxEXPAND | wxALIGN_CENTER, 5);
-				}
-				prop->getValue(mPropertyLastKnownValue);
-				Layout();
-			}
-		}
-		if (what & Property::PROPERTY_INFO_VALUE) {
-			if (mValueCtrl) {
-				// TODO cast is not clean
-				((PropertyListener*)mValueCtrl)->onPropertyChanged(prop, what & Property::PROPERTY_INFO_VALUE);
-			}
-		}
-	}
+    // Property has changed, we should refresh the dashboard
+    if (what & Property::PROPERTY_INFO_NAME) {
+        mStaticTextName->SetLabel(wxString::FromUTF8(prop->getName()));
+    }
+    if (what & Property::PROPERTY_INFO_DESCRIPTION) {
+        mStaticTextDescription->SetLabel(wxString::FromUTF8(prop->getDescription()));
+    }
+    if (what & Property::PROPERTY_INFO_TYPE) {
+        PROPERTY_TYPE new_type = prop->getType();
+        if (new_type != mPropertyLastKnownType) {
+            // Save new type
+            mPropertyLastKnownType = new_type;
+            // Create a new value control
+            wxWindow* newValueCtrl;
+            switch(new_type) {
+            case PROPERTY_TYPE_BOOL:
+                newValueCtrl = new wxPropertyBoolean(this, prop);
+                break;
+            case PROPERTY_TYPE_U8:
+            case PROPERTY_TYPE_S8:
+            case PROPERTY_TYPE_U16:
+            case PROPERTY_TYPE_S16:
+                newValueCtrl = new wxPropertyNumber(this, prop);
+                break;
+            default:
+                newValueCtrl = 0;
+            }
+            // Detach and remove old control
+            if (mValueCtrl) {
+                mSizerChildren->Detach(mValueCtrl);
+                mValueCtrl->Destroy();
+            }
+            // Attach the new one
+            mValueCtrl = newValueCtrl;
+            if (mValueCtrl) {
+                mSizerChildren->Add(mValueCtrl, 1, wxEXPAND | wxALIGN_CENTER, 5);
+            }
+            prop->getValue(mPropertyLastKnownValue);
+            Layout();
+        }
+    }
+    if (what & Property::PROPERTY_INFO_VALUE) {
+        if (mValueCtrl) {
+            // TODO cast is not clean
+            ((PropertyListener*)mValueCtrl)->onPropertyChanged(prop, what & Property::PROPERTY_INFO_VALUE);
+        }
+    }
 }
 
-void DashboardPropertyImpl::onNewChild(PropertyManager* parent, PropertyManager* child, unsigned char index)
+void DashboardPropertyImpl::onNewChild(Property* prop, Property* child, unsigned char index)
 {
 	if (mValueCtrl) {
 		// index 0 is reserved for current property value
@@ -138,7 +133,7 @@ void DashboardPropertyImpl::onNewChild(PropertyManager* parent, PropertyManager*
 		}
 	} else {
 		// We must add a new child
-		// First step: we add as many spacer as needed
+		// First step: we add as many spacers as needed
 		for (size_t i = mSizerChildren->GetItemCount(); i < index; i++) {
 			mSizerChildren->AddStretchSpacer();
 		}
@@ -148,22 +143,16 @@ void DashboardPropertyImpl::onNewChild(PropertyManager* parent, PropertyManager*
 
 	// Refresh screen
 	Layout();
-}
 
-void DashboardPropertyImpl::onPropertyDeleted(PropertyManager* manager)
-{
-	mManager = 0;
-	//Destroy();
+    // Register listener
+    child->registerListener(dashprop);
 }
 
 void DashboardPropertyImpl::onRefreshClick(wxCommandEvent& event)
 {
 	// Force a refresh of the underlying property
-	if (mManager) {
-		Property* prop = mManager->getProperty();
-		if (prop) {
-			prop->refresh();
-		}
+	if (mProperty) {
+        mProperty->refresh();
 	}
 }
 

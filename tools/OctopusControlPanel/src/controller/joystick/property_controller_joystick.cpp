@@ -20,8 +20,8 @@
 #include "property_controller_joystick.h"
 #include "settings/joystick_settings_panel_impl.h"
 
-PropertyControllerJoystick::PropertyControllerJoystick(PropertyManager* manager) :
-	PropertyController(manager)
+PropertyControllerJoystick::PropertyControllerJoystick(Property* prop) :
+	PropertyController(prop)
 {
 	Notify();
 }
@@ -30,9 +30,13 @@ PropertyControllerJoystick::~PropertyControllerJoystick()
 {
 }
 
-wxPanel* PropertyControllerJoystick::getSettingsPanel(wxWindow *parent)
+void PropertyControllerJoystick::onPropertyChanged(Property* prop, PROPERTY_INFO what)
 {
-	return new JoystickSettingsPanelImpl(parent, &mVirtualAxe/*, mSettings, mManager ? mManager->getProperty() : 0*/);
+}
+
+void PropertyControllerJoystick::onNewChild(Property* prop, Property* child, unsigned char index)
+{
+    child->registerListener(new PropertyControllerJoystick(child));
 }
 
 wxString PropertyControllerJoystick::getName() const
@@ -41,27 +45,17 @@ wxString PropertyControllerJoystick::getName() const
 	return name;
 }
 
-void PropertyControllerJoystick::onNewChild(PropertyManager* prop, PropertyManager* child, unsigned char index)
+wxPanel* PropertyControllerJoystick::getSettingsPanel(wxWindow *parent)
 {
-	child->registerController(new PropertyControllerJoystick(child));
-}
-
-void PropertyControllerJoystick::onPropertyChanged(PropertyManager* prop, PROPERTY_INFO what)
-{
-}
-
-void PropertyControllerJoystick::onPropertyDeleted(PropertyManager* prop)
-{
-	delete this;
+	return new JoystickSettingsPanelImpl(parent, &mVirtualAxe/*, mSettings, mManager ? mManager->getProperty() : 0*/);
 }
 
 void PropertyControllerJoystick::Notify()
 {
 	if (mVirtualAxe.isEnabled()) {
-		Property* prop = mManager->getProperty();
 		double dvalue = mVirtualAxe.GetValue();
 		PROPERTY_VALUE evalue;
-		switch(prop->getType()) {
+		switch(mProperty->getType()) {
 			case PROPERTY_TYPE_BOOL:
 				evalue.boolean = (dvalue != 0);
 				break;
@@ -104,7 +98,7 @@ void PropertyControllerJoystick::Notify()
 			default:
 				return;
 		}
-		prop->setValue(evalue);
+		mProperty->setValue(evalue);
 	}
 	Start(10, true);
 }

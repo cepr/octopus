@@ -18,20 +18,23 @@
  */
 
 #include "settings_dialog_impl.h"
+#include "controller/property_controller.h"
+
 using std::vector;
 
-SettingsDialogImpl::SettingsDialogImpl(wxWindow *parent, PropertyManager *manager) :
-	SettingsDialog(parent), mManager(manager) {
+SettingsDialogImpl::SettingsDialogImpl(wxWindow *parent, Property *prop) :
+	SettingsDialog(parent), mProperty(prop) {
 
 	// Request settings tabs from PropertyManager
-	std::list<PropertyController*>::iterator iter;
-	for (iter = mManager->mControllers.begin(); iter != mManager->mControllers.end(); ++iter) {
-		PropertyController *controller = (*iter);
-		wxPanel *panel = controller->getSettingsPanel(m_notebook1);
+    std::list<PropertyListener*>::iterator it;
+    for (it = prop->mListeners.begin(); it != prop->mListeners.end(); ++it) {
+        PropertyListener* listener = *it;
+        PropertyController *controller = static_cast<PropertyController *>(listener);   // TODO dangerous cast
+        wxPanel *panel = controller->getSettingsPanel(m_notebook1);
 		if (panel) {
 			m_notebook1->AddPage(panel, controller->getName());
 		}
-	}
+    }
 
 	// Load settings from PropertyConfiguration
 	// Appearance

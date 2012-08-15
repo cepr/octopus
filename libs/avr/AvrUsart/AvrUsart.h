@@ -24,7 +24,7 @@
 #include "event.h"
 
 /**
- * @brief USART port of an ATMEGA328P.
+ * USART port of an ATMEGA328P.
  *
  * This class is an implementation of Usart class for the ATMEGA328P and similar.
  *
@@ -53,7 +53,7 @@ public:
 	} UsartBaudrate;
 
 	/**
-	 * @brief Constructor.
+	 * Constructor.
 	 *
 	 * @param[in] baudrate Baudrate:
 	 *                     - B115200
@@ -65,7 +65,7 @@ public:
 	AvrUsart(UsartBaudrate baudrate = B57600);
 
 	/**
-	 * @brief Send a single byte to the AVR USART controller.
+	 * Send a single byte to the AVR USART controller.
 	 *
 	 * @param c Byte to send.
 	 */
@@ -79,7 +79,7 @@ public:
 private:
 
 	/**
-	 * @brief Internal event handler.
+	 * Internal event handler.
 	 *
 	 * @param[in] what Unused
 	 */

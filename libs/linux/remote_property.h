@@ -25,7 +25,7 @@
 #include <vector>
 
 /**
- * @brief Property that shadows a remote property by listening to incoming packets.
+ * Property that shadows a remote property by listening to incoming packets.
  *
  * This class is a shadowed version of a remote property. Its name, description,
  * type and value are updated each time a packet coming from the monitored remote property
@@ -34,30 +34,31 @@
  * In order to use this class, you should create only one instance using #RemoteProperty and
  * forward all incoming packets to this instance. If an incoming packet concerns the root
  * property, the instance of RemoteProperty will analyse it and update its fields, otherwise
- * it will recursively create the childs to handle the received packet.
+ * it will recursively create the children to handle the received packet.
  *
  * @ingroup COM_STACK
  */
-class RemoteProperty : public Property
+class RemoteProperty: public Property
 {
 public:
-
 	/**
-	 * @brief Constructor
+	 * @brief Constructor.
 	 *
-	 * @param[in, out] packet Packet object which will be used to notify property modifications
+	 * @param[in, out] packet  Packet object which will be used to notify property modifications
 	 */
 	RemoteProperty(Packet* packet);
 
 	/**
-	 * @brief Destructor
+	 * @brief Destructor.
+     *
+     * Children are also destroyed recursively.
 	 */
-	~RemoteProperty();
+	virtual ~RemoteProperty();
 
-	/**
-	 * @copydoc Property#getChild()
-	 */
-	virtual Property* getChild(unsigned char index);
+    /**
+     * @copydoc Property#getChild()
+     */
+    virtual Property* getChild(unsigned char index);
 
 	/**
 	 * @copydoc Property#getDescription()
@@ -105,6 +106,14 @@ public:
 	virtual bool onReadyToSend(unsigned char* data, unsigned char & size, unsigned char capacity);
 
 protected:
+    /**
+     * Creates a new RemoteProperty instance.
+     *
+     * This method is called from #onPacketReceived to create dynamically a new RemoteProperty instance
+     * for a new child. You should overide this method if you want to inherit RemoteProperty.
+     */
+    virtual RemoteProperty* createChild();
+
 	PROPERTY_INFO mInfoToRequest;
 	bool mValueToSend;
 	PROPERTY_TYPE mType;

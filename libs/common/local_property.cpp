@@ -77,7 +77,19 @@ bool LocalProperty::onReadyToSend(unsigned char* data, unsigned char & size, uns
 	if (size < capacity) {
 
 		// Report any requested information
-		if (mInfoToReport & PROPERTY_INFO_VALUE) {
+		if (mInfoToReport & PROPERTY_INFO_TYPE) {
+			if (size + 1 + sizeof(PROPERTY_INFO) + 1 <= capacity) {
+				mInfoToReport &= ~PROPERTY_INFO_TYPE;
+				// Append CMD_REPORT to packet
+				data[size++] = CMD_REPORT;
+				// Append PROPERTY_INFO_TYPE to packet
+				memcpy(&data[size], &PROPERTY_INFO_TYPE, sizeof(PROPERTY_INFO));
+				size+=sizeof(PROPERTY_INFO);
+				// Append type to packet
+				data[size++] = (unsigned char)getType();
+				return true;
+			}
+		} else if (mInfoToReport & PROPERTY_INFO_VALUE) {
 			char data_size = getSize();
 			if (size + 1 + sizeof(PROPERTY_INFO) + data_size <= capacity) {
 				mInfoToReport &= ~PROPERTY_INFO_VALUE;
@@ -121,18 +133,6 @@ bool LocalProperty::onReadyToSend(unsigned char* data, unsigned char & size, uns
 				// Append description to packet
 				memcpy(&data[size], desc, data_size);
 				size+=data_size;
-				return true;
-			}
-		} else if (mInfoToReport & PROPERTY_INFO_TYPE) {
-			if (size + 1 + sizeof(PROPERTY_INFO) + 1 <= capacity) {
-				mInfoToReport &= ~PROPERTY_INFO_TYPE;
-				// Append CMD_REPORT to packet
-				data[size++] = CMD_REPORT;
-				// Append PROPERTY_INFO_TYPE to packet
-				memcpy(&data[size], &PROPERTY_INFO_TYPE, sizeof(PROPERTY_INFO));
-				size+=sizeof(PROPERTY_INFO);
-				// Append type to packet
-				data[size++] = (unsigned char)getType();
 				return true;
 			}
 		}

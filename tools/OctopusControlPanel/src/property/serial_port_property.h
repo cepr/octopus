@@ -25,26 +25,26 @@
 #include "Packet.h"
 #include "PropertyAddress.h"
 #include "remote_property.h"
-#include <wx/string.h>
+#include <string>
 #include "PropertyListener.h"
 
 class SerialPortProperty : public PropertyRecord
 {
+private:
+	std::string		    mDevicePath;
+	LinuxSerialPort     mSerialPort;
+	Packet 			    mPacket;
+	PropertyAddress     mRootAddress;
+	RemoteProperty      mRootProperty;
+
 public:
-	SerialPortProperty(const wxString & devicepath);
+	SerialPortProperty(const std::string & devicepath);
 	~SerialPortProperty();
 
 	const char* getName() const;
 	const char* getDescription();
 	Property* getChild(unsigned char index);
 	virtual void refresh();
-
-private:
-	char*			mDevicePath;
-	LinuxSerialPort mSerialPort;
-	Packet 			mPacket;
-	PropertyAddress mRootAddress;
-	RemoteProperty	mRootProperty;
 };
 
 #endif // SERIALPORTPROPERTY_H
