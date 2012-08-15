@@ -225,8 +225,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libwxsvg_agg.la
-@USE_FREETYPE_FALSE@INCLUDES = -I$(top_builddir)/include -I$(top_builddir)/include/wxSVG
-@USE_FREETYPE_TRUE@INCLUDES = -I$(top_builddir)/include -I$(top_builddir)/include/wxSVG $(FREETYPE_CFLAGS)
+@USE_FREETYPE_FALSE@INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/wxSVG
+@USE_FREETYPE_TRUE@INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/wxSVG $(FREETYPE_CFLAGS)
 @USE_FREETYPE_FALSE@libwxsvg_agg_la_SOURCES = SVGCanvasAgg.cpp SVGCanvasPathAgg.cpp SVGCanvasTextAgg.cpp
 @USE_FREETYPE_TRUE@libwxsvg_agg_la_SOURCES = SVGCanvasAgg.cpp SVGCanvasPathAgg.cpp
 all: all-am
