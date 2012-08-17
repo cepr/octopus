@@ -20,6 +20,7 @@
 #ifndef SYSTEM_TIMER_H
 #define SYSTEM_TIMER_H
 
+#include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
@@ -136,24 +137,24 @@ private:
 	static const unsigned short TIMER_OVERHEAD = 0;	// TODO Determine TIMER_OVERHEAD
 
 	/**
+	 * \brief Next timer of the linked-list
+	 */
+	class SystemTimer* mPreviousSystemTimer;
+
+	/**
+	 * \brief Next timer of the linked-list
+	 */
+	class SystemTimer* mNextSystemTimer;
+
+	/**
 	 * \brief First timer of the linked-list
 	 */
-	static class SystemTimer* mpFirstTimerListener;
-
-	/**
-	 * \brief Next timer of the linked-list
-	 */
-	class SystemTimer* mpPreviousTimerListener;
-
-	/**
-	 * \brief Next timer of the linked-list
-	 */
-	class SystemTimer* mpNextTimerListener;
+	static class SystemTimer* mFirstSystemTimer;
 
 	/**
 	 * \brief Last timer of the linked-list
 	 */
-	static class SystemTimer* mpLastTimerListener;
+	static class SystemTimer* mLastSystemTimer;
 
 	/**
 	 * \brief Absolute event time in microseconds of this timer

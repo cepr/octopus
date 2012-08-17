@@ -19,33 +19,35 @@
 
 #include "system_timer.h"
 
-class SystemTimer* SystemTimer::mpFirstTimerListener(0);
-class SystemTimer* SystemTimer::mpLastTimerListener(0);
+class SystemTimer* SystemTimer::mFirstSystemTimer(0);
+class SystemTimer* SystemTimer::mLastSystemTimer(0);
 
 void SystemTimer::rescheduleHardwareTimer() {
 
 	// Raise all pending timer events
 	// The test "> MAX_DELAY" should be read as "< 0" because the operation is performed on
 	// unsigned shorts (a negative signed value corresponds to a huge unsigned value).
-	while(mpFirstTimerListener && ((mpFirstTimerListener->mTimerWhen - now()) > MAX_DELAY)) {
+	while(mFirstSystemTimer && ((mFirstSystemTimer->mTimerWhen - now()) > MAX_DELAY)) {
 
-		SystemTimer* timer = mpFirstTimerListener;
-		unsigned short when = mpFirstTimerListener->mTimerWhen;
-		unsigned char what = mpFirstTimerListener->mWhat;
+		SystemTimer* timer = mFirstSystemTimer;
 
 		// remove timer from the list
-		mpFirstTimerListener = mpFirstTimerListener->mpNextTimerListener;
-		if (!mpFirstTimerListener) {
-			mpLastTimerListener = 0;
+		mFirstSystemTimer = mFirstSystemTimer->mNextSystemTimer;
+        if (mFirstSystemTimer) {
+            mFirstSystemTimer->mPreviousSystemTimer = 0;
+        } else {
+			mLastSystemTimer = 0;
 		}
-
+        timer->mPreviousSystemTimer = 0;
+        timer->mNextSystemTimer = 0;
+ 
 		// Raise user timer event
-		timer->onTimerLISR(when, what);
+		timer->onTimerLISR(timer->mTimerWhen, timer->mWhat);
 	}
 
-	if (mpFirstTimerListener) {
+	if (mFirstSystemTimer) {
 		// We add SCHEDULER_OVERHEAD to the timer to not miss one complete timer cycle (65536 us).
-		OCR1A = mpFirstTimerListener->mTimerWhen + SCHEDULER_OVERHEAD;
+		OCR1A = mFirstSystemTimer->mTimerWhen + SCHEDULER_OVERHEAD;
 		TIFR1 = _BV(OCF1A); // Clear output compare A match interrupt
 		TIMSK1 = _BV(OCIE1A);	// Output Compare A Match Interrupt Enable
 	} else {
@@ -61,32 +63,31 @@ ISR (TIMER1_COMPA_vect) {
 	SystemTimer::rescheduleHardwareTimer();
 }
 
-SystemTimer::SystemTimer() : mTimerWhen(0), mWhat(0) {
+SystemTimer::SystemTimer() : mPreviousSystemTimer(0), mNextSystemTimer(0), mTimerWhen(0), mWhat(0) {
     TCCR1A = 0; // Normal port operation
 #if (F_CPU == 8000000L)
     TCCR1B = _BV(CS11); // clkIO / 8 (From prescaler)
 #else
 # error Unknown CPU frequency
 #endif
-    TIMSK1 = _BV(OCIE1A); // Output Compare A Match Interrupt Enable
 }
 
 void SystemTimer::cancelUnsafe(void) {
 
-	if (mpNextTimerListener) {
+	if (mNextSystemTimer) {
 		// Timer is not the last one
-		mpNextTimerListener->mpPreviousTimerListener = mpPreviousTimerListener;
-	} else {
-		// Timer is the last one
-		mpLastTimerListener = mpPreviousTimerListener;
+		mNextSystemTimer->mPreviousSystemTimer = mPreviousSystemTimer;
+	} else if (mLastSystemTimer == this) {
+        // Timer is the last one
+        mLastSystemTimer = mPreviousSystemTimer;
 	}
 
-	if (mpPreviousTimerListener) {
+	if (mPreviousSystemTimer) {
 		// Timer is not the first one
-		mpPreviousTimerListener->mpNextTimerListener = mpNextTimerListener;
-	} else {
+		mPreviousSystemTimer->mNextSystemTimer = mNextSystemTimer;
+	} else if (mFirstSystemTimer == this) {
 		// Modifying the first timer of the list, we must reschedule hardware timer
-		mpFirstTimerListener = mpNextTimerListener;
+		mFirstSystemTimer = mNextSystemTimer;
 		rescheduleHardwareTimer();
 	}
 
@@ -106,38 +107,37 @@ void SystemTimer::schedule(unsigned short when, char what) {
 	mTimerWhen = when;
 	mWhat = what;
 
-	SystemTimer* timer = mpFirstTimerListener;
+	SystemTimer* timer = mFirstSystemTimer;
 
 	// Search for the right place inside the chronological list of timers
 	while(timer && ((timer->mTimerWhen - _now) < (when - _now))) {
 		// timer_after will trigger sooner than the one we want to insert in the list
-		timer = timer->mpNextTimerListener;
+		timer = timer->mNextSystemTimer;
 	}
-
-	mpNextTimerListener = timer;
+	mNextSystemTimer = timer;
 
 	if (timer) {
 		// We must insert ourself between 'timer->mpPreviousTimer' and 'timer'
-		mpPreviousTimerListener = timer->mpPreviousTimerListener;
-		timer->mpPreviousTimerListener = this;
-		if (mpPreviousTimerListener) {
+		mPreviousSystemTimer = timer->mPreviousSystemTimer;
+		timer->mPreviousSystemTimer = this;
+		if (mPreviousSystemTimer) {
 			// Not the first of the list
-			mpPreviousTimerListener->mpNextTimerListener = this;
+			mPreviousSystemTimer->mNextSystemTimer = this;
 		} else {
 			// First timer of the list
-			mpFirstTimerListener = this;
+			mFirstSystemTimer = this;
 			rescheduleHardwareTimer();
 		}
 	} else {
 		// We must append ourself at the end of the list
-		mpPreviousTimerListener = mpLastTimerListener;
-		mpLastTimerListener = this;
-		if (mpPreviousTimerListener) {
+		mPreviousSystemTimer = mLastSystemTimer;
+		mLastSystemTimer = this;
+		if (mPreviousSystemTimer) {
 			// The list is not empty
-			mpPreviousTimerListener->mpNextTimerListener = this;
+			mPreviousSystemTimer->mNextSystemTimer = this;
 		} else {
 			// The list was empty
-			mpFirstTimerListener = this;
+			mFirstSystemTimer = this;
 			rescheduleHardwareTimer();
 		}
 	}

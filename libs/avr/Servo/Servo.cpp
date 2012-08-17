@@ -20,42 +20,40 @@
 #include <avr/io.h>
 #include "Servo.h"
 
-#define PERIOD 20000
-
-#define EVENT_50HZ 0
+#define EVENT_START_PULSE 0
 #define EVENT_FINISH_PULSE 1
 
 #define PORT PORTD
 #define DDR DDRD
 
-PropertyServoPosition::PropertyServoPosition(Packet* packet) : PropertyU16(DEFAULT, packet) {
+Servo::PropertyServoPosition::PropertyServoPosition(Packet* packet) : PropertyU16(DEFAULT, packet), mPulseWidth(MIN) {
 }
 
-Servo::Servo(char pin, Packet* packet) : PropertyRecord(packet), mEnabled(this, packet), mPosition(packet) {
-    mPin = pin;
+Servo::Servo(char pin, Packet* packet) : PropertyRecord(packet), mEnabled(this, packet), mPosition(packet), mPin(pin), mNextPulse(0) {
     DDR |= _BV(mPin);
 }
 
-void Servo::go(unsigned short position) {
+void Servo::go(uint16_t position) {
 	mPosition = position;
 }
 
 void Servo::onTimerLISR(unsigned short when, char what) {
 	if (mEnabled) {
-		if (what == EVENT_50HZ) {
+		if (what == EVENT_START_PULSE) {
 			/* 50Hz tick */
 			/* start pulse, and program the timer to stop the pulse */
 			PORT |= _BV(mPin);
-			schedule(when + mPosition, EVENT_FINISH_PULSE);
+            mNextPulse = when + PERIOD;
+			schedule(when + mPosition.mPulseWidth, EVENT_FINISH_PULSE);
 		} else {
 			/* stop pulse */
 			PORT &= ~_BV(mPin);
-			schedule(when + PERIOD - mPosition, EVENT_50HZ);
+			schedule(mNextPulse, EVENT_START_PULSE);
 		}
 	}
 }
 
-Property* Servo::getChild(unsigned char index) {
+Property* Servo::getChild(uint8_t index) {
 	switch(index) {
 	case 0: return &mEnabled;
 	case 1: return &mPosition;
@@ -66,7 +64,7 @@ Property* Servo::getChild(unsigned char index) {
 void Servo::onPropertyChanged(Property* prop, PROPERTY_INFO what) {
 	if (mEnabled) {
 		cli();
-        onTimerLISR(now(), EVENT_50HZ);
+        onTimerLISR(now(), EVENT_START_PULSE);
 		sei();
     }
 }
