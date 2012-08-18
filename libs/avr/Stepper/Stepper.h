@@ -31,20 +31,8 @@ class PropertyStepperTargetLocation: public PropertyS16 {
 private:
     const char* getName() const {return "target";}
     const char* getDescription() {return "Target location in absolute steps.";}
-    PropertyListener* mListener;
-    void setValue(const PROPERTY_VALUE* value) {
-        if (value->s16 != mValue) {
-            mValue = value->s16;
-            if (mListener) {
-                mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
-            }
-        }
-    }
 public:
-    PropertyStepperTargetLocation(PropertyListener* listener, Packet* packet) : PropertyS16(0, packet), mListener(listener) {}
-//    short operator= (short value) {
-//    	return PropertyS16::operator=(value);
-//	}
+    PropertyStepperTargetLocation(Packet* packet) : PropertyS16(0, packet) {}
 };
 
 class PropertyStepperCurrentLocation: public PropertyS16 {
@@ -63,17 +51,8 @@ private:
     const char* getName() const {return "manual";}
     const char* getDescription() {return "";}
     PropertyListener* mListener;
-    void setValue(const PROPERTY_VALUE* value) {
-        if (value->boolean != mValue) {
-            mValue = value->boolean;
-            mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
-        }
-    }
 public:
     PropertyStepperManual(PropertyListener* listener, Packet* packet) : PropertyBoolean(false, packet), mListener(listener) {}
-//    bool operator= (bool value) {
-//    	return PropertyBoolean::operator=(value);
-//	}
 };
 
 /**

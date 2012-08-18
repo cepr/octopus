@@ -39,6 +39,16 @@ typedef enum {
     PROPERTY_TYPE_U8	/**< The property holds an unsigned 8 bits integer. */
 } PROPERTY_TYPE;
 
+template <class T>
+PROPERTY_TYPE _getType();
+#define PROPERTY_TYPE(T) _getType<T>()
+
+template <> inline PROPERTY_TYPE _getType<bool>()            { return PROPERTY_TYPE_BOOL; }
+template <> inline PROPERTY_TYPE _getType<unsigned short>()  { return PROPERTY_TYPE_U16; }
+template <> inline PROPERTY_TYPE _getType<signed short>()    { return PROPERTY_TYPE_S16; }
+template <> inline PROPERTY_TYPE _getType<signed char>()     { return PROPERTY_TYPE_S8; }
+template <> inline PROPERTY_TYPE _getType<unsigned char>()   { return PROPERTY_TYPE_U8; }
+
 /**
  * @brief Property value
  *
@@ -50,13 +60,31 @@ typedef union uPROPERTY_VALUE {
 	signed short    s16;        /**< Valid for PROPERTY_TYPE_S16. */
 	unsigned char   u8;         /**< Valid for PROPERTY_TYPE_U8. */
 	signed char     s8;         /**< Valid for PROPERTY_TYPE_S8. */
+
+    // Constructor
 	uPROPERTY_VALUE()                     : u16(0)         {}
 	uPROPERTY_VALUE(bool           value) : boolean(value) {}
 	uPROPERTY_VALUE(unsigned short value) : u16(value)     {}
 	uPROPERTY_VALUE(signed   short value) : s16(value)     {}
 	uPROPERTY_VALUE(unsigned char  value) : u8(value)      {}
 	uPROPERTY_VALUE(signed   char  value) : s8(value)      {}
+
+    // Methods
 	void clear() { u16 = 0; }
+
+    // Operator=
+    inline bool operator=(bool value) { boolean = value; return value; }
+    inline unsigned short operator=(unsigned short value) { return u16 = value; }
+    inline signed short operator=(signed short value) { return s16 = value; }
+    inline unsigned char operator=(unsigned char value) { return u8 = value; }
+    inline signed char operator=(signed char value) { return s8 = value; }
+
+    // Cast
+    inline operator bool() const { return boolean; }
+    inline operator unsigned short() const { return u16; }
+    inline operator signed short() const { return s16; }
+    inline operator unsigned char() const { return u8; }
+    inline operator signed char() const { return s8; }
 } PROPERTY_VALUE;
 
 /**

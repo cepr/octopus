@@ -29,14 +29,26 @@ class PropertyListener;
  * @brief Listener.
  */
 class PropertyListener : public Listener {
+
 public:
+    /**
+     * Origin of a property modification.
+     * 
+     * @see #onPropertyChanged()
+     */
+    typedef enum {
+        ORIGIN_LOCAL, /**< The property has been modified localy, for example by a direct affectation. */
+        ORIGIN_REMOTE /**< The property has been modified remotely. */
+    } ORIGIN;
+
 	/**
-	 * @brief Method called when a property has changed
+	 * Method called when a property has changed
 	 *
-	 * @param[in,out] prop The changed property
-	 * @param[in,out] what Elements that have changed
+	 * @param[in,out] prop    The changed property
+	 * @param[in]     what    Elements that have changed
+     * @param[in]     origin  Origin of the modification
 	 */
-	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) = 0;
+	virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin) = 0;
 
 	/**
 	 * @brief Method called when a property has a new child

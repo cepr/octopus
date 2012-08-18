@@ -21,26 +21,23 @@
 #include "Blink.h"
 #include "fatal.h"
 
-Blink::Blink(Packet* packet) : PropertyRecord(packet), mEnabled(this, packet), mTimer(this) {
+Blink::Blink(Packet* packet) : PropertyRecord(packet), mEnabled(packet), mTimer(this) {
     DDRB |= _BV(DDB5);
-    mRequestId = 0;
+    mEnabled.registerListener(this);
 }
 
-Blink::Timer::Timer(Blink* parent) : mParent(parent) {
-	mTimeMs = 0;
+Blink::Timer::Timer(Blink* parent) : mParent(parent), mTime20Ms(0) {
 }
 
 void Blink::Timer::onTimerLISR(unsigned short when, char what) {
 	// In order to only take into account the last call to setEnabled(), we
 	// check if this timer was scheduled from the same instance.
-	if (what == mParent->mRequestId) {
-		schedule(when+1000, what);
-		mTimeMs++;
-		if (mTimeMs == 1000) {
-			PORTB ^= _BV(PORTB5);
-			mTimeMs = 0;
-		}
-	}
+    schedule(when+20000, 0);
+    mTime20Ms++;
+    if (mTime20Ms == 50) {
+        PORTB ^= _BV(PORTB5);
+        mTime20Ms = 0;
+    }
 }
 
 Property* Blink::getChild(unsigned char index) {
@@ -50,15 +47,14 @@ Property* Blink::getChild(unsigned char index) {
 	}
 }
 
-void Blink::onPropertyChanged(class Property* prop, PROPERTY_INFO what) {
-	mRequestId++;
+void Blink::onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN origin) {
+
 	if (mEnabled) {
 		cli();
-		mTimer.onTimerLISR(SystemTimer::now(), mRequestId);
+		mTimer.onTimerLISR(SystemTimer::now(), 0);
 		sei();
 	} else {
-		// We do not need to stop the timer, onTimer will detect that
-		// mRequestId has changed, and will not reschedule.
+        mTimer.cancel();
 		PORTB &= ~_BV(PORTB5);
 	}
 }

@@ -29,7 +29,7 @@
 Stepper::Stepper(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet) :
 		PropertyRecord(packet),
 		mCurrentLocation(packet),
-		mTargetLocation(this, packet),
+		mTargetLocation(packet),
 		mManual(this, packet)
 {
 
@@ -63,6 +63,8 @@ Stepper::Stepper(char pinA1, char pinA2, char pinB1, char pinB2, Packet* packet)
 	mCurrentLocation = 0;
     mCurrentSpeed = 0;
     mTimerStarted = false;
+
+    mTargetLocation.registerListener(this);
 }
 
 void Stepper::registerListener(StepperListener *finishListener) {

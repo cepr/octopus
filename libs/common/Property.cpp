@@ -50,7 +50,7 @@ void Property::registerListener(PropertyListener* listener)
 	if (getDescription()) {
 		infos |= PROPERTY_INFO_DESCRIPTION;
 	}
-	listener->onPropertyChanged(this, infos);
+	listener->onPropertyChanged(this, infos, PropertyListener::ORIGIN_LOCAL);
 
 	// Report children (if any)
 	unsigned char i;

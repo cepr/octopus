@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 Cedric Priscal
+ * Copyright 2010-2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -46,19 +46,36 @@ private:
 	}
 
 public:
+    void setValue(const PROPERTY_VALUE & value) {
+        if ((T)value != mValue) {
+            mValue = value;
+            if (mListener) {
+                mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_REMOTE);
+            }
+        }
+    }
+    void getValue(PROPERTY_VALUE & value) { value = mValue; }
+    char getSize() { return sizeof(T); }
+    PROPERTY_TYPE getType() { return PROPERTY_TYPE(T); }
     operator T() {
         return mValue;
     }
     T operator=(T value) {
-        return mValue = value;
+        if (value != mValue) {
+            mValue = value;
+            if (mListener) {
+                mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_LOCAL);
+            }
+        }
+        return mValue;
     }
     const T operator++(int) {
         mValue++;
-        return *this;
+        return mValue;
     }
     const T operator--(int) {
         mValue--;
-        return *this;
+        return mValue;
     }
 };
 
@@ -66,80 +83,30 @@ public:
  * \brief Abstract base class for all properties of type boolean.
  * When extending this class, you should implement getName() and getDescription().
  */
-class PropertyBoolean: public PropertyData<bool> {
-public:
-    PropertyBoolean(bool value, Packet* packet) : PropertyData<bool>(value, packet){}
-    PROPERTY_TYPE getType() { return PROPERTY_TYPE_BOOL; }
-    void getValue(PROPERTY_VALUE & value) { value.boolean = mValue; }
-    virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.boolean; }
-    char getSize() { return 1; }
-    using PropertyData<bool>::operator =;
-    using PropertyData<bool>::operator ++;
-    using PropertyData<bool>::operator --;
-};
+typedef PropertyData<bool> PropertyBoolean;
 
 /**
  * \brief Abstract base class for all properties of type unsigned char.
  * When extending this class, you should implement getName() and getDescription().
  */
-class PropertyU8: public PropertyData<unsigned char> {
-public:
-    PropertyU8(unsigned char value, Packet* packet) : PropertyData<unsigned char>(value, packet){}
-    PROPERTY_TYPE getType() { return PROPERTY_TYPE_U8; }
-    void getValue(PROPERTY_VALUE & value) { value.u8 = mValue; }
-    virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.u8; }
-    char getSize() { return 1; }
-    using PropertyData<unsigned char>::operator =;
-    using PropertyData<unsigned char>::operator ++;
-    using PropertyData<unsigned char>::operator --;
-};
+typedef PropertyData<unsigned char> PropertyU8;
 
 /**
  * \brief Abstract base class for all properties of type signed char.
  * When extending this class, you should implement getName() and getDescription().
  */
-class PropertyS8: public PropertyData<signed char> {
-public:
-    PropertyS8(signed char value, Packet* packet) : PropertyData<signed char>(value, packet){}
-    PROPERTY_TYPE getType() { return PROPERTY_TYPE_S8; }
-    void getValue(PROPERTY_VALUE & value) { value.s8 = mValue; }
-    virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.s8; }
-    char getSize() { return 1; }
-    using PropertyData<signed char>::operator =;
-    using PropertyData<signed char>::operator ++;
-    using PropertyData<signed char>::operator --;
-};
+typedef PropertyData<signed char> PropertyS8;
 
 /**
  * \brief Abstract base class for all properties of type unsigned short.
  * When extending this class, you should implement getName() and getDescription().
  */
-class PropertyU16: public PropertyData<unsigned short> {
-public:
-    PropertyU16(unsigned short value, Packet* packet) : PropertyData<unsigned short>(value, packet){}
-    PROPERTY_TYPE getType() { return PROPERTY_TYPE_U16; }
-    void getValue(PROPERTY_VALUE & value) { value.u16 = mValue; }
-    virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.u16; }
-    char getSize() { return 2; }
-    using PropertyData<unsigned short>::operator =;
-    using PropertyData<unsigned short>::operator ++;
-    using PropertyData<unsigned short>::operator --;
-};
+typedef PropertyData<unsigned short> PropertyU16;
 
 /**
  * \brief Abstract base class for all properties of type signed short.
  * When extending this class, you should implement getName() and getDescription().
  */
-class PropertyS16: public PropertyData<signed short> {
-public:
-    PropertyS16(signed short value, Packet* packet) : PropertyData<signed short>(value, packet){}
-    PROPERTY_TYPE getType() { return PROPERTY_TYPE_S16; }
-    void getValue(PROPERTY_VALUE & value) { value.s16 = mValue; }
-    virtual void setValue(const PROPERTY_VALUE & value) { mValue = value.s16; }
-    char getSize() { return 2; }
-    using PropertyData<signed short>::operator =;
-    using PropertyData<signed short>::operator ++;
-    using PropertyData<signed short>::operator --;
-};
+typedef PropertyData<signed short> PropertyS16;
 
 #endif // PROPERTYDATA_H

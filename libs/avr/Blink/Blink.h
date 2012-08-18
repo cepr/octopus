@@ -43,44 +43,27 @@ public:
      */
     Blink(Packet* packet);
 
+    /**
+     * @brief Enable or disable the blinking.
+     */
     class PropertyBlinkEnabled : public PropertyBoolean {
     private:
         const char* getName() const {return "enabled";}
         const char* getDescription() {return "";}
-        PropertyListener* mListener;
-        void setValue(const PROPERTY_VALUE & value) {
-            operator=(value.boolean);
-        }
     public:
-        PropertyBlinkEnabled(PropertyListener* listener, Packet* packet) : PropertyBoolean(false, packet), mListener(listener) {};
-        bool operator=(bool value) {
-            if (value != mValue) {
-                mValue = value;
-                if (mListener) {
-                    mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE);
-                }
-            }
-            return value;
-        }
-    };
-
-    /**
-     * @brief Enable or disable the blinking.
-     */
-    PropertyBlinkEnabled mEnabled;
+        PropertyBlinkEnabled(Packet* packet) : PropertyBoolean(false, packet) {};
+        using PropertyBoolean::operator =;
+    } mEnabled;
 
 private:
-    char mRequestId;
-
 	class Timer: public SystemTimer {
 	public:
 		Timer(Blink *parent);
 		void onTimerLISR(unsigned short when, char what);
 	private:
 		Blink* mParent;
-		unsigned short mTimeMs;
-	};
-	Timer mTimer;
+		unsigned short mTime20Ms;
+	} mTimer;
 
     // PropertyRecord pure virtual functions
 	const char* getName() const { return "Blink"; }
@@ -88,7 +71,7 @@ private:
     Property* getChild(unsigned char index);
 
     // PropertyListener implementation
-    void onPropertyChanged(class Property* prop, PROPERTY_INFO what);
+    void onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN origin);
 };
 
 #endif /* BLINK_H_ */
