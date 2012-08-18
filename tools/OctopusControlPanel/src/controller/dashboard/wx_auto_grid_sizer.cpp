@@ -34,7 +34,7 @@ wxSize wxAutoGridSizer::CalcMin()
 {
 	// Compute the optimal number of columns to obtain square children
 	wxSize size = GetSize();
-	if (size.GetWidth() > 0) {
+	if ( (size.GetWidth() > 0) && (size.GetHeight() > 0) ) {
 		size_t count = GetItemCount();
 		size_t best_cols = 0;
 		float best_ratio_delta = __FLT_MAX__;
