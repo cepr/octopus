@@ -20,8 +20,8 @@
 #ifndef OCTOPUSCOMMSTACK_H
 #define OCTOPUSCOMMSTACK_H
 
-#include "Property.h"
-#include "Packet.h"
+#include "property.h"
+#include "packet.h"
 
 /**
  * @brief Octopus Communication Stack template

@@ -1,13 +1,12 @@
 
-#include "Robot/Robot.h"
-#include "octopus_comm_stack.h"
-#include "property_record.h"
-#include "AvrUsart/AvrUsart.h"
-#include "UsartListener.h"
-#include "Packet.h"
-#include "Blink/Blink.h"
+#include "octopus/prop/octopus_comm_stack.h"
+#include "octopus/prop/property_record.h"
+#include "octopus/dev/usart/avr_usart.h"
+#include "octopus/dev/usart/usart_listener.h"
+#include "octopus/prop/packet.h"
+#include "octopus/dev/blink/blink.h"
 
-class Template : public Robot, public OctopusCommStack<AvrUsart, PropertyRecord> {
+class Template : public OctopusCommStack<AvrUsart, PropertyRecord> {
 
 private:
     // List of modules

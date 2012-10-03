@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>liboctopus</name>
-	<comment>
-    </comment>
+	<name>robot-template</name>
+	<comment></comment>
 	<projects>
+		<project>liboctopus</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -14,7 +14,7 @@
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
-			<triggers>incremental,</triggers>
+			<triggers>full,incremental,</triggers>
 			<arguments>
 			</arguments>
 		</buildCommand>
