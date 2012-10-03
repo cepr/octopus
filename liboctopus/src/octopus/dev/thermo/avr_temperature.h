@@ -17,26 +17,19 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef THREAD_H_
-#define THREAD_H_
+#ifndef AVR_TEMPERATURE_H_
+#define AVR_TEMPERATURE_H_
 
-#include <pthread.h>
+#include "AnalogChannel.h"
 
-class Thread {
-
-private:
-	pthread_t mThread;
-
+/**
+ * AVR internal temperature sensor driver.
+ *
+ * TODO Temperature module under development.
+ */
+class AvrTemperature : public AnalogChannel {
 public:
-	/**
-	 * @brief Thread entry point.
-	 */
-	virtual void run() = 0;
-
-	/**
-	 * @brief Starts the new Thread of execution.
-	 */
-	void start();
+	AvrTemperature() : AnalogChannel(CHANNEL_ADC8, VREF_VBG) {}
 };
 
-#endif /* THREAD_H_ */
+#endif /* AVR_TEMPERATURE_H_ */
