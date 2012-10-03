@@ -192,7 +192,7 @@ void RemoteProperty::onPacketReceived(const unsigned char* data, unsigned char s
 			mInfoToRequest &= ~what_changed;
             std::list<PropertyListener*>::iterator it;
             for (it = mListeners.begin(); it != mListeners.end(); ++it) {
-                (*it)->onPropertyChanged(this, what_changed);
+                (*it)->onPropertyChanged(this, what_changed, PropertyListener::ORIGIN_REMOTE);
             }
 		}
 	}

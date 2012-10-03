@@ -48,7 +48,7 @@ wxPropertyNumber::wxPropertyNumber(wxWindow* parent, Property* property) :
 	case PROPERTY_TYPE_VOID:
 		; // nothing to do
 	}
-	onPropertyChanged(property, Property::PROPERTY_INFO_VALUE);
+	onPropertyChanged(property, Property::PROPERTY_INFO_VALUE, ORIGIN_REMOTE);
 	Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( wxPropertyNumber::onScroll ), (wxObject*)NULL, (wxEvtHandler*)this );
 }
 
@@ -82,7 +82,7 @@ void wxPropertyNumber::onScroll(wxScrollEvent& event)
 	mProperty->setValue(value);
 }
 
-void wxPropertyNumber::onPropertyChanged(Property* prop, PROPERTY_INFO what)
+void wxPropertyNumber::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
 {
 	if (what & Property::PROPERTY_INFO_VALUE) {
 		PROPERTY_VALUE value;

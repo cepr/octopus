@@ -23,7 +23,7 @@
 wxPropertyBoolean::wxPropertyBoolean(wxWindow* parent, Property* property) : wxToggleButton(parent, wxID_ANY, wxT("")), mProperty(property)
 {
 	// Force a refresh
-	onPropertyChanged(property, Property::PROPERTY_INFO_VALUE);
+	onPropertyChanged(property, Property::PROPERTY_INFO_VALUE, ORIGIN_REMOTE);
 	Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(wxPropertyBoolean::onToggleButton), NULL, this);
 }
 
@@ -32,7 +32,7 @@ wxPropertyBoolean::~wxPropertyBoolean()
 	Disconnect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(wxPropertyBoolean::onToggleButton), NULL, this);
 }
 
-void wxPropertyBoolean::onPropertyChanged(Property* prop, PROPERTY_INFO what)
+void wxPropertyBoolean::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
 {
 	if (what & Property::PROPERTY_INFO_VALUE) {
 		PROPERTY_VALUE value;

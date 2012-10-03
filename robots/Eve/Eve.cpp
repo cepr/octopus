@@ -75,7 +75,6 @@ public:
      * \copydoc Robot::onStart()
      */
     void onStart(){
-        mBlink.mEnabled = true;
     }
 
     /**

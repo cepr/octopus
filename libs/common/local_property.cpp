@@ -156,4 +156,8 @@ bool LocalProperty::onReadyToSend(unsigned char* data, unsigned char & size, uns
 
 void LocalProperty::refresh()
 {
+    mInfoToReport |= PROPERTY_INFO_VALUE;
+    if (mPacket) {
+        mPacket->requestToSend();
+    }
 }

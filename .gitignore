@@ -1,5 +1,5 @@
 /.flash
-/.build-debug/
+/.build-*/
 /out
 /octopus.batch_build
 /octopus.workspace.*

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="OctopusXCopter" InternalType="Console">
+<CodeLite_Project Name="GPIOs" InternalType="Console">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
@@ -9,8 +9,8 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <VirtualDirectory Name="robots">
-      <VirtualDirectory Name="OctopusXCopter">
-        <File Name="../../robots/OctopusXCopter/OctopusXCopter.cpp"/>
+      <VirtualDirectory Name="GPIOs">
+        <File Name="../../robots/GPIOs/GPIOs.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
@@ -31,6 +31,9 @@
           <File Name="../../libs/avr/Blink/Blink.h"/>
         </VirtualDirectory>
         <File Name="../../libs/avr/fatal.h"/>
+        <VirtualDirectory Name="hmc6352">
+          <File Name="../../libs/avr/hmc6352/hmc6352.h"/>
+        </VirtualDirectory>
         <VirtualDirectory Name="imu">
           <File Name="../../libs/avr/imu/AccelerationListener.h"/>
           <File Name="../../libs/avr/imu/adxl345.h"/>
@@ -105,14 +108,10 @@
         <File Name="../../libs/common/UsartBuffer.h"/>
         <File Name="../../libs/common/UsartListener.h"/>
       </VirtualDirectory>
-      <VirtualDirectory Name="sensors">
-        <VirtualDirectory Name="hmc6352">
-          <File Name="../../libs/sensors/hmc6352/hmc6352.h"/>
-        </VirtualDirectory>
-      </VirtualDirectory>
+      <VirtualDirectory Name="sensors"/>
     </VirtualDirectory>
     <VirtualDirectory Name="robots">
-      <VirtualDirectory Name="OctopusXCopter"/>
+      <VirtualDirectory Name="GPIOs"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
@@ -134,8 +133,7 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).out" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[
-      ]]>
+        <![CDATA[]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -171,8 +169,7 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).out" IntermediateDirectory="../../out/$(ProjectName)/$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[
-      ]]>
+        <![CDATA[]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -203,10 +200,10 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Release">
+  <Dependencies Name="Debug">
     <Project Name="OctopusAVR"/>
   </Dependencies>
-  <Dependencies Name="Debug">
+  <Dependencies Name="Release">
     <Project Name="OctopusAVR"/>
   </Dependencies>
 </CodeLite_Project>

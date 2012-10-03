@@ -72,7 +72,7 @@ public:
     /**
      * @copydoc PropertyListener#onPropertyChanged
      */
-    virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what) = 0;
+    virtual void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin) = 0;
 
     /**
 	 * @copydoc PropertyListener#onNewChild

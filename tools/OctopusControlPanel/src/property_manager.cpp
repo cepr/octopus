@@ -35,14 +35,14 @@ PropertyManager::~PropertyManager()
 {
 }
 
-void PropertyManager::onPropertyChanged(Property* prop, PROPERTY_INFO what)
+void PropertyManager::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
 {
 	// Save available information
 	mPropertyAvailableInfo |= what;
 	// Notify all Controllers about the new property
 	std::list<PropertyController*>::iterator it;
 	for (it = mControllers.begin(); it != mControllers.end(); ++it) {
-		(*it)->onPropertyChanged(this, what);
+		(*it)->onPropertyChanged(this, what, origin);
 	}
 }
 
@@ -86,7 +86,7 @@ void PropertyManager::registerController(PropertyController* controller)
 	mControllers.push_back(controller);
 
 	// Report value, name, type and description
-	controller->onPropertyChanged(this, mPropertyAvailableInfo);
+	controller->onPropertyChanged(this, mPropertyAvailableInfo, ORIGIN_REMOTE);
 
 	// Report children (if any)
 	size_t i;

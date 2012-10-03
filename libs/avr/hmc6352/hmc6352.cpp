@@ -19,24 +19,49 @@
 
 #include "hmc6352.h"
 #include "twi/AvrTwoWireInterface.h"
+#include "fatal.h"
 
 #ifdef FAST_I2C
 # error FAST_I2C is not supported with HMC6352.
 #endif
 
 Hmc6352::Hmc6352() {
+
     mListener = 0;
-    mTransfer.device = this;
-    mTransfer.buffer = mBuffer;
+
+    mGetHeadingTransfer.device = this;
+    mGetHeadingTransfer.buffer = mGetHeadingBuffer;
+
+    mStartCalibrationTransfer.device = this;
+    mStartCalibrationTransfer.type = I2C_TRANSMIT;
+    mStartCalibrationTransfer.buffer = mStartCalibrationBuffer;
+    mStartCalibrationTransfer.size = sizeof(mStartCalibrationBuffer);
+    mStartCalibrationBuffer[0] = 'C';
+
+    mStopCalibrationTransfer.device = this;
+    mStopCalibrationTransfer.type = I2C_TRANSMIT;
+    mStopCalibrationTransfer.buffer = mStopCalibrationBuffer;
+    mStopCalibrationTransfer.size = sizeof(mStopCalibrationBuffer);
+    mStopCalibrationBuffer[0] = 'E';
 }
 
 void Hmc6352::getHeading(CompassListener* listener) {
     mListener = listener;
-    mTransfer.type = I2C_TRANSMIT;
-    mBuffer[0] = 'A';
-    mTransfer.size = 1;
-    mTransfer.next = 0;
-    AvrTwoWireInterface::getInstance().commit(&mTransfer);
+    mGetHeadingTransfer.type = I2C_TRANSMIT;
+    mGetHeadingBuffer[0] = 'A';
+    mGetHeadingTransfer.size = 1;
+    mGetHeadingTransfer.next = 0;
+    AvrTwoWireInterface::getInstance().commit(&mGetHeadingTransfer);
+}
+
+void Hmc6352::startCalibration() {
+    mStartCalibrationTransfer.next = 0;
+    AvrTwoWireInterface::getInstance().commit(&mStartCalibrationTransfer);
+}
+
+void Hmc6352::stopCalibration() {
+    mStopCalibrationTransfer.next = 0;
+    AvrTwoWireInterface::getInstance().commit(&mStopCalibrationTransfer);
 }
 
 void Hmc6352::onTransmitFinished(unsigned char transmitted) {
@@ -44,17 +69,17 @@ void Hmc6352::onTransmitFinished(unsigned char transmitted) {
 }
 
 void Hmc6352::onTimer(char what) {
-    mTransfer.type = I2C_RECEIVE;
-    mTransfer.size = 2;
-    mTransfer.next = 0;
-    AvrTwoWireInterface::getInstance().commit(&mTransfer);
+    mGetHeadingTransfer.type = I2C_RECEIVE;
+    mGetHeadingTransfer.size = 2;
+    mGetHeadingTransfer.next = 0;
+    AvrTwoWireInterface::getInstance().commit(&mGetHeadingTransfer);
 }
 
 void Hmc6352::onReceiveFinished(unsigned char received) {
     if (mListener && (received == 2)) {
         unsigned short heading;
-        ((unsigned char*)&heading)[0] = mBuffer[1];
-        ((unsigned char*)&heading)[1] = mBuffer[0];
+        ((unsigned char*)&heading)[0] = mGetHeadingBuffer[1];
+        ((unsigned char*)&heading)[1] = mGetHeadingBuffer[0];
         mListener->onNewHeading(heading);
     }
 }
@@ -64,17 +89,21 @@ unsigned char Hmc6352::getAddress(void) {
 }
 
 void Hmc6352::onBusBusy(void) {
+    //fatal(FATAL_DEBUG);
     // TODO reschedule
 }
 
 void Hmc6352::onBusError(void) {
+    //fatal(FATAL_DEBUG);
     // TODO reschedule
 }
 
 void Hmc6352::onDeviceNack(void) {
+    //fatal(FATAL_DEBUG);
     // TODO reschedule
 }
 
 void Hmc6352::onDeviceNotResponding(void) {
+    //fatal(FATAL_DEBUG);
     // TODO reschedule
 }

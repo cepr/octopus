@@ -60,7 +60,6 @@ public:
     }
 
     void onStart() {
-        mBlink.mEnabled = true;
         mRangeFinder.getRange(this);
     }
 

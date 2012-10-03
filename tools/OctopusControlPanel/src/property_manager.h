@@ -53,7 +53,7 @@ public:
 	/**
 	 * @copydoc PropertyListener::onPropertyChanged()
 	 */
-	void onPropertyChanged(Property* prop, PROPERTY_INFO what);
+	void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
 
 	/**
 	 * @copydoc PropertyListener::onPropertyChildCreated()

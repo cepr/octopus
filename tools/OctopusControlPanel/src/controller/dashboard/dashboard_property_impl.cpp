@@ -57,7 +57,7 @@ void DashboardPropertyImpl::onPreferencesClick(wxCommandEvent& event)
 	//}
 }
 
-void DashboardPropertyImpl::onPropertyChanged(Property* prop, PROPERTY_INFO what)
+void DashboardPropertyImpl::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
 {
     // Property has changed, we should refresh the dashboard
     if (what & Property::PROPERTY_INFO_NAME) {
@@ -103,7 +103,7 @@ void DashboardPropertyImpl::onPropertyChanged(Property* prop, PROPERTY_INFO what
     if (what & Property::PROPERTY_INFO_VALUE) {
         if (mValueCtrl) {
             // TODO cast is not clean
-            ((PropertyListener*)mValueCtrl)->onPropertyChanged(prop, what & Property::PROPERTY_INFO_VALUE);
+            dynamic_cast<PropertyListener*>(mValueCtrl)->onPropertyChanged(prop, what & Property::PROPERTY_INFO_VALUE, origin);
         }
     }
 }

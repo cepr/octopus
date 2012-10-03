@@ -51,7 +51,7 @@ public:
         const char* getName() const {return "enabled";}
         const char* getDescription() {return "";}
     public:
-        PropertyBlinkEnabled(Packet* packet) : PropertyBoolean(false, packet) {};
+        PropertyBlinkEnabled(Packet* packet) : PropertyBoolean(true, packet) {};
         using PropertyBoolean::operator =;
     } mEnabled;
 

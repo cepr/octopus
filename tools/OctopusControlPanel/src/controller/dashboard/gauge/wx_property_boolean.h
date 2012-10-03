@@ -29,7 +29,7 @@ class wxPropertyBoolean : public wxToggleButton, public PropertyListener
 public:
 	wxPropertyBoolean(wxWindow* parent, Property* property);
 	~wxPropertyBoolean();
-	void onPropertyChanged(Property* prop, PROPERTY_INFO what);
+	void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
 	void onNewChild(Property* prop, Property* child, unsigned char index);
 	void onPropertyDeleted();
 

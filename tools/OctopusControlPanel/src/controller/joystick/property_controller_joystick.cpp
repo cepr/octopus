@@ -30,7 +30,7 @@ PropertyControllerJoystick::~PropertyControllerJoystick()
 {
 }
 
-void PropertyControllerJoystick::onPropertyChanged(Property* prop, PROPERTY_INFO what)
+void PropertyControllerJoystick::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
 {
 }
 

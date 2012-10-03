@@ -28,7 +28,6 @@ public:
     }
 
     void onStart() {
-        mBlink.mEnabled = true;
     }
 
     Property* getChild(unsigned char index) {

@@ -9,6 +9,7 @@
 #include "Packet.h"
 #include "Blink/Blink.h"
 #include "Servo/Servo.h"
+#include "hmc6352/hmc6352.h"
 
 class OctopusXCopter : public Robot, public OctopusCommStack<AvrUsart, PropertyRecord>
 {
@@ -21,6 +22,7 @@ private:
     {
     public:
         FrontLeftMotor(Packet* packet) : Servo(4, packet) {
+            //mEnabled = true;
         }
         const char* getDescription() {
             return "Front left motor, CW";
@@ -34,6 +36,7 @@ private:
     {
     public:
         FrontRightMotor(Packet* packet) : Servo(5, packet) {
+            //mEnabled = true;
         }
         const char* getDescription() {
             return "Front right motor, CCW";
@@ -47,6 +50,7 @@ private:
     {
     public:
         BackLeftMotor(Packet* packet) : Servo(6, packet) {
+            //mEnabled = true;
         }
         const char* getDescription() {
             return "Back left motor, CCW";
@@ -60,6 +64,7 @@ private:
     {
     public:
         BackRightMotor(Packet* packet) : Servo(7, packet) {
+            //mEnabled = true;
         }
         const char* getDescription() {
             return "Back right motor, CW";
@@ -69,14 +74,59 @@ private:
         }
     } mBackRightMotor;
 
+    class Heading : public PropertyU16, public CompassListener, public ApplicationTimer
+    {
+    public:
+        // Attributes
+        Hmc6352 mCompass;
+
+        // Constructor
+        Heading(Packet* packet) :
+                // parent classes
+                PropertyU16(0, packet),
+                CompassListener(),
+                ApplicationTimer(),
+                // attributes
+                mCompass() {
+
+            schedule(0, 0);
+        }
+
+        // From PropertyU16
+        const char* getName() const {
+            return "Heading";
+        }
+        const char* getDescription() {
+            return "Magnetic sensor (HMC6352)";
+        }
+        using PropertyU16::operator =;
+
+        // From CompassListener
+        void onNewHeading(unsigned short heading) {
+            operator=(heading);
+            refresh(); // send the value to the remote computer
+        }
+
+        // From ApplicationTimer
+        void onTimer(char what) {
+            schedule(now()+50000, 0);   // 20Hz
+            mCompass.getHeading(this);
+        }
+    } mHeading;
+
 public:
     // Constructor
     OctopusXCopter() :
+        // parents
+        Robot(),
+        OctopusCommStack<AvrUsart, PropertyRecord>(),
+        // Attributes
         mBlink(&mPacket),
         mFrontLeftMotor(&mPacket),
         mFrontRightMotor(&mPacket),
         mBackLeftMotor(&mPacket),
-        mBackRightMotor(&mPacket) {
+        mBackRightMotor(&mPacket),
+        mHeading(&mPacket) {
     }
 
     // Property definition
@@ -89,7 +139,10 @@ public:
     }
 
     void onStart() {
-        mBlink.mEnabled = true;
+        //mFrontLeftMotor.mEnabled = true;
+        //mFrontRightMotor.mEnabled = true;
+        //mBackLeftMotor.mEnabled = true;
+        //mBackRightMotor.mEnabled = true;
     }
 
     Property* getChild(unsigned char index) {
@@ -102,6 +155,10 @@ public:
             return &mBackLeftMotor;
         case 3:
             return &mBackRightMotor;
+        case 4:
+            return &mHeading;
+        case 5:
+            return &mBlink;
         default:
             return 0;
         }

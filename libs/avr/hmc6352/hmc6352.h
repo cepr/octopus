@@ -50,6 +50,9 @@ public:
      */
     void getHeading(CompassListener* listener);
 
+    void startCalibration();
+    void stopCalibration();
+    
 private:
     unsigned char getAddress(void);
     void onBusBusy(void);
@@ -60,8 +63,12 @@ private:
     void onTransmitFinished(unsigned char transmitted);
     void onTimer(char what);
 
-    unsigned char mBuffer[2];
-    I2CTransfer mTransfer;
+    unsigned char mGetHeadingBuffer[2];
+    I2CTransfer mGetHeadingTransfer;
+    unsigned char mStartCalibrationBuffer[1];
+    I2CTransfer mStartCalibrationTransfer;
+    unsigned char mStopCalibrationBuffer[1];
+    I2CTransfer mStopCalibrationTransfer;
     CompassListener *mListener;
 };
 

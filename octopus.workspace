@@ -6,7 +6,6 @@
   <Project Name="Template" Path="robots/Template/Template.project" Active="No"/>
   <Project Name="TwoChannelsCar" Path="robots/TwoChannelsCar/TwoChannelsCar.project" Active="No"/>
   <Project Name="LoopBack" Path="robots/LoopBack/LoopBack.project" Active="No"/>
-  <Project Name="OctopusAVR" Path="libs/OctopusAVR.project" Active="No"/>
   <Project Name="OctopusLinux" Path="libs/OctopusLinux.project" Active="No"/>
   <Project Name="wxWidgets" Path="wxWidgets.project" Active="No"/>
   <Project Name="OctopusControlPanel" Path="tools/OctopusControlPanel/OctopusControlPanel.project" Active="No"/>
@@ -27,10 +26,21 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
   ]]>
   </Environment>
-  <Project Name="OctopusXCopter" Path="robots/OctopusXCopter/OctopusXCopter.project" Active="No"/>
-  <Project Name="wxSVG" Path="wxSVG.project" Active="Yes"/>
+  <Project Name="OctopusXCopter" Path="robots/OctopusXCopter/OctopusXCopter.project" Active="Yes"/>
+  <Project Name="wxSVG" Path="wxSVG.project" Active="No"/>
+  <Project Name="OctopusAVR" Path="libs/OctopusAVR.project" Active="No"/>
+  <Project Name="GPIOs" Path="robots/GPIOs/GPIOs.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="wxWidgets" ConfigName="Debug"/>
@@ -40,18 +50,18 @@
       <Project Name="OctopusXCopter" ConfigName="Debug"/>
       <Project Name="OctopusLinux" ConfigName="Debug"/>
       <Project Name="OctopusControlPanel" ConfigName="Debug"/>
-      <Project Name="OctopusAVR" ConfigName="Debug"/>
       <Project Name="LoopBack" ConfigName="Debug"/>
       <Project Name="Eve" ConfigName="Debug"/>
       <Project Name="Compass" ConfigName="Debug"/>
       <Project Name="wxSVG" ConfigName="Debug"/>
+      <Project Name="OctopusAVR" ConfigName="Debug"/>
+      <Project Name="GPIOs" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="no">
       <Project Name="TwoChannelsCar" ConfigName="Release"/>
       <Project Name="Template" ConfigName="Release"/>
       <Project Name="RangeFinder" ConfigName="Release"/>
       <Project Name="OctopusLinux" ConfigName="Release"/>
-      <Project Name="OctopusAVR" ConfigName="Release"/>
       <Project Name="LoopBack" ConfigName="Release"/>
       <Project Name="Eve" ConfigName="Release"/>
       <Project Name="Compass" ConfigName="Release"/>
@@ -60,6 +70,8 @@
       <Project Name="OctopusControlPanel" ConfigName="Release"/>
       <Project Name="OctopusXCopter" ConfigName="Release"/>
       <Project Name="wxSVG" ConfigName="Release"/>
+      <Project Name="OctopusAVR" ConfigName="Release"/>
+      <Project Name="GPIOs" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

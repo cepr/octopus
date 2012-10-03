@@ -29,7 +29,7 @@ class wxPropertyNumber : public wxSlider, public PropertyListener
 public:
 	wxPropertyNumber(wxWindow* parent, Property* property);
 	~wxPropertyNumber();
-	void onPropertyChanged(Property* prop, PROPERTY_INFO what);
+	void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
 	void onNewChild(Property* prop, Property* child, unsigned char index);
 	void onPropertyDeleted();
 

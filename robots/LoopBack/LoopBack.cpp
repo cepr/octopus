@@ -41,7 +41,6 @@ public:
     }
 
     void onStart() {
-        mBlink.mEnabled = true;
         mAvrUsart.sendString("LoopBack starting!");
     }
 

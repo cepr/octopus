@@ -146,7 +146,7 @@ Property* Stepper::getChild(unsigned char index) {
 	}
 }
 
-void Stepper::onPropertyChanged(Property* prop, PROPERTY_INFO what) {
+void Stepper::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin) {
 	if (!mTimerStarted) {
 		mTimerStarted = true;
 		setEnabled(true);

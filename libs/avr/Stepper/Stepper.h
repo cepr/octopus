@@ -118,7 +118,7 @@ public:
     virtual const char* getName() const = 0;
     virtual const char* getDescription()=0;
 
-    void onPropertyChanged(class Property* prop, PROPERTY_INFO what);
+    void onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN origin);
 };
 
 #endif /* STEPPER_H_ */

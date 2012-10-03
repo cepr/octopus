@@ -66,7 +66,6 @@ public:
     }
 
     void onStart() {
-        mBlink.mEnabled = true;
         mCompass.getHeading(this);
     }
 
