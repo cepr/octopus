@@ -20,10 +20,10 @@
 #ifndef PACKET_H_
 #define PACKET_H_
 
-#include "Usart.h"
-#include "UsartListener.h"
-#include "PacketListener.h"
-#include "event.h"
+#include "octopus/dev/usart/usart.h"
+#include "octopus/dev/usart/usart_listener.h"
+#include "packet_listener.h"
+#include "octopus/event/event.h"
 
 /**
  * @brief Data link layer of the Octopus Communication Stack

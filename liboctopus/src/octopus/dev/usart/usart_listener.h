@@ -20,14 +20,12 @@
 #ifndef USARTLISTENER_H_
 #define USARTLISTENER_H_
 
-#include "Listener.h"
-
 /**
  * @brief USART listener
  *
  * @ingroup COM_STACK
  */
-class UsartListener : public Listener {
+class UsartListener {
 public:
 	/**
 	 * @brief Listener called when a new byte is received on the USART port

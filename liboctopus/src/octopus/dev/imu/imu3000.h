@@ -20,8 +20,8 @@
 #ifndef IMU3000_H
 #define IMU3000_H
 
-#include "i2c_device.h" // Base class: I2CDevice
-#include "i2c_driver.h"
+#include "octopus/dev/i2c/i2c_device.h" // Base class: I2CDevice
+#include "octopus/dev/i2c/i2c_driver.h"
 #include "inertial_data_provider.h" // Base class: InertialDataProvider
 
 /**

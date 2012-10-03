@@ -21,17 +21,15 @@
 #define SERVO_H_
 
 #include <stdint.h>
-#include "Handler.h"
-#include "Timer/system_timer.h"
-#include "property_record.h"
-#include "property_data.h"
-#include "Module.h"
+#include "octopus/dev/timer/system_timer.h"
+#include "octopus/prop/property_record.h"
+#include "octopus/prop/property_data.h"
 
 
 /**
  * @brief Servomotor driver using 1 GPIO of port D.
  */
-class Servo: private SystemTimer, public PropertyRecord, public PropertyListener, public Module {
+class Servo: private SystemTimer, public PropertyRecord, public PropertyListener {
 
     ////////////////////////////////////////////////////////////////////////////
     // Constants

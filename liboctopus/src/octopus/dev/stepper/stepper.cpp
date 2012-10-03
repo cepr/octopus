@@ -18,10 +18,10 @@
  */
 
 #include <avr/io.h>
-#include "Stepper.h"
+#include "stepper.h"
 
-#include "AccelerationTable.h"
-#include "AvrFlash.h"
+#include "acceleration_table.h"
+#include "octopus/util/avr_flash.h"
 
 #define NB_DELAYS (sizeof(DELAYS)/sizeof(DELAYS[0]))
 #define MAX_SPEED ((short)(NB_DELAYS - 1))

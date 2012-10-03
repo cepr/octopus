@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Property.h"
+#include "property.h"
 
 const PROPERTY_INFO Property::PROPERTY_INFO_NAME;
 const PROPERTY_INFO Property::PROPERTY_INFO_DESCRIPTION;

@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Usart.h"
+#include "usart.h"
 
 Usart::Usart() : mListener(0) {
 }

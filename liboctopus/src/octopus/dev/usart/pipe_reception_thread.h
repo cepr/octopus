@@ -20,6 +20,8 @@
 #ifndef PIPERECEPTIONTHREAD_H
 #define PIPERECEPTIONTHREAD_H
 
+#ifndef AVR
+
 class PipeReceptionThread;
 
 #include <wx/thread.h> // Base class: wxThread
@@ -66,5 +68,7 @@ private:
 	UsartBuffer mBuffer;
 	wxMutex mMutex;
 };
+
+#endif /* AVR */
 
 #endif // PIPERECEPTIONTHREAD_H

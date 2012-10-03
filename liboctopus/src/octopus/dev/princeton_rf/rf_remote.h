@@ -20,7 +20,7 @@
 #ifndef RFREMOTE_H_
 #define RFREMOTE_H_
 
-#include "PrincetonRf/PrincetonRfEncoder.h"
+#include "princeton_rf_encoder.h"
 
 typedef enum {
     RF_REMOTE_A1,

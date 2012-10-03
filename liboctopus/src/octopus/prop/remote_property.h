@@ -20,8 +20,10 @@
 #ifndef REMOTEPROPERTY_H_
 #define REMOTEPROPERTY_H_
 
-#include "Property.h"
-#include "PropertyAddress.h"
+#ifndef AVR
+
+#include "property.h"
+#include "property_address.h"
 #include <vector>
 
 /**
@@ -33,7 +35,7 @@
  *
  * In order to use this class, you should create only one instance using #RemoteProperty and
  * forward all incoming packets to this instance. If an incoming packet concerns the root
- * property, the instance of RemoteProperty will analyse it and update its fields, otherwise
+ * property, the instance of RemoteProperty will analyze it and update its fields, otherwise
  * it will recursively create the children to handle the received packet.
  *
  * @ingroup COM_STACK
@@ -50,15 +52,15 @@ public:
 
 	/**
 	 * @brief Destructor.
-     *
-     * Children are also destroyed recursively.
+	 *
+	 * Children are also destroyed recursively.
 	 */
 	virtual ~RemoteProperty();
 
-    /**
-     * @copydoc Property#getChild()
-     */
-    virtual Property* getChild(unsigned char index);
+	/**
+	 * @copydoc Property#getChild()
+	 */
+	virtual Property* getChild(unsigned char index);
 
 	/**
 	 * @copydoc Property#getDescription()
@@ -106,13 +108,13 @@ public:
 	virtual bool onReadyToSend(unsigned char* data, unsigned char & size, unsigned char capacity);
 
 protected:
-    /**
-     * Creates a new RemoteProperty instance.
-     *
-     * This method is called from #onPacketReceived to create dynamically a new RemoteProperty instance
-     * for a new child. You should overide this method if you want to inherit RemoteProperty.
-     */
-    virtual RemoteProperty* createChild();
+	/**
+	 * Creates a new RemoteProperty instance.
+	 *
+	 * This method is called from #onPacketReceived to create dynamically a new RemoteProperty instance
+	 * for a new child. You should override this method if you want to inherit RemoteProperty.
+	 */
+	virtual RemoteProperty* createChild();
 
 	PROPERTY_INFO mInfoToRequest;
 	bool mValueToSend;
@@ -123,5 +125,7 @@ protected:
 	char* mDescription;
 	std::vector<RemoteProperty*> mChildren;
 };
+
+#endif /* AVR */
 
 #endif /* REMOTEPROPERTY_H_ */

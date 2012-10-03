@@ -21,7 +21,7 @@
 #define APPLICATIONTIMER_H
 
 #include "system_timer.h"
-#include "event.h"
+#include "octopus/event/event.h"
 
 /**
  * \brief Provides a timer for long tasks.

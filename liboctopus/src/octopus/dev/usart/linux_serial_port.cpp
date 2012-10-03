@@ -17,7 +17,9 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "LinuxSerialPort.h"
+#ifndef AVR
+
+#include "linux_serial_port.h"
 
 #include <termios.h>
 #include <unistd.h>
@@ -80,3 +82,5 @@ LinuxSerialPort::~LinuxSerialPort()
 	mRxThread->Terminate();
 	mTxThread->Terminate();
 }
+
+#endif /* AVR */

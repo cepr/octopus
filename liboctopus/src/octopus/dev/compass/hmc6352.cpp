@@ -18,8 +18,8 @@
  */
 
 #include "hmc6352.h"
-#include "twi/AvrTwoWireInterface.h"
-#include "fatal.h"
+#include "octopus/dev/i2c/avr_two_wire_interface.h"
+#include "octopus/util/fatal.h"
 
 #ifdef FAST_I2C
 # error FAST_I2C is not supported with HMC6352.

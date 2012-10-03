@@ -20,8 +20,8 @@
 #ifndef AVRUSART_H_
 #define AVRUSART_H_
 
-#include "Usart.h"
-#include "event.h"
+#include "usart.h"
+#include "octopus/event/event.h"
 
 /**
  * USART port of an ATMEGA328P.

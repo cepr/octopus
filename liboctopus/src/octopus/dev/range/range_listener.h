@@ -20,8 +20,6 @@
 #ifndef RANGELISTENER_H
 #define RANGELISTENER_H
 
-#include "Listener.h" // Base class: Listener
-
 /**
  * \brief Range event listener.
  *
@@ -29,7 +27,7 @@
  *
  * \see RangeProvider::getRange()
  */
-class RangeListener : public Listener {
+class RangeListener {
 
 public:
     /**

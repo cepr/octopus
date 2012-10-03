@@ -20,8 +20,8 @@
 #ifndef PT2262_H_
 #define PT2262_H_
 
-#include "PrincetonRf.h"
-#include "Timer/system_timer.h"
+#include "princeton_rf.h"
+#include "octopus/dev/timer/system_timer.h"
 
 class PrincetonRfEncoder : public SystemTimer {
 private:

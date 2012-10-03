@@ -20,7 +20,7 @@
 #ifndef ADXL345REGISTER_H
 #define ADXL345REGISTER_H
 
-#include "property_data.h" // Base class: PropertyU8
+#include "octopus/prop/property_data.h" // Base class: PropertyU8
 
 /**
  * List of ADXL345 registers extracted from datasheet.

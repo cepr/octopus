@@ -20,12 +20,11 @@
 #ifndef STEPPER_H_
 #define STEPPER_H_
 
-#include "Timer/system_timer.h"
-#include "StepperListener.h"
-#include "Module.h"
-#include "Property.h"
-#include "property_record.h"
-#include "property_data.h"
+#include "octopus/dev/timer/system_timer.h"
+#include "stepper_listener.h"
+#include "octopus/prop/property.h"
+#include "octopus/prop/property_record.h"
+#include "octopus/prop/property_data.h"
 
 class PropertyStepperTargetLocation: public PropertyS16 {
 private:
@@ -62,7 +61,7 @@ public:
  * @see Stepper4C
  * @see Stepper4D
  */
-class Stepper : public SystemTimer, public Module, public PropertyRecord, public PropertyListener {
+class Stepper : public SystemTimer, public PropertyRecord, public PropertyListener {
 
 private:
     short mCurrentSpeed;						/**< current speed in steps/(second/8) */

@@ -20,9 +20,11 @@
 #ifndef LINUXSERIALPORT_H_
 #define LINUXSERIALPORT_H_
 
+#ifndef AVR
+
 class LinuxSerialPort;
 
-#include "Usart.h"
+#include "usart.h"
 #include "pipe_reception_thread.h"
 #include "pipe_transmission_thread.h"
 
@@ -77,5 +79,7 @@ private:
 	friend class PipeTransmissionThread;
 	friend class PipeReceptionThread;
 };
+
+#endif /* AVR */
 
 #endif /* LINUXSERIALPORT_H_ */

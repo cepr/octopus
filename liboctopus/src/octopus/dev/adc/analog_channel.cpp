@@ -17,8 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "AnalogChannel.h"
-#include "AnalogToDigitalConverter.h"
+#include "analog_channel.h"
+#include "analog_to_digital_converter.h"
 
 AnalogChannel::AnalogChannel(CHANNEL channel, VREF vref) : mTimer(this) {
     mChannel = channel;

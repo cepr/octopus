@@ -21,9 +21,9 @@
 #define HMC6352_H
 
 #include "compass_provider.h" // Base class: CompassProvider
-#include "i2c_device.h"
-#include "i2c_driver.h"
-#include "Timer/application_timer.h"
+#include "octopus/dev/i2c/i2c_device.h"
+#include "octopus/dev/i2c/i2c_driver.h"
+#include "octopus/dev/timer/application_timer.h"
 
 /**
  * \defgroup HMC6352 Honeywell HMC6252 Digital Compass

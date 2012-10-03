@@ -20,9 +20,9 @@
 #ifndef BLINK_H_
 #define BLINK_H_
 
-#include "Timer/system_timer.h"
-#include "property_record.h"
-#include "property_data.h"
+#include "octopus/dev/timer/system_timer.h"
+#include "octopus/prop/property_record.h"
+#include "octopus/prop/property_data.h"
 
 /**
  * @brief Blinking LED.

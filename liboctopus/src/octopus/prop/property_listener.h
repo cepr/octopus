@@ -22,13 +22,12 @@
 
 class PropertyListener;
 
-#include "Property.h"
-#include "Listener.h"
+#include "property.h"
 
 /**
  * @brief Listener.
  */
-class PropertyListener : public Listener {
+class PropertyListener {
 
 public:
     /**

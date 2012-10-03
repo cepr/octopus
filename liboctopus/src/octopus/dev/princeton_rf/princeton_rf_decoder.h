@@ -20,7 +20,7 @@
 #ifndef PT2272_H_
 #define PT2272_H_
 
-#include "event.h"
+#include "octopus/event/event.h"
 
 class PrincetonRfListener {
 public:

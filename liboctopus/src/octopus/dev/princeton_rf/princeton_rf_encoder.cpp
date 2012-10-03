@@ -18,7 +18,7 @@
  */
 
 #include <avr/io.h>
-#include "PrincetonRfEncoder.h"
+#include "princeton_rf_encoder.h"
 
 PrincetonRfEncoder::PrincetonRfEncoder(char pin) {
     mPin = pin;

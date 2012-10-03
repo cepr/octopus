@@ -20,6 +20,8 @@
 #ifndef PIPETRANSMISSIONTHREAD_H
 #define PIPETRANSMISSIONTHREAD_H
 
+#ifndef AVR
+
 class PipeTransmissionThread;
 
 #include <wx/thread.h> // Base class: wxThread
@@ -87,5 +89,7 @@ private:
 	wxMutex mMutex;
 	wxCondition mBufferNotEmptyCondition;
 };
+
+#endif /* AVR */
 
 #endif // PIPETRANSMISSIONTHREAD_H

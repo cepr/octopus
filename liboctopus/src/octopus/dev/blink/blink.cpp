@@ -18,8 +18,8 @@
  */
 
 #include <avr/io.h>
-#include "Blink.h"
-#include "fatal.h"
+#include "blink.h"
+#include "octopus/util/fatal.h"
 
 Blink::Blink(Packet* packet) : PropertyRecord(packet), mEnabled(packet), mTimer(this) {
     DDRB |= _BV(DDB5);

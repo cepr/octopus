@@ -21,7 +21,7 @@
 #define ANALOGCHANNEL_H_
 
 #include <avr/io.h>
-#include "Timer/application_timer.h"
+#include "octopus/dev/timer/application_timer.h"
 
 /**
  * \brief Enumeration of the available analog channels.

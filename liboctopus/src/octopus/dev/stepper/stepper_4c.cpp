@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Stepper4C.h"
+#include "stepper_4c.h"
 
 #define PORT PORTC
 #define DDR DDRC

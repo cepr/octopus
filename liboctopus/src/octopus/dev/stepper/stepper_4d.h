@@ -20,7 +20,7 @@
 #ifndef STEPPER4D_H_
 #define STEPPER4D_H_
 
-#include "Stepper.h"
+#include "stepper.h"
 
 /**
  * @brief Bipolar step motor driver using 4 GPIOs of port D.

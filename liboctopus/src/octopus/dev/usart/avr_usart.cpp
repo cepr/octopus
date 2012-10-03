@@ -19,9 +19,9 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "AvrUsart.h"
-#include "UsartBuffer.h"
-#include "fatal.h"
+#include "avr_usart.h"
+#include "usart_buffer.h"
+#include "octopus/util/fatal.h"
 
 namespace
 {

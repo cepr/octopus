@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef AVR
+
 #include "pipe_reception_thread.h"
 #include <wx/log.h>
 #include <string.h>
@@ -118,3 +120,5 @@ void PipeReceptionThread::Terminate()
 	mFile.Close();
 	Delete();
 }
+
+#endif /* AVR */

@@ -20,14 +20,12 @@
 #ifndef PACKETLISTENER_H_
 #define PACKETLISTENER_H_
 
-#include "Listener.h"
-
 /**
  * @brief Packet listener
  *
  * @ingroup COM_STACK
  */
-class PacketListener : public Listener {
+class PacketListener {
 public:
 	/**
 	 * @brief Listener called when a new packet is received

@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef AVR
+
 #include "remote_property.h"
 #include <string.h>
 
@@ -268,3 +270,5 @@ bool RemoteProperty::onReadyToSend(unsigned char* data, unsigned char & size, un
 RemoteProperty* RemoteProperty::createChild() {
     return new RemoteProperty(mPacket);
 }
+
+#endif /* AVR */

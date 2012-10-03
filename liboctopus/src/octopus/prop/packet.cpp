@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Packet.h"
+#include "packet.h"
 #if !defined(AVR)
 #include <wx/log.h>
 #endif

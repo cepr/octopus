@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "UsartBuffer.h"
+#include "usart_buffer.h"
 
 UsartBuffer::UsartBuffer() {
     mCount = 0;

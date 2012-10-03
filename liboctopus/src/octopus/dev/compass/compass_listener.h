@@ -20,8 +20,6 @@
 #ifndef COMPASSLISTENER_H
 #define COMPASSLISTENER_H
 
-#include "Listener.h" // Base class: Listener
-
 /**
  * \brief Compass event listener.
  *
@@ -29,7 +27,7 @@
  *
  * \see CompassProvider::getHeading()
  */
-class CompassListener : public Listener {
+class CompassListener {
 
 public:
     /**

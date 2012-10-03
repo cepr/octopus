@@ -19,9 +19,9 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include "PrincetonRf.h"
-#include "PrincetonRfDecoder.h"
-#include "event.h"
+#include "princeton_rf.h"
+#include "princeton_rf_decoder.h"
+#include "octopus/event/event.h"
 
 //#define DBG
 

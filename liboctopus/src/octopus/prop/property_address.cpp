@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "PropertyAddress.h"
+#include "property_address.h"
 
 static char memcmp(const void *s1, const void *s2, char n) {
 	const char* p1 = (const char*)s1;

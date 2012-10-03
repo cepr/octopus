@@ -20,8 +20,8 @@
 #ifndef ANALOGTODIGITALCONVERTER_H_
 #define ANALOGTODIGITALCONVERTER_H_
 
-#include "Timer/system_timer.h"
-#include "event.h"
+#include "octopus/dev/timer/system_timer.h"
+#include "octopus/event/event.h"
 
 #define MAX_PENDING_CONVERTIONS 8
 

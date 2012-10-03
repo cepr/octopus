@@ -20,8 +20,6 @@
 #ifndef STEPPERLISTENER_H_
 #define STEPPERLISTENER_H_
 
-#include "Listener.h"
-
 /**
  * @brief Listener interface.
  *
@@ -30,7 +28,7 @@
  *
  * @see Stepper::go()
  */
-class StepperListener : public Listener {
+class StepperListener {
 public:
 	/**
 	 * @brief Called when the step motor has reached its destination.

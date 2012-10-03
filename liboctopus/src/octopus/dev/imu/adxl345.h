@@ -20,8 +20,8 @@
 #ifndef ADXL345_H
 #define ADXL345_H
 
-#include "i2c_device.h" // Base class: I2CDevice
-#include "property_record.h"
+#include "octopus/dev/i2c/i2c_device.h" // Base class: I2CDevice
+#include "octopus/prop/property_record.h"
 #include "adxl345_register.h"
 
 class Adxl345 : public I2CDevice, PropertyRecord {

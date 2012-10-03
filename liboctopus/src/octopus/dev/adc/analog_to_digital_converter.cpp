@@ -20,9 +20,9 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-#include "AnalogToDigitalConverter.h"
-#include "AnalogChannel.h"
-#include "fatal.h"
+#include "analog_to_digital_converter.h"
+#include "analog_channel.h"
+#include "octopus/util/fatal.h"
 
 #define ADC_PRESCALER_2   (                          _BV(ADPS0))
 #define ADC_PRESCALER_4   (             _BV(ADPS1)             )

@@ -20,7 +20,7 @@
 #ifndef USART_H_
 #define USART_H_
 
-#include "UsartListener.h"
+#include "octopus/dev/usart/usart_listener.h"
 
 /**
  * @brief Physical layer of the Octopus Communication Stack

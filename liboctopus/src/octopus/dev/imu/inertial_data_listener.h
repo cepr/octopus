@@ -20,8 +20,6 @@
 #ifndef INERTIALDATALISTENER_H
 #define INERTIALDATALISTENER_H
 
-#include "Listener.h" // Base class: Listener
-
 /**
  * \brief Inertial data listener.
  *
@@ -29,7 +27,7 @@
  *
  * \see InertialDataProvider::getInertialData()
  */
-class InertialDataListener : public Listener {
+class InertialDataListener {
 
 public:
     /**

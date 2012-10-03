@@ -17,8 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "RfRemote.h"
-#include "PrincetonRf/PrincetonRf.h"
+#include "rf_remote.h"
+#include "princeton_rf.h"
 
 static const tristate RfAddresses[] = {
                   // A0....A7

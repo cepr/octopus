@@ -26,26 +26,26 @@
 #include "fatal.h"
 
 void fatal(ERRORCODE errorcode) {
-    cli();
+	cli();
 	wdt_disable();
-    DDRB |= _BV(5);
-    for(;;) {
-        char i;
-        for (i=0; i<errorcode; i++) {
-            PORTB |= _BV(5);
-            _delay_ms(100);
-            PORTB &= ~_BV(5);
-            _delay_ms(300);
-        }
-        _delay_ms(1000);
-    }
+	DDRB |= _BV(5);
+	for (;;) {
+		char i;
+		for (i = 0; i < errorcode; i++) {
+			PORTB |= _BV(5);
+			_delay_ms(100);
+			PORTB &= ~_BV(5);
+			_delay_ms(300);
+		}
+		_delay_ms(1000);
+	}
 }
 
 void reboot(void) {
 	cli();
 	// Enable watchdog
 	wdt_enable(WDTO_15MS);
-	for(;;) {
+	for (;;) {
 		// Wait for reboot
 	}
 }
@@ -61,5 +61,5 @@ void enter_boot_loader(void) {
  * when a pure virtual function is called.
  */
 extern "C" void __cxa_pure_virtual() {
-    fatal(FATAL_CXA_PURE_VIRTUAL);
+	fatal(FATAL_CXA_PURE_VIRTUAL);
 }

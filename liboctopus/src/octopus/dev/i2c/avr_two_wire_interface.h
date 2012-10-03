@@ -26,7 +26,7 @@
 #define AVRTWOWIREINTERFACE_H_
 
 #include "i2c_driver.h"
-#include "event.h"
+#include "octopus/event/event.h"
 #include "i2c_device.h"
 
 /**

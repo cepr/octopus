@@ -20,7 +20,7 @@
 #ifndef LOCALPROPERTY_H
 #define LOCALPROPERTY_H
 
-#include "Property.h"
+#include "property.h"
 
 /**
  * @brief Class representing a local property

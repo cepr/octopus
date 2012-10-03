@@ -5,3 +5,4 @@
 /octopus.workspace.*
 /octopus-sdk.tags
 *.mk
+/.metadata

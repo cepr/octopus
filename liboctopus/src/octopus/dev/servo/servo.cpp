@@ -18,7 +18,7 @@
  */
 
 #include <avr/io.h>
-#include "Servo.h"
+#include "servo.h"
 
 #define EVENT_START_PULSE 0
 #define EVENT_FINISH_PULSE 1

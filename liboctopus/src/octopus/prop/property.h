@@ -96,9 +96,9 @@ typedef unsigned char PROPERTY_INFO;
 
 class Property;
 
-#include "PropertyListener.h"
-#include "PacketListener.h"
-#include "Packet.h"
+#include "property_listener.h"
+#include "packet_listener.h"
+#include "packet.h"
 
 /**
  * @brief Base abstract class for all properties
