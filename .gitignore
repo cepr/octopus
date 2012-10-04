@@ -1,8 +1,4 @@
-/.flash
-/.build-*/
-/out
-/octopus.batch_build
-/octopus.workspace.*
-/octopus-sdk.tags
-*.mk
 /.metadata
+Debug
+Release
+
