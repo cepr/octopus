@@ -26,9 +26,6 @@ public:
         return "Template robot";
     }
 
-    void onStart() {
-    }
-
     Property* getChild(unsigned char index) {
         switch(index) {
             case 0: return &mBlink;
@@ -40,8 +37,7 @@ public:
 
 int main(void)
 {
-    Template robot;
-    robot.onStart();
+    static Template robot;
     Event::startLooper();
     return 0;
 }
