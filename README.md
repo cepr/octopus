@@ -16,7 +16,7 @@ modifications, timers, incoming byte on the serial port, etc).
 
 Octopus framework uses an event-queue to handle incoming events. As
 a consequence the CPU stays in idle mode as long as no event arises.
-If you want to simply blink a led, you just have to code an timer
+If you want to simply blink a led, you just have to code a timer
 event handler which will toggle the GPIO output, and start a timer
 for 1 second with this event handler. 
 

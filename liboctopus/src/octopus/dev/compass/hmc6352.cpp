@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "hmc6352.h"
 #include "octopus/dev/i2c/avr_two_wire_interface.h"
 #include "octopus/util/fatal.h"
@@ -107,3 +109,5 @@ void Hmc6352::onDeviceNotResponding(void) {
     //fatal(FATAL_DEBUG);
     // TODO reschedule
 }
+
+#endif /* __AVR */

@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include "princeton_rf_encoder.h"
 
@@ -128,3 +130,5 @@ void PrincetonRfEncoder::onTimerLISR(unsigned short when, char what) {
         schedule(when, what);
     }
 }
+
+#endif /* __AVR */

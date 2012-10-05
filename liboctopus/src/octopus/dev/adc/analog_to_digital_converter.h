@@ -20,6 +20,8 @@
 #ifndef ANALOGTODIGITALCONVERTER_H_
 #define ANALOGTODIGITALCONVERTER_H_
 
+#ifdef __AVR
+
 #include "octopus/dev/timer/system_timer.h"
 #include "octopus/event/event.h"
 
@@ -81,5 +83,7 @@ public:
      */
     void startADC(AnalogChannel *channel);
 };
+
+#endif /* __AVR */
 
 #endif /* ANALOGTODIGITALCONVERTER_H_ */

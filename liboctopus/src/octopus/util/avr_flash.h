@@ -20,6 +20,8 @@
 #ifndef AVRFLASH_H_
 #define AVRFLASH_H_
 
+#ifdef __AVR
+
 /**
  * \defgroup const_access_group Direct access to const variables
  * \ingroup DEVELOPER_GUIDE
@@ -84,5 +86,7 @@ unsigned long  readU32(const unsigned long  *ptr);
 /**
  * \}
  */
+
+#endif /* __AVR */
 
 #endif /* AVRFLASH_H_ */

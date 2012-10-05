@@ -20,6 +20,8 @@
 #ifndef SERVO_H_
 #define SERVO_H_
 
+#ifdef __AVR
+
 #include <stdint.h>
 #include "octopus/dev/timer/system_timer.h"
 #include "octopus/prop/property_record.h"
@@ -112,5 +114,7 @@ private:
     /// @copydoc PropertyListener::onPropertyChanged()
     void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
 };
+
+#endif /* __AVR */
 
 #endif /* SERVO_H_ */

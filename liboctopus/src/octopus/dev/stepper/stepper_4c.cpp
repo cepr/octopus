@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "stepper_4c.h"
 
 #define PORT PORTC
@@ -41,3 +43,4 @@ void Stepper4C::setEnabled(bool enable) {
 	}
 }
 
+#endif /* __AVR */

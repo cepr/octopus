@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "imu3000.h"
 #include "octopus/dev/i2c/avr_two_wire_interface.h"
 #include "octopus/util/fatal.h"
@@ -142,3 +144,5 @@ void IMU3000::onReceiveFinished(unsigned char received)
 void IMU3000::onTransmitFinished(unsigned char transmitted)
 {
 }
+
+#endif /* __AVR */

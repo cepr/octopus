@@ -17,13 +17,13 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVR
+#ifdef __linux
 
 #include "pipe_reception_thread.h"
 #include <wx/log.h>
 #include <string.h>
 #include <wx/file.h>
-#include "Usart.h"
+#include "usart.h"
 
 DEFINE_EVENT_TYPE(wxEVT_SERIAL_PORT_RX_EVENT)
 
@@ -121,4 +121,4 @@ void PipeReceptionThread::Terminate()
 	Delete();
 }
 
-#endif /* AVR */
+#endif /* __linux */

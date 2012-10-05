@@ -20,6 +20,8 @@
 #ifndef ANALOGCHANNEL_H_
 #define ANALOGCHANNEL_H_
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include "octopus/dev/timer/application_timer.h"
 
@@ -119,5 +121,7 @@ public:
      */
     virtual void onNewMeasure(unsigned short value) = 0;
 };
+
+#endif /* __AVR */
 
 #endif /* ANALOGCHANNEL_H_ */

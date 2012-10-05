@@ -20,6 +20,8 @@
 #ifndef RFREMOTE_H_
 #define RFREMOTE_H_
 
+#ifdef __AVR
+
 #include "princeton_rf_encoder.h"
 
 typedef enum {
@@ -43,5 +45,7 @@ public:
     RfRemote(char pin);
     void Set(RfRemoteAddress remote, bool enabled);
 };
+
+#endif /* __AVR */
 
 #endif /* RFREMOTE_H_ */

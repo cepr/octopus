@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "avr_usart.h"
@@ -255,3 +257,5 @@ bool AvrUsart::isUsartBufferEmpty()
 {
 	return (mTxBuffer.mCount == 0);
 }
+
+#endif /* __AVR */

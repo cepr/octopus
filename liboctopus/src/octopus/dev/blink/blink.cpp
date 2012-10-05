@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include "blink.h"
 #include "octopus/util/fatal.h"
@@ -58,3 +60,5 @@ void Blink::onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN o
 		PORTB &= ~_BV(PORTB5);
 	}
 }
+
+#endif /* __AVR */

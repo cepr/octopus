@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "avr_timer0.h"
 #include <avr/io.h>
 
@@ -38,3 +40,5 @@ unsigned char AvrTimer0::FastPWMChannelB::getValue() {
 void AvrTimer0::FastPWMChannelB::setValue(unsigned char value) {
 	OCR0B = value;
 }
+
+#endif /* __AVR */

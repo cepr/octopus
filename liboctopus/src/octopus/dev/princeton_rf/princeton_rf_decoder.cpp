@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include "princeton_rf.h"
@@ -159,3 +161,5 @@ PrincetonRfDecoder::PrincetonRfDecoder(PrincetonRfListener* listener) {
     EICRA = _BV(ISC00);
     EIMSK = _BV(INT0);
 }
+
+#endif /* __AVR */

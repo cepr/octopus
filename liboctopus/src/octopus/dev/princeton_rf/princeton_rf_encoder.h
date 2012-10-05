@@ -20,6 +20,8 @@
 #ifndef PT2262_H_
 #define PT2262_H_
 
+#ifdef __AVR
+
 #include "princeton_rf.h"
 #include "octopus/dev/timer/system_timer.h"
 
@@ -45,5 +47,7 @@ public:
     void send(tristate address, tristate data);
     void onTimerLISR(unsigned short when, char what);
 };
+
+#endif /* __AVR */
 
 #endif /* PT2262_H_ */

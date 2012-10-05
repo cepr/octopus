@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
@@ -151,3 +153,5 @@ void AnalogToDigitalConverter::onEvent(char what) {
 	/* Report result to AnalogChannel */
 	channel->onNewMeasure(value);
 }
+
+#endif /* __AVR */

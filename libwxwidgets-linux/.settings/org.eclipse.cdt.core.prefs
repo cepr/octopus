@@ -1,0 +1,17 @@
+eclipse.preferences.version=1
+environment/project/0.439628971.1727148895/ConfigName/delimiter=\:
+environment/project/0.439628971.1727148895/ConfigName/operation=append
+environment/project/0.439628971.1727148895/ConfigName/value=${ConfigName}
+environment/project/0.439628971.1727148895/LANG/delimiter=\:
+environment/project/0.439628971.1727148895/LANG/operation=replace
+environment/project/0.439628971.1727148895/LANG/value=
+environment/project/0.439628971.1727148895/append=true
+environment/project/0.439628971.1727148895/appendContributed=true
+environment/project/0.439628971/ConfigName/delimiter=\:
+environment/project/0.439628971/ConfigName/operation=append
+environment/project/0.439628971/ConfigName/value=${ConfigName}
+environment/project/0.439628971/LANG/delimiter=\:
+environment/project/0.439628971/LANG/operation=replace
+environment/project/0.439628971/LANG/value=
+environment/project/0.439628971/append=true
+environment/project/0.439628971/appendContributed=true

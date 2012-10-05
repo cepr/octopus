@@ -3,6 +3,7 @@
 	<name>robot-loopback</name>
 	<comment></comment>
 	<projects>
+		<project>liboctopus-avr</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "system_timer.h"
 
 class SystemTimer* SystemTimer::mFirstSystemTimer(0);
@@ -145,3 +147,5 @@ void SystemTimer::schedule(unsigned short when, char what) {
 	// Restore interrupt mask
 	SREG = sreg;
 }
+
+#endif /* __AVR */

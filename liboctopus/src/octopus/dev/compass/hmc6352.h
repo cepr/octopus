@@ -20,6 +20,8 @@
 #ifndef HMC6352_H
 #define HMC6352_H
 
+#ifdef __AVR
+
 #include "compass_provider.h" // Base class: CompassProvider
 #include "octopus/dev/i2c/i2c_device.h"
 #include "octopus/dev/i2c/i2c_driver.h"
@@ -75,5 +77,7 @@ private:
 /**
  * \}
  */
+
+#endif /* __AVR */
 
 #endif // HMC6352_H

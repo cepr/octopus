@@ -20,6 +20,8 @@
 #ifndef APPLICATIONTIMER_H
 #define APPLICATIONTIMER_H
 
+#ifdef __AVR
+
 #include "system_timer.h"
 #include "octopus/event/event.h"
 
@@ -64,5 +66,7 @@ private:
 
 	TimerEvent mEvent;
 };
+
+#endif /* __AVR */
 
 #endif // APPLICATIONTIMER_H

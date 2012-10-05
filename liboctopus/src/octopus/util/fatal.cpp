@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -63,3 +65,5 @@ void enter_boot_loader(void) {
 extern "C" void __cxa_pure_virtual() {
 	fatal(FATAL_CXA_PURE_VIRTUAL);
 }
+
+#endif /* __AVR */

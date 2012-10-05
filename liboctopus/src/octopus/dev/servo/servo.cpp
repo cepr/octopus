@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include "servo.h"
 
@@ -70,3 +72,5 @@ void Servo::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
         }
     }
 }
+
+#endif /* __AVR */

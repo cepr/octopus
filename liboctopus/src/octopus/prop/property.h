@@ -223,7 +223,7 @@ protected:
 
 	Packet*	mPacket;
 public:
-#ifdef AVR
+#ifdef __AVR
 	PropertyListener *mListener;
 #else
     std::list<PropertyListener*> mListeners;

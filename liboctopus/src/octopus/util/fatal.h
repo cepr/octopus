@@ -20,6 +20,8 @@
 #ifndef FATAL_H_
 #define FATAL_H_
 
+#ifdef __AVR
+
 typedef enum {
 	FATAL_LOOPER_OVERFLOW = 1,
 	FATAL_CXA_PURE_VIRTUAL = 2,
@@ -41,5 +43,7 @@ void reboot(void) __attribute__ ((noreturn));
  * @brief Enter the bootloader
  */
 void enter_boot_loader(void);
+
+#endif /* __AVR */
 
 #endif /* FATAL_H_ */

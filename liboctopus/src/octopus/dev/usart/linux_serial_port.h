@@ -20,7 +20,7 @@
 #ifndef LINUXSERIALPORT_H_
 #define LINUXSERIALPORT_H_
 
-#ifndef AVR
+#ifdef __linux
 
 class LinuxSerialPort;
 
@@ -80,6 +80,6 @@ private:
 	friend class PipeReceptionThread;
 };
 
-#endif /* AVR */
+#endif /* __linux */
 
 #endif /* LINUXSERIALPORT_H_ */

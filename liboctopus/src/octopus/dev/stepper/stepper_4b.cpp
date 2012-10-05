@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "stepper_4b.h"
 
 #define PORT PORTB
@@ -40,3 +42,5 @@ void Stepper4B::setEnabled(bool enable) {
 		PORT = PORT & ~PinsMask;
 	}
 }
+
+#endif /* __AVR */

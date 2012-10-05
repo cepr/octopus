@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "rf_remote.h"
 #include "princeton_rf.h"
 
@@ -44,3 +46,5 @@ void RfRemote::Set(RfRemoteAddress remote, bool enabled) {
     tristate data = {enabled ? 0x01 : 0x00, 0x01};
     mRfEncoder.send(address, data);
 }
+
+#endif /* __AVR */

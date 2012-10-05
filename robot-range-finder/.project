@@ -3,7 +3,7 @@
 	<name>robot-range-finder</name>
 	<comment></comment>
 	<projects>
-		<project>liboctopus</project>
+		<project>liboctopus-avr</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -20,11 +20,7 @@
 #ifndef USARTBUFFER_H_
 #define USARTBUFFER_H_
 
-#ifdef AVR
 #define USART_BUFFER_CAPACITY 64
-#else
-#define USART_BUFFER_CAPACITY 256
-#endif
 
 /**
  * @brief Simple buffer.

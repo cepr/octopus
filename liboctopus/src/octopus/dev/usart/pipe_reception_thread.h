@@ -20,16 +20,16 @@
 #ifndef PIPERECEPTIONTHREAD_H
 #define PIPERECEPTIONTHREAD_H
 
-#ifndef AVR
+#ifdef __linux
 
 class PipeReceptionThread;
 
 #include <wx/thread.h> // Base class: wxThread
 #include <wx/event.h>
 #include <wx/file.h>
-#include "UsartBuffer.h"
-#include "UsartListener.h"
-#include "LinuxSerialPort.h"
+#include "usart_buffer.h"
+#include "usart_listener.h"
+#include "linux_serial_port.h"
 
 /**
  * @brief Serial port reception thread
@@ -69,6 +69,6 @@ private:
 	wxMutex mMutex;
 };
 
-#endif /* AVR */
+#endif /* __linux */
 
 #endif // PIPERECEPTIONTHREAD_H

@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 unsigned char readU8(const unsigned char *ptr) {
 
     unsigned char ret;
@@ -71,3 +73,5 @@ unsigned long readU32(const unsigned long *ptr) {
 
     return ret.u32;
 }
+
+#endif /* __AVR */

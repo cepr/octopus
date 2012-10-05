@@ -20,6 +20,8 @@
 #ifndef SYSTEM_TIMER_H
 #define SYSTEM_TIMER_H
 
+#ifdef __AVR
+
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -165,5 +167,7 @@ private:
 
 	char mWhat;
 };
+
+#endif /* __AVR */
 
 #endif /* SYSTEM_TIMER_H */

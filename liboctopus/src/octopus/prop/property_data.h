@@ -49,9 +49,16 @@ public:
     void setValue(const PROPERTY_VALUE & value) {
         if ((T)value != mValue) {
             mValue = value;
+#ifdef __AVR
             if (mListener) {
                 mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_REMOTE);
             }
+#else
+            std::list<PropertyListener*>::iterator it;
+            for (it = mListeners.begin(); it != mListeners.end(); ++it) {
+            	(*it)->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_REMOTE);
+            }
+#endif
         }
     }
     void getValue(PROPERTY_VALUE & value) { value = mValue; }
@@ -63,9 +70,16 @@ public:
     T operator=(T value) {
         if (value != mValue) {
             mValue = value;
+#ifdef __AVR
             if (mListener) {
                 mListener->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_LOCAL);
             }
+#else
+            std::list<PropertyListener*>::iterator it;
+            for (it = mListeners.begin(); it != mListeners.end(); ++it) {
+            	(*it)->onPropertyChanged(this, PROPERTY_INFO_VALUE, PropertyListener::ORIGIN_LOCAL);
+            }
+#endif
         }
         return mValue;
     }

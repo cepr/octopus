@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "analog_channel.h"
 #include "analog_to_digital_converter.h"
 
@@ -69,3 +71,5 @@ void AnalogChannel::Timer::onTimer(char what) {
         schedule(now() + 1000);
     }
 }
+
+#endif /* __AVR */

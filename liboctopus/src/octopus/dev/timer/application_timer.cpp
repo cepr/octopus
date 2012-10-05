@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include "application_timer.h"
 
 ApplicationTimer::ApplicationTimer() : SystemTimer(), mEvent(this)
@@ -36,3 +38,5 @@ void ApplicationTimer::TimerEvent::onEvent(char what)
 {
 	mParent->onTimer(what);
 }
+
+#endif /* __AVR */

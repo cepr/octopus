@@ -17,6 +17,8 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef __AVR
+
 #include <avr/io.h>
 #include "stepper.h"
 
@@ -155,3 +157,5 @@ void Stepper::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origi
 		sei();
 	}
 }
+
+#endif /* __AVR */

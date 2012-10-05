@@ -76,6 +76,8 @@ char RemoteProperty::getSize()
 	case PROPERTY_TYPE_U16:
 	case PROPERTY_TYPE_S16:
 		return 2;
+	default:
+		return 0;
 	}
 }
 

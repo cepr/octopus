@@ -17,10 +17,10 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVR
+#ifdef __linux
 
 #include "pipe_transmission_thread.h"
-#include "Usart.h"
+#include "usart.h"
 #include <wx/log.h>
 
 DEFINE_EVENT_TYPE(wxEVT_SERIAL_PORT_TX_EVENT)
@@ -121,4 +121,4 @@ void PipeTransmissionThread::Terminate()
 	Delete();
 }
 
-#endif /* AVR */
+#endif /* __linux */

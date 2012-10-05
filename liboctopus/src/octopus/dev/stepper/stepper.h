@@ -20,6 +20,8 @@
 #ifndef STEPPER_H_
 #define STEPPER_H_
 
+#ifdef __AVR
+
 #include "octopus/dev/timer/system_timer.h"
 #include "stepper_listener.h"
 #include "octopus/prop/property.h"
@@ -119,5 +121,7 @@ public:
 
     void onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN origin);
 };
+
+#endif /* __AVR */
 
 #endif /* STEPPER_H_ */

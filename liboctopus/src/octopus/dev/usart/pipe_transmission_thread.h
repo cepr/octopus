@@ -20,16 +20,16 @@
 #ifndef PIPETRANSMISSIONTHREAD_H
 #define PIPETRANSMISSIONTHREAD_H
 
-#ifndef AVR
+#ifdef __linux
 
 class PipeTransmissionThread;
 
 #include <wx/thread.h> // Base class: wxThread
 #include <wx/event.h>
 #include <wx/file.h>
-#include "UsartBuffer.h"
-#include "UsartListener.h"
-#include "LinuxSerialPort.h"
+#include "usart_buffer.h"
+#include "usart_listener.h"
+#include "linux_serial_port.h"
 
 /**
  * @brief Serial port transmission thread
@@ -90,6 +90,6 @@ private:
 	wxCondition mBufferNotEmptyCondition;
 };
 
-#endif /* AVR */
+#endif /* __linux */
 
 #endif // PIPETRANSMISSIONTHREAD_H
