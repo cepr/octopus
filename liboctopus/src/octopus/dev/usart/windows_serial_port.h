@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Cedric Priscal
+ * Copyright 2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -17,25 +17,27 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WXPROPERTYBOOLEAN_H
-#define WXPROPERTYBOOLEAN_H
+#ifndef WINDOWS_SERIAL_PORT_H_
+#define WINDOWS_SERIAL_PORT_H_
 
-#include <wx/tglbtn.h> // Base class: wxToggleButton
-#include "Property.h"
-#include "PropertyListener.h"
+#ifdef __WIN32
 
-class wxPropertyBoolean : public wxToggleButton, public PropertyListener
-{
+#include "octopus/dev/usart/usart.h"
+#include <wx/string.h>
+
+class WindowsSerialPort : public Usart {
 public:
-	wxPropertyBoolean(wxWindow* parent, Property* property);
-	~wxPropertyBoolean();
-	void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
-	void onNewChild(Property* prop, Property* child, unsigned char index);
-	void onPropertyDeleted();
-
-private:
-	Property* mProperty;
-	void onToggleButton( wxCommandEvent& event );
+	/**
+	 * @brief Constructor
+	 *
+	 * @param[in]      devicepath Device file path, or 0 for STDIN/STDOUT
+	 */
+	WindowsSerialPort(const wxString & devicepath);
+	virtual ~WindowsSerialPort();
+	virtual void sendByte(unsigned char c);
+	virtual bool isUsartBufferEmpty();
 };
 
-#endif // WXPROPERTYBOOLEAN_H
+#endif /* __WIN32 */
+
+#endif /* WINDOWS_SERIAL_PORT_H_ */

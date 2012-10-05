@@ -17,25 +17,25 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WXPROPERTYNUMBER_H
-#define WXPROPERTYNUMBER_H
+#ifndef WXPROPERTYBOOLEAN_H
+#define WXPROPERTYBOOLEAN_H
 
-#include <wx/slider.h> // Base class: wxSlider
-#include "Property.h"
+#include <wx/tglbtn.h> // Base class: wxToggleButton
+#include "octopus/prop/property.h"
+#include "octopus/prop/property_listener.h"
 
-class wxPropertyNumber : public wxSlider, public PropertyListener
+class wxPropertyBoolean : public wxToggleButton, public PropertyListener
 {
-
 public:
-	wxPropertyNumber(wxWindow* parent, Property* property);
-	~wxPropertyNumber();
+	wxPropertyBoolean(wxWindow* parent, Property* property);
+	~wxPropertyBoolean();
 	void onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin);
 	void onNewChild(Property* prop, Property* child, unsigned char index);
 	void onPropertyDeleted();
 
 private:
 	Property* mProperty;
-	void onScroll( wxScrollEvent& event );
+	void onToggleButton( wxCommandEvent& event );
 };
 
-#endif // WXPROPERTYNUMBER_H
+#endif // WXPROPERTYBOOLEAN_H

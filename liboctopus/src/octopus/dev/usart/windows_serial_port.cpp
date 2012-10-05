@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Cedric Priscal
+ * Copyright 2012 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -17,23 +17,25 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROPERTIESDIALOGIMPL_H
-#define PROPERTIESDIALOGIMPL_H
+#ifdef __WIN32
 
-#include "settings_dialog.h" // Base class: PropertiesDialog
-#include "Property.h"
+#include "octopus/dev/usart/windows_serial_port.h"
 
-class SettingsDialogImpl : public SettingsDialog {
+WindowsSerialPort::WindowsSerialPort(const wxString& devicepath) {
+	// TODO Implement WindowsSerialPort
+}
 
-private:
-	Property* mProperty;
+WindowsSerialPort::~WindowsSerialPort() {
+	// TODO Implement WindowsSerialPort
+}
 
-public:
-	SettingsDialogImpl(wxWindow *parent, Property *prop);
-	~SettingsDialogImpl();
-	void onApplyButtonClick(wxCommandEvent& event);
-	void onCancelButtonClick(wxCommandEvent& event);
-	void onOKButtonClick(wxCommandEvent& event);
-};
+void WindowsSerialPort::sendByte(unsigned char c) {
+	// TODO Implement WindowsSerialPort
+}
 
-#endif // PROPERTIESDIALOGIMPL_H
+bool WindowsSerialPort::isUsartBufferEmpty() {
+	// TODO Implement WindowsSerialPort
+	return true;
+}
+
+#endif /* __WIN32 */

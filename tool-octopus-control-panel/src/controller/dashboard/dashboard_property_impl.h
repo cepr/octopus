@@ -24,7 +24,7 @@
 #include "controller/property_controller.h" // Base class: PropertyController
 #include <wx/stattext.h>
 #include <wx/event.h>
-#include "Property.h"
+#include "octopus/prop/property.h"
 #include "property_configuration.h"
 #include "wx_auto_grid_sizer.h"
 

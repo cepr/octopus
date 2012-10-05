@@ -21,7 +21,7 @@
 #define PROPERTYCONFIGURATION_H
 
 #include <wx/string.h>
-#include "Property.h"
+#include "octopus/prop/property.h"
 
 class PropertyConfiguration {
 

@@ -22,7 +22,7 @@
 
 class PropertyController;
 
-#include "Property.h"
+#include "octopus/prop/property.h"
 #include <wx/panel.h>
 
 /**

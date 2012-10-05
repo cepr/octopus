@@ -20,19 +20,24 @@
 #ifndef SERIALPORTPROPERTY_H
 #define SERIALPORTPROPERTY_H
 
-#include "property_record.h"
-#include "linux_serial_port/LinuxSerialPort.h"
-#include "Packet.h"
-#include "PropertyAddress.h"
-#include "remote_property.h"
+#include "octopus/prop/property_record.h"
+#include "octopus/dev/usart/linux_serial_port.h"
+#include "octopus/dev/usart/windows_serial_port.h"
+#include "octopus/prop/packet.h"
+#include "octopus/prop/property_address.h"
+#include "octopus/prop/remote_property.h"
 #include <string>
-#include "PropertyListener.h"
+#include "octopus/prop/property_listener.h"
 
 class SerialPortProperty : public PropertyRecord
 {
 private:
 	std::string		    mDevicePath;
+#ifdef __linux
 	LinuxSerialPort     mSerialPort;
+#elif defined __WIN32
+	WindowsSerialPort	mSerialPort;
+#endif
 	Packet 			    mPacket;
 	PropertyAddress     mRootAddress;
 	RemoteProperty      mRootProperty;

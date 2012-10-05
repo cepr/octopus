@@ -26,14 +26,16 @@
 						<toolChain id="cdt.managedbuild.toolchain.gnu.lib.debug.897188397" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.lib.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.lib.debug.397870919" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.lib.debug"/>
 							<builder buildPath="${workspace_loc:/liboctopus-linux/Debug}" id="cdt.managedbuild.target.gnu.builder.lib.debug.556161170" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.lib.debug"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.lib.debug.337147483" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.lib.debug"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.1503613687" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug">
+							<tool id="cdt.managedbuild.tool.gnu.archiver.lib.debug.337147483" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.lib.debug">
+								<outputType id="cdt.managedbuild.tool.gnu.archiver.output.1971336629" outputPrefix="" superClass="cdt.managedbuild.tool.gnu.archiver.output"/>
+							</tool>
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.1503613687" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug">
 								<option id="gnu.cpp.compiler.lib.debug.option.optimization.level.1584338391" name="Optimization Level" superClass="gnu.cpp.compiler.lib.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.lib.debug.option.debugging.level.1807396901" name="Debug Level" superClass="gnu.cpp.compiler.lib.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.64169660" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-linux/src}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1948633205" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cflags`" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1948633205" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cxxflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1221712728" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.lib.debug.84422148" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.lib.debug">
@@ -42,7 +44,7 @@
 								<option id="gnu.c.compiler.option.include.paths.588718378" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-linux/src}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.1018413894" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cppflags`" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.other.1018413894" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1255146617" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.269667414" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -88,14 +90,16 @@
 						<toolChain id="cdt.managedbuild.toolchain.gnu.lib.release.2044947415" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.lib.release">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.lib.release.519433463" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.lib.release"/>
 							<builder buildPath="${workspace_loc:/liboctopus-linux/Release}" id="cdt.managedbuild.target.gnu.builder.lib.release.1071663708" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.lib.release"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.lib.release.1700315143" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.lib.release"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.lib.release.1700315143" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.lib.release">
+								<outputType id="cdt.managedbuild.tool.gnu.archiver.output.1859174008" outputPrefix="" superClass="cdt.managedbuild.tool.gnu.archiver.output"/>
+							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.lib.release.914453263" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.lib.release">
 								<option id="gnu.cpp.compiler.lib.release.option.optimization.level.2041090614" name="Optimization Level" superClass="gnu.cpp.compiler.lib.release.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.lib.release.option.debugging.level.639346100" name="Debug Level" superClass="gnu.cpp.compiler.lib.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1599743373" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-linux/src}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1311032207" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cflags`" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1311032207" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cxxflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.700101861" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.lib.release.285945445" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.lib.release">
@@ -104,7 +108,7 @@
 								<option id="gnu.c.compiler.option.include.paths.485596954" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-linux/src}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.1803071916" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cppflags`" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.other.1803071916" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-linux/${ConfigName}}/wx-config --cflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.152660018" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.361928379" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -127,21 +131,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="liboctopus-linux.cdt.managedbuild.target.gnu.lib.442974195" name="Static Library" projectType="cdt.managedbuild.target.gnu.lib"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.debug.1095820910;cdt.managedbuild.config.gnu.lib.debug.1095820910.;cdt.managedbuild.tool.gnu.c.compiler.lib.debug.84422148;cdt.managedbuild.tool.gnu.c.compiler.input.1255146617">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.release.1952431690;cdt.managedbuild.config.gnu.lib.release.1952431690.;cdt.managedbuild.tool.gnu.c.compiler.lib.release.285945445;cdt.managedbuild.tool.gnu.c.compiler.input.152660018">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.release.1952431690;cdt.managedbuild.config.gnu.lib.release.1952431690.;cdt.managedbuild.tool.gnu.cpp.compiler.lib.release.914453263;cdt.managedbuild.tool.gnu.cpp.compiler.input.700101861">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.debug.1095820910;cdt.managedbuild.config.gnu.lib.debug.1095820910.;cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.1503613687;cdt.managedbuild.tool.gnu.cpp.compiler.input.1221712728">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Release">
@@ -150,5 +139,20 @@
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/liboctopus-linux"/>
 		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.debug.1095820910;cdt.managedbuild.config.gnu.lib.debug.1095820910.;cdt.managedbuild.tool.gnu.c.compiler.lib.debug.84422148;cdt.managedbuild.tool.gnu.c.compiler.input.1255146617">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.release.1952431690;cdt.managedbuild.config.gnu.lib.release.1952431690.;cdt.managedbuild.tool.gnu.c.compiler.lib.release.285945445;cdt.managedbuild.tool.gnu.c.compiler.input.152660018">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.debug.1095820910;cdt.managedbuild.config.gnu.lib.debug.1095820910.;cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.1503613687;cdt.managedbuild.tool.gnu.cpp.compiler.input.1221712728">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.lib.release.1952431690;cdt.managedbuild.config.gnu.lib.release.1952431690.;cdt.managedbuild.tool.gnu.cpp.compiler.lib.release.914453263;cdt.managedbuild.tool.gnu.cpp.compiler.input.700101861">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
