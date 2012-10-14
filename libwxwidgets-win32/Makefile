@@ -1,7 +1,13 @@
+# Build rules
 
-# Makefile creation
+all: $(ConfigName)/Makefile $(ConfigName)/cxxflags $(ConfigName)/ldflags
+	cd $(ConfigName) && $(MAKE)
 
-FLAGS := --enable-stl --disable-shared --host=i586-mingw32msvc
+.PHONY: $(ConfigName)
+
+# Makefile, wx-config and cxxflags for Eclipse path and symbols discovery
+
+FLAGS := --enable-stl --disable-shared --enable-monolithic --host=i586-mingw32msvc
 DEBUG := --enable-debug
 CONFIGURE := ../../submodules/wxWidgets/configure
 
@@ -13,12 +19,11 @@ Release/Makefile:
 	mkdir -p Release
 	cd Release && $(CONFIGURE) $(FLAGS)
 
-# Build rules
+$(ConfigName)/cxxflags: $(ConfigName)/Makefile
+	$(ConfigName)/wx-config --cxxflags >$@
 
-.PHONY: $(ConfigName)
-
-all: $(ConfigName)/Makefile
-	cd $(ConfigName) && $(MAKE)
+$(ConfigName)/ldflags: $(ConfigName)/Makefile
+	$(ConfigName)/wx-config --libs > $@
 
 # Clean
 

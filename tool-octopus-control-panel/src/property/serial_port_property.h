@@ -21,8 +21,7 @@
 #define SERIALPORTPROPERTY_H
 
 #include "octopus/prop/property_record.h"
-#include "octopus/dev/usart/linux_serial_port.h"
-#include "octopus/dev/usart/windows_serial_port.h"
+#include "octopus/dev/usart/boost_serial_port.h"
 #include "octopus/prop/packet.h"
 #include "octopus/prop/property_address.h"
 #include "octopus/prop/remote_property.h"
@@ -33,11 +32,7 @@ class SerialPortProperty : public PropertyRecord
 {
 private:
 	std::string		    mDevicePath;
-#ifdef __linux
-	LinuxSerialPort     mSerialPort;
-#elif defined __WIN32
-	WindowsSerialPort	mSerialPort;
-#endif
+	BoostSerialPort     mSerialPort;
 	Packet 			    mPacket;
 	PropertyAddress     mRootAddress;
 	RemoteProperty      mRootProperty;

@@ -25,7 +25,7 @@ using std::string;
 SerialPortProperty::SerialPortProperty(const std::string & devicepath) :
 	PropertyRecord(0),
     mDevicePath(devicepath),
-	mSerialPort(devicepath),
+	mSerialPort(devicepath.c_str()),
 	mPacket(&mSerialPort),
     mRootProperty(&mPacket)
 {

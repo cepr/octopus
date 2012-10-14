@@ -20,21 +20,19 @@
 #ifndef PIPERECEPTIONTHREAD_H
 #define PIPERECEPTIONTHREAD_H
 
-#ifdef __linux
-
-class PipeReceptionThread;
+#ifndef __AVR
 
 #include <wx/thread.h> // Base class: wxThread
 #include <wx/event.h>
 #include <wx/file.h>
+#include <boost/system/error_code.hpp>
 #include "usart_buffer.h"
 #include "usart_listener.h"
-#include "linux_serial_port.h"
 
 /**
  * @brief Serial port reception thread
  */
-class PipeReceptionThread : public wxThread, private wxEvtHandler {
+class PipeReceptionThread: public wxThread, private wxEvtHandler {
 
 public:
 	/**
@@ -42,7 +40,7 @@ public:
 	 *
 	 * @param[in,out] parent Parent
 	 */
-	PipeReceptionThread(LinuxSerialPort & parent);
+	PipeReceptionThread(class BoostSerialPort* parent);
 
 	/**
 	 * @brief Terminate the thread
@@ -51,24 +49,37 @@ public:
 
 private:
 	/**
+	 * @brief Boost::asio asynchronous read handler
+	 *
+	 * @param[in] error              Result of operation.
+	 * @param[in] bytes_transferred  Number od bytes read.
+	 */
+	void handler(const boost::system::error_code& error, std::size_t bytes_transferred);
+
+	/**
 	 * @brief Event entry point
 	 *
 	 * This method is called by the event handler running on UI thread.
 	 */
-	void OnEvent( wxCommandEvent &event );
+	void OnEvent(wxCommandEvent &event);
 
 	/**
 	 * @brief Destructor
 	 */
 	~PipeReceptionThread();
 
-	LinuxSerialPort *mParent;
+	/**
+	 * wxThread entry point.
+	 */
 	virtual void* Entry();
-	wxFile mFile;
+
+	class BoostSerialPort *mParent;
 	UsartBuffer mBuffer;
 	wxMutex mMutex;
+	bool mEscaping;
+	unsigned char mBoostBuffer[32];
 };
 
-#endif /* __linux */
+#endif /* __AVR */
 
 #endif // PIPERECEPTIONTHREAD_H

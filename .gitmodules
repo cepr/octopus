@@ -1,12 +1,7 @@
-[submodule "submodules/gcc"]
-	path = submodules/gcc
-	url = https://github.com/mirrors/gcc.git
-[submodule "submodules/CodeLite"]
-	path = submodules/CodeLite
-	url = git@github.com:cepr/CodeLite.git
-[submodule "submodules/simulavr"]
-	path = submodules/simulavr
-	url = git@github.com:cepr/simulavr.git
 [submodule "submodules/wxWidgets"]
 	path = submodules/wxWidgets
 	url = git://github.com/wxWidgets/wxWidgets.git
+
+[submodule "submodules/boost-svn"]
+	path = submodules/boost-svn
+	url = git://github.com/ryppl/boost-svn.git

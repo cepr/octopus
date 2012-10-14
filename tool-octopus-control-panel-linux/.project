@@ -3,6 +3,7 @@
 	<name>tool-octopus-control-panel-linux</name>
 	<comment></comment>
 	<projects>
+		<project>libboost-linux</project>
 		<project>liboctopus-linux</project>
 		<project>libwxwidgets-linux</project>
 	</projects>

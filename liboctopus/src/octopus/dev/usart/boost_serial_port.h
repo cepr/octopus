@@ -17,27 +17,45 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWS_SERIAL_PORT_H_
-#define WINDOWS_SERIAL_PORT_H_
+#ifndef BOOST_SERIAL_PORT_H_
+#define BOOST_SERIAL_PORT_H_
 
-#ifdef __WIN32
+#ifndef __AVR
 
-#include "octopus/dev/usart/usart.h"
-#include <wx/string.h>
+#include "usart.h"
+#include <wx/timer.h>
+#include <wx/thread.h>
+#include <boost/asio/serial_port.hpp>
+#include <boost/asio/io_service.hpp>
+#include <string>
 
-class WindowsSerialPort : public Usart {
+class BoostSerialPort: public Usart, private wxTimer {
 public:
 	/**
 	 * @brief Constructor
 	 *
-	 * @param[in]      devicepath Device file path, or 0 for STDIN/STDOUT
+	 * @param[in] devicepath Device file path
 	 */
-	WindowsSerialPort(const wxString & devicepath);
-	virtual ~WindowsSerialPort();
+	BoostSerialPort(const char* devicepath);
+	virtual ~BoostSerialPort();
 	virtual void sendByte(unsigned char c);
 	virtual bool isUsartBufferEmpty();
+
+private:
+	// wxTimer notification
+	virtual void Notify();
+
+	// Reset serial port status
+	void reset();
+
+	// Attributes
+	std::string mDevicePath;
+	boost::asio::io_service mIoService;
+	boost::asio::serial_port mSerialPort;
+	class PipeReceptionThread *mReceptionThread;
+	friend class PipeReceptionThread;
 };
 
-#endif /* __WIN32 */
+#endif /* __AVR */
 
-#endif /* WINDOWS_SERIAL_PORT_H_ */
+#endif /* BOOST_SERIAL_PORT_H_ */

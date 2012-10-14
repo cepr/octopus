@@ -109,8 +109,6 @@ void RemoteProperty::refresh()
 		delete p;
 	}
 	mChildren.clear();
-	
-	std::vector<RemoteProperty*>::size_type toto = mChildren.size();
 
 	// Restore default state
 	mType = PROPERTY_TYPE_VOID;

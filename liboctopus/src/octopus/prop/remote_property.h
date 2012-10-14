@@ -40,8 +40,7 @@
  *
  * @ingroup COM_STACK
  */
-class RemoteProperty: public Property
-{
+class RemoteProperty: public Property {
 public:
 	/**
 	 * @brief Constructor.
@@ -116,13 +115,13 @@ protected:
 	 */
 	virtual RemoteProperty* createChild();
 
-	PROPERTY_INFO mInfoToRequest;
-	bool mValueToSend;
 	PROPERTY_TYPE mType;
-	PROPERTY_VALUE mInputValue;
-	PROPERTY_VALUE mOutputValue;
 	char* mName;
 	char* mDescription;
+	PROPERTY_INFO mInfoToRequest;
+	bool mValueToSend;
+	PROPERTY_VALUE mInputValue;
+	PROPERTY_VALUE mOutputValue;
 	std::vector<RemoteProperty*> mChildren;
 };
 

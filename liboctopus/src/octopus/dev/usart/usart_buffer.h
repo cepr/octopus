@@ -20,7 +20,11 @@
 #ifndef USARTBUFFER_H_
 #define USARTBUFFER_H_
 
-#define USART_BUFFER_CAPACITY 64
+#ifdef __AVR
+# define USART_BUFFER_CAPACITY 64
+#else
+# define USART_BUFFER_CAPACITY 1024
+#endif
 
 /**
  * @brief Simple buffer.
@@ -43,7 +47,7 @@ public:
 	/**
 	 * \brief Number of bytes stored in the buffer
 	 */
-    unsigned char mCount;
+    int mCount;
 
 	/**
 	 * \brief Append a byte to the buffer

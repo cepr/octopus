@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>tool-octopus-control-panel-win32</name>
+	<name>libboost-win32</name>
 	<comment></comment>
 	<projects>
-		<project>libboost-win32</project>
-		<project>liboctopus-win32</project>
-		<project>libwxwidgets-win32</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -27,11 +24,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src</name>
-			<type>2</type>
-			<locationURI>WORKSPACE_LOC/tool-octopus-control-panel/src</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

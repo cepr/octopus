@@ -31,13 +31,17 @@
 								<option id="gnu.c.compiler.option.misc.other.1555211579" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --cflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.145478631" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.62525534" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
+							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} @../../libwxwidgets-win32/Debug/cxxflags" id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.62525534" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="gnu.cpp.compiler.option.optimization.level.1202836194" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1110483559" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.other.other.1790305916" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --cxxflags`" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1790305916" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.973176011" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-win32/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
+									<listOptionValue builtIn="false" value="${WorkspaceDirPath}/submodules/boost-svn"/>
+								</option>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1325227600" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="DEBUG=1"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1601174416" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -45,9 +49,11 @@
 							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --libs`" id="cdt.managedbuild.tool.gnu.cross.cpp.linker.2104355780" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
 								<option id="gnu.cpp.link.option.paths.492245061" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-win32/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/libboost-win32/debug/lib}&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.384594853" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="octopus-win32"/>
+									<listOptionValue builtIn="false" value="boost_system"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1236287083" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -78,6 +84,7 @@
 					</externalSetting>
 				</externalSettings>
 				<externalSettings containerId="libwxwidgets-win32;cdt.managedbuild.toolchain.gnu.cross.base.394127583" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
+				<externalSettings containerId="libboost-win32;0.74168637" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 			</storageModule>
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.258202023">
@@ -108,23 +115,27 @@
 								<option id="gnu.c.compiler.option.misc.other.1124136497" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --cflags`" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.336291469" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1358942820" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
+							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} @../../libwxwidgets-win32/Release/cxxflags" id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1358942820" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="gnu.cpp.compiler.option.optimization.level.147249620" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1259730080" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.other.other.2026530880" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --cxxflags`" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.2026530880" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.528737923" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-win32/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
+									<listOptionValue builtIn="false" value="${WorkspaceDirPath}/submodules/boost-svn"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1353942744" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1410626184" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --libs`" id="cdt.managedbuild.tool.gnu.cross.c.linker.816181512" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
 							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} `${workspace_loc:/libwxwidgets-win32/${ConfigName}}/wx-config --libs`" id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1616259911" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
 								<option id="gnu.cpp.link.option.paths.1932422597" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/liboctopus-win32/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/libboost-win32/release/lib}&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.2112488849" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="octopus-win32"/>
+									<listOptionValue builtIn="false" value="boost_system"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1015896939" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -155,6 +166,7 @@
 					</externalSetting>
 				</externalSettings>
 				<externalSettings containerId="libwxwidgets-win32;cdt.managedbuild.toolchain.gnu.cross.base.394127583.1682664794" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
+				<externalSettings containerId="libboost-win32;0.74168637.1694314998" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 			</storageModule>
 		</cconfiguration>
 	</storageModule>
@@ -170,10 +182,11 @@
 			<resource resourceType="PROJECT" workspacePath="/tool-octopus-control-panel-win32"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1794452420;cdt.managedbuild.config.gnu.cross.exe.debug.1794452420.;cdt.managedbuild.tool.gnu.cross.c.compiler.1194959540;cdt.managedbuild.tool.gnu.c.compiler.input.145478631">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
@@ -186,7 +199,7 @@
 			</profile>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.258202023;cdt.managedbuild.config.gnu.cross.exe.release.258202023.;cdt.managedbuild.tool.gnu.cross.c.compiler.932822907;cdt.managedbuild.tool.gnu.c.compiler.input.336291469">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
@@ -206,7 +219,7 @@
 					<parser enabled="true"/>
 				</buildOutputProvider>
 				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="i586-mingw32msvc-g++" useDefault="true"/>
+					<runAction arguments="-E -P -v -dD @../../libwxwidgets-win32/Debug/cxxflags &quot;${plugin_state_location}/specs.cpp&quot;" command="i586-mingw32msvc-g++" useDefault="true"/>
 					<parser enabled="true"/>
 				</scannerInfoProvider>
 			</profile>
@@ -219,7 +232,7 @@
 					<parser enabled="true"/>
 				</buildOutputProvider>
 				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="i586-mingw32msvc-g++" useDefault="true"/>
+					<runAction arguments="-E -P -v -dD @../../libwxwidgets-win32/Release/cxxflags &quot;${plugin_state_location}/specs.cpp&quot;" command="i586-mingw32msvc-g++" useDefault="true"/>
 					<parser enabled="true"/>
 				</scannerInfoProvider>
 			</profile>
