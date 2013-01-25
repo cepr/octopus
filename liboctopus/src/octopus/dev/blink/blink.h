@@ -59,7 +59,7 @@ private:
 	class Timer: public SystemTimer {
 	public:
 		Timer(Blink *parent);
-		void onTimerLISR(unsigned short when, char what);
+		void onTimerLISR(unsigned short when);
 	private:
 		Blink* mParent;
 		unsigned short mTime20Ms;

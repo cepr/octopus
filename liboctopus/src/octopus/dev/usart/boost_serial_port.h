@@ -20,7 +20,7 @@
 #ifndef BOOST_SERIAL_PORT_H_
 #define BOOST_SERIAL_PORT_H_
 
-#ifndef __AVR
+#ifndef __AVR__
 
 #include "usart.h"
 #include <wx/timer.h>
@@ -56,6 +56,6 @@ private:
 	friend class PipeReceptionThread;
 };
 
-#endif /* __AVR */
+#endif /* __AVR__ */
 
 #endif /* BOOST_SERIAL_PORT_H_ */

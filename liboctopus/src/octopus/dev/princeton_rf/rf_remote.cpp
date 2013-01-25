@@ -43,7 +43,7 @@ RfRemote::RfRemote(char pin) : mRfEncoder(pin) {
 
 void RfRemote::Set(RfRemoteAddress remote, bool enabled) {
     tristate address = RfAddresses[remote];
-    tristate data = {enabled ? 0x01 : 0x00, 0x01};
+    tristate data = {enabled ? (unsigned char)0x01 : (unsigned char)0x00, 0x01};
     mRfEncoder.send(address, data);
 }
 

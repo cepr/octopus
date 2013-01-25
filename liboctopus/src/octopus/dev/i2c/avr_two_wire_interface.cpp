@@ -23,11 +23,14 @@
 #include <avr/interrupt.h>
 #include "avr_two_wire_interface.h"
 #include "octopus/util/fatal.h"
+#include "octopus/event/looper.h"
+
+using octopus::event::Looper;
 
 AvrTwoWireInterface AvrTwoWireInterface::mInstance;
 
 AvrTwoWireInterface::AvrTwoWireInterface() :
-		mCurrentTransfer(0), mLastTransfer(0), mSlaveAddress(0), mDataPtr(0), mRemaining(
+		mEvent(0), mCurrentTransfer(0), mLastTransfer(0), mSlaveAddress(0), mDataPtr(0), mRemaining(
 				0), mTransmited(0)
 
 {
@@ -157,9 +160,9 @@ inline void onTwiInterrupt(void) {
 		} else {
 			// No more data to write, send STOP condition
 			_stop();
-			// Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-			AvrTwoWireInterface::mInstance.Post(
-					AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
+			// Note: no interrupt is generated after a STOP condition, we can notify listener transfer is finished
+			AvrTwoWireInterface::mInstance.mEvent = AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE;
+			Looper::get()->insert(&AvrTwoWireInterface::mInstance);
 		}
 		break;
 
@@ -167,9 +170,9 @@ inline void onTwiInterrupt(void) {
 		// Data byte has been transmitted; NOT ACK has been received
 		// The I2C device does not accept any more bytes, send STOP condition
 		_stop();
-		// Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-		AvrTwoWireInterface::mInstance.Post(
-				AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE);
+		// Note: no interrupt is generated after a STOP condition, we can notify listener transfer is finished
+		AvrTwoWireInterface::mInstance.mEvent = AvrTwoWireInterface::EVENT_TRANSMIT_COMPLETE;
+		Looper::get()->insert(&AvrTwoWireInterface::mInstance);
 		break;
 
 	case 0x20:
@@ -179,15 +182,15 @@ inline void onTwiInterrupt(void) {
 		// send STOP condition
 		_stop();
 		// Note: no interrupt is generated after a STOP condition, we can notify listener transfert is finished
-		AvrTwoWireInterface::mInstance.Post(
-				AvrTwoWireInterface::EVENT_DEVICE_NACK);
+		AvrTwoWireInterface::mInstance.mEvent = AvrTwoWireInterface::EVENT_DEVICE_NACK;
+		Looper::get()->insert(&AvrTwoWireInterface::mInstance);
 		break;
 
 	case 0x38:
 		// Arbitration lost
 		TWCR = _BV(TWINT); // TWINT must be written to one to clear the TWINT Flag
-		AvrTwoWireInterface::mInstance.Post(
-				AvrTwoWireInterface::EVENT_ARBITRATION_LOST);
+		AvrTwoWireInterface::mInstance.mEvent = AvrTwoWireInterface::EVENT_ARBITRATION_LOST;
+		Looper::get()->insert(&AvrTwoWireInterface::mInstance);
 		break;
 
 	case 0x50:
@@ -213,8 +216,8 @@ inline void onTwiInterrupt(void) {
 			// I2C Master (AVR) has sent a NACK to indicate it was the last byte to receive,
 			// we just sent a STOP and notify reception is over.
 			_stop();
-			AvrTwoWireInterface::mInstance.Post(
-					AvrTwoWireInterface::EVENT_RECEIVE_COMPLETE);
+			AvrTwoWireInterface::mInstance.mEvent = AvrTwoWireInterface::EVENT_RECEIVE_COMPLETE;
+			Looper::get()->insert(&AvrTwoWireInterface::mInstance);
 		}
 		break;
 	}
@@ -224,14 +227,14 @@ ISR(TWI_vect) {
 	onTwiInterrupt();
 }
 
-void AvrTwoWireInterface::onEvent(char what) {
+void AvrTwoWireInterface::onEvent() {
 
 	// Current transfer has completed, remove it from the list
 	I2CDevice* device_to_notify = mCurrentTransfer->device;
 	mCurrentTransfer = mCurrentTransfer->next;
 
 	// notify user
-	switch (what) {
+	switch (mEvent) {
 	case EVENT_RECEIVE_COMPLETE:
 		device_to_notify->onReceiveFinished(mTransmited);
 		break;

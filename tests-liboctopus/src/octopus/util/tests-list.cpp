@@ -22,9 +22,24 @@
 #include "octopus/util/list.h"
 using octopus::util::List;
 
+class Int {
+public:
+	Int(): value(0) {
+	}
+	Int(int value): value(value) {
+	}
+	Int(const Int & that): value(that.value) {
+	}
+	operator int() {
+		return value;
+	}
+protected:
+	int value;
+};
+
 TEST(List, Empty) {
 	// Create an empty list
-	List<int> list;
+	List<Int> list;
 
 	// Check that the list is empty
 	EXPECT_EQ(0, list.front());
@@ -32,13 +47,13 @@ TEST(List, Empty) {
 	EXPECT_FALSE(list.begin().is_valid());
 
 	// Insert an item in the list
-	List<int>::Item item;
+	List<Int>::Item item;
 	EXPECT_EQ(&item, list.insert(&item));
 
 	// Check that the list contains the element
 	EXPECT_EQ(&item, list.front());
 	EXPECT_EQ(&item, list.back());
-	List<int>::Iterator it(list.begin());
+	List<Int>::Iterator it(list.begin());
 	EXPECT_TRUE(it.is_valid());
 	++it;
 	EXPECT_FALSE(it.is_valid());
@@ -54,28 +69,28 @@ TEST(List, Empty) {
 
 TEST(List, InsertAndRemove) {
 	// Create an empty list
-	List<int> list;
+	List<Int> list;
 
 	// Insert two items
-	List<int>::Item item1(1);
-	List<int>::Item item3(3);
+	List<Int>::Item item1(1);
+	List<Int>::Item item3(3);
 	list.insert(&item1);
 	list.insert(&item3);
 
 	// Insert a third one in the middle
-	List<int>::Item item2(2);
+	List<Int>::Item item2(2);
 	list.insert(&item2, &item3);
 
 	// Check result
-	List<int>::Iterator it(list.begin());
+	List<Int>::Iterator it(list.begin());
 	ASSERT_TRUE(it.is_valid());
-	EXPECT_EQ(1, **it);
+	EXPECT_EQ(1, (int)**it);
 	++it;
 	ASSERT_TRUE(it.is_valid());
-	EXPECT_EQ(2, **it);
+	EXPECT_EQ(2, (int)**it);
 	++it;
 	ASSERT_TRUE(it.is_valid());
-	EXPECT_EQ(3, **it);
+	EXPECT_EQ(3, (int)**it);
 	++it;
 	ASSERT_FALSE(it.is_valid());
 
@@ -85,17 +100,17 @@ TEST(List, InsertAndRemove) {
 	// Check result
 	it = list.begin();
 	ASSERT_TRUE(it.is_valid());
-	EXPECT_EQ(1, **it);
+	EXPECT_EQ(1, (int)**it);
 	++it;
 	ASSERT_TRUE(it.is_valid());
-	EXPECT_EQ(3, **it);
+	EXPECT_EQ(3, (int)**it);
 	++it;
 	ASSERT_FALSE(it.is_valid());
 }
 
 TEST(List, Iterator) {
 	// Dereference invalid iterator
-	List<int>::Iterator it;
+	List<Int>::Iterator it;
 	EXPECT_FALSE(it.is_valid());
 	EXPECT_EQ(0, *it);
 }

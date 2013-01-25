@@ -252,7 +252,7 @@ bool RemoteProperty::onReadyToSend(unsigned char* data, unsigned char & size, un
 
 		// Do the same recursively for all children
 		int i;
-		for (i = 0; i < mChildren.size(); i++) {
+		for (i = 0; i < (int)mChildren.size(); i++) {
 			RemoteProperty* prop = mChildren[i];
 			if (prop) {
 				data[size++] = (unsigned char)i;

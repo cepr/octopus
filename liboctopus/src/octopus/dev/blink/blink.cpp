@@ -31,10 +31,10 @@ Blink::Blink(Packet* packet) : PropertyRecord(packet), mEnabled(packet), mTimer(
 Blink::Timer::Timer(Blink* parent) : mParent(parent), mTime20Ms(0) {
 }
 
-void Blink::Timer::onTimerLISR(unsigned short when, char what) {
+void Blink::Timer::onTimerLISR(unsigned short when) {
 	// In order to only take into account the last call to setEnabled(), we
 	// check if this timer was scheduled from the same instance.
-    schedule(when+20000, 0);
+    schedule(when+20000);
     mTime20Ms++;
     if (mTime20Ms == 50) {
         PORTB ^= _BV(PORTB5);
@@ -53,7 +53,7 @@ void Blink::onPropertyChanged(class Property* prop, PROPERTY_INFO what, ORIGIN o
 
 	if (mEnabled) {
 		cli();
-		mTimer.onTimerLISR(SystemTimer::now(), 0);
+		mTimer.onTimerLISR(SystemTimer::now());
 		sei();
 	} else {
         mTimer.cancel();

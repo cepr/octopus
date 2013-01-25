@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cedric Priscal
+ * Copyright 2013 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -17,28 +17,42 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __AVR__
+#ifdef __WXGTK__
 
-#include "application_timer.h"
+#include "octopus/event/looper.h"
+#include "octopus/util/lock.h"
 
-using octopus::event::Looper;
+namespace octopus {
+namespace event {
 
-ApplicationTimer::ApplicationTimer() : SystemTimer(), mEvent(this)
-{
+using util::List;
+using util::Lock;
+
+Looper::Looper() {
 }
 
-void ApplicationTimer::onTimerLISR(unsigned short when)
-{
-	Looper::get()->insert(&mEvent);
+void Looper::run() {
+
+	// Handle all events
+	while(true) {
+		// Extract the next item from the list
+		Item* item;
+
+		// Critical section
+		{
+			Lock lock;
+			item = remove(front());
+			if (!item) {
+				return;
+			}
+		}
+
+		// Call onEvent() method
+		item->onEvent();
+	}
 }
 
-ApplicationTimer::TimerEvent::TimerEvent(ApplicationTimer* parent) : mParent(parent)
-{
-}
+} /* namespace event */
+} /* namespace octopus */
 
-void ApplicationTimer::TimerEvent::onEvent()
-{
-	mParent->onTimer();
-}
-
-#endif /* __AVR__ */
+#endif /* __WXGTK__ */

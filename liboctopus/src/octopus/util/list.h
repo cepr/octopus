@@ -38,7 +38,7 @@ public:
 	/**
 	 * \brief Item of the list.
 	 */
-	class Item {
+	class Item : public T {
 	public:
 
 		/**
@@ -46,7 +46,7 @@ public:
 		 *
 		 * The item value is constructed with its default constructor.
 		 */
-		Item(): value(), prev(0), next(0) {
+		Item(): T(), prev(0), next(0) {
 		}
 
 		/**
@@ -56,13 +56,8 @@ public:
 		 *
 		 * The item value is copied from the given parameter.
 		 */
-		Item(const T & value): value(value), prev(0), next(0) {
+		Item(const T & value): T(value), prev(0), next(0) {
 		}
-
-		/**
-		 * Item value
-		 */
-		T value;
 
 	private:
 		friend class List;
@@ -87,11 +82,7 @@ public:
 		 * This operator returns the item value pointed by this iterator.
 		 */
 		T* operator *() {
-			if (item) {
-				return &item->value;
-			} else {
-				return 0;
-			}
+			return item;
 		}
 
 		/**

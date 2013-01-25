@@ -17,7 +17,7 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __AVR
+#ifdef __AVR__
 
 #include "hmc6352.h"
 #include "octopus/dev/i2c/avr_two_wire_interface.h"
@@ -67,10 +67,10 @@ void Hmc6352::stopCalibration() {
 }
 
 void Hmc6352::onTransmitFinished(unsigned char transmitted) {
-    schedule(now() + 6000, 0);
+    schedule(now() + 6000);
 }
 
-void Hmc6352::onTimer(char what) {
+void Hmc6352::onTimer() {
     mGetHeadingTransfer.type = I2C_RECEIVE;
     mGetHeadingTransfer.size = 2;
     mGetHeadingTransfer.next = 0;
@@ -110,4 +110,4 @@ void Hmc6352::onDeviceNotResponding(void) {
     // TODO reschedule
 }
 
-#endif /* __AVR */
+#endif /* __AVR__ */

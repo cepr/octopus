@@ -5,6 +5,9 @@
 #include "octopus/dev/usart/usart_listener.h"
 #include "octopus/prop/packet.h"
 #include "octopus/dev/blink/blink.h"
+#include "octopus/event/looper.h"
+
+using octopus::event::Looper;
 
 class Template : public OctopusCommStack<AvrUsart, PropertyRecord> {
 
@@ -38,6 +41,6 @@ public:
 int main(void)
 {
     static Template robot;
-    Event::startLooper();
+    Looper::get()->run();
     return 0;
 }

@@ -27,6 +27,7 @@
 
 #include "i2c_driver.h"
 #include "octopus/event/event.h"
+#include "octopus/event/looper.h"
 #include "i2c_device.h"
 
 /**
@@ -36,7 +37,7 @@
  *
  * \ingroup AVR_TWI
  */
-class AvrTwoWireInterface: public I2CDriver, private Event {
+class AvrTwoWireInterface: public I2CDriver, private octopus::event::Looper::Item {
 
 public:
     /**
@@ -57,6 +58,8 @@ public:
      * I2CDriver::removeDevice()
      */
     void removeDevice(I2CDevice *device);
+
+    char mEvent;
 
 private:
 
@@ -86,7 +89,7 @@ private:
      *
      * \param[in] what Type of event, see \ref I2C_EVENTS.
      */
-    void onEvent(char what);
+    void onEvent();
 
     /**
      * \internal

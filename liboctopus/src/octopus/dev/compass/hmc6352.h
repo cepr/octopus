@@ -63,7 +63,7 @@ private:
     void onDeviceNotResponding(void);
     void onReceiveFinished(unsigned char received);
     void onTransmitFinished(unsigned char transmitted);
-    void onTimer(char what);
+    void onTimer();
 
     unsigned char mGetHeadingBuffer[2];
     I2CTransfer mGetHeadingTransfer;
