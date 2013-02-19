@@ -41,10 +41,11 @@ private:
     int mIndex;
     // mRepeat corresponds to the number of bursts to send
     char mRepeat;
+    char mCode;
 public:
     PrincetonRfEncoder(char pin);
     void send(tristate address, tristate data);
-    void onTimerLISR(unsigned short when);
+    void onTimerLISR(unsigned short when, char what);
 };
 
 #endif /* __AVR */

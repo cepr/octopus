@@ -24,6 +24,7 @@
 
 PrincetonRfEncoder::PrincetonRfEncoder(char pin) {
     mPin = pin;
+    mCode = 0;
     /* Set pin as output 0 */
     PORTD &= ~_BV(pin);
     DDRD |= _BV(mPin);
@@ -75,57 +76,59 @@ void PrincetonRfEncoder::send(tristate address, tristate data) {
     mState = 0;
     mIndex = 0;
     mRepeat = 50;
-    onTimerLISR(now());
+    mCode++;
+    onTimerLISR(mCode, now());
 }
 
-void PrincetonRfEncoder::onTimerLISR(unsigned short when) {
+void PrincetonRfEncoder::onTimerLISR(unsigned short when, char what) {
+    if (what == mCode) {
+        /* Switch output */
+        PORTD ^= _BV(mPin);
 
-	/* Switch output */
-	PORTD ^= _BV(mPin);
-
-	/* Program timer for next switch */
-	switch(mState) {
-	case 0:
-		// Sending address
-		if ((mRawAddress>>mIndex) & 1) {
-			when += LONG_DURATION;
-		} else {
-			when += SHORT_DURATION;
-		}
-		mIndex++;
-		if (mIndex == 32) {
-			mIndex = 0;
-			mState = 1;
-		}
-		break;
-	case 1:
-		// Sending data
-		if ((mRawData>>mIndex) & 1) {
-			when += LONG_DURATION;
-		} else {
-			when += SHORT_DURATION;
-		}
-		mIndex++;
-		if (mIndex == 16) {
-			mIndex = 0;
-			mState = 2;
-		}
-		break;
-	case 2:
-		// Sending SYNC1
-		when += SYNC_HIGH_DURATION;
-		mState = 3;
-		break;
-	case 3:
-		// Sending SYNC2
-		when += SYNC_LOW_DURATION;
-		mState = 0;
-		if (!--mRepeat) {
-			return;
-		}
-		break;
-	}
-	schedule(when);
+        /* Program timer for next switch */
+        switch(mState) {
+        case 0:
+            // Sending address
+            if ((mRawAddress>>mIndex) & 1) {
+                when += LONG_DURATION;
+            } else {
+                when += SHORT_DURATION;
+            }
+            mIndex++;
+            if (mIndex == 32) {
+                mIndex = 0;
+                mState = 1;
+            }
+            break;
+        case 1:
+            // Sending data
+            if ((mRawData>>mIndex) & 1) {
+                when += LONG_DURATION;
+            } else {
+                when += SHORT_DURATION;
+            }
+            mIndex++;
+            if (mIndex == 16) {
+                mIndex = 0;
+                mState = 2;
+            }
+            break;
+        case 2:
+            // Sending SYNC1
+            when += SYNC_HIGH_DURATION;
+            mState = 3;
+            break;
+        case 3:
+            // Sending SYNC2
+            when += SYNC_LOW_DURATION;
+            mState = 0;
+            if (!--mRepeat) {
+                return;
+            }
+            break;
+        }
+        schedule(when, what);
+    }
 }
 
 #endif /* __AVR */

@@ -75,7 +75,7 @@ private:
 		Timer(AnalogChannel* parent);
 	private:
 		AnalogChannel* mParent;
-		void onTimer();
+		void onTimer(char what);
 	};
 	Timer mTimer;
 

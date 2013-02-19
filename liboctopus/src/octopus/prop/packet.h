@@ -23,9 +23,7 @@
 #include "octopus/dev/usart/usart.h"
 #include "octopus/dev/usart/usart_listener.h"
 #include "packet_listener.h"
-#include "octopus/event/looper.h"
-
-using octopus::event::Looper;
+#include "octopus/event/event.h"
 
 /**
  * @brief Data link layer of the Octopus Communication Stack
@@ -38,7 +36,7 @@ using octopus::event::Looper;
  *
  * @ingroup COM_STACK
  */
-class Packet : private UsartListener, private Looper::Item
+class Packet : private UsartListener, private Event
 {
 public:
 	/**
@@ -85,7 +83,7 @@ private:
 	/**
 	 * @copydoc Event::onEvent()
 	 */
-	virtual void onEvent();
+	virtual void onEvent(char what);
 };
 
 #endif /* PACKET_H_ */

@@ -25,14 +25,12 @@
 #include "usart_buffer.h"
 #include "octopus/util/fatal.h"
 
-using octopus::event::Looper;
-
 namespace
 {
 	// Warning: mRxBuffer and mTxBuffer must be accessed with masked interrupts to avoid concurrent access.
 	UsartBuffer mRxBuffer;
 	UsartBuffer mTxBuffer;
-	AvrUsart* thiz = 0;
+	Event* mEvent = 0;
 
 	// Uplink
 	bool isRemoteSuspended = false;		// true if XOFF has been received
@@ -139,8 +137,7 @@ ISR(USART_RX_vect)
 		}
 	}
 
-	thiz->event = AvrUsart::RX_EVENT;
-	Looper::get()->insert(thiz);
+	mEvent->Post(0);
 }
 
 /* USART, Data Register Empty */
@@ -176,8 +173,7 @@ ISR(USART_UDRE_vect)
 			/* If everything has been send or if remote is overloaded (XOFF received), deactivate the interrupt */
 			suspendTransmission();
 			if (mTxBuffer.mCount == 0) {
-				thiz->event = AvrUsart::TX_EVENT;
-				Looper::get()->insert(thiz);
+				mEvent->Post(1);
 			}
 			break;
 		}
@@ -186,7 +182,7 @@ ISR(USART_UDRE_vect)
 
 AvrUsart::AvrUsart(UsartBaudrate baudrate) : Usart()
 {
-	thiz = this;
+	mEvent = this;
 
 	switch(baudrate) {
 #if (F_CPU == 8000000L)
@@ -231,9 +227,9 @@ void AvrUsart::sendByte(unsigned char c)
 	sei();
 }
 
-void AvrUsart::onEvent()
+void AvrUsart::onEvent(char what)
 {
-	if (event == RX_EVENT) {
+	if (what == 0) {
 		// Reception event
 		while(mRxBuffer.mCount > 0) {
 			cli();

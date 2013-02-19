@@ -28,31 +28,23 @@
 #define PORT PORTD
 #define DDR DDRD
 
-Servo::Servo(char pin, Packet* packet) :
-		PropertyRecord(packet),
-		mEnabled(packet),
-		mPosition(packet),
-		mPin(pin),
-		mNextPulse(0),
-		mPulseWidth(MIN_PULSE_WIDTH) {
+Servo::Servo(char pin, Packet* packet) : PropertyRecord(packet), mEnabled(packet), mPosition(packet), mPin(pin), mNextPulse(0), mPulseWidth(MIN_PULSE_WIDTH) {
     DDR |= _BV(mPin);
     mEnabled.registerListener(this);
     mPosition.registerListener(this);
 }
 
-void Servo::onTimerLISR(unsigned short when) {
-    if (mEvent == EVENT_START_PULSE) {
+void Servo::onTimerLISR(unsigned short when, char what) {
+    if (what == EVENT_START_PULSE) {
         /* 50Hz tick */
         /* start pulse, and program the timer to stop the pulse */
         PORT |= _BV(mPin);
         mNextPulse = when + PULSE_PERIOD;
-        mEvent = EVENT_FINISH_PULSE;
-        schedule(when + mPulseWidth);
+        schedule(when + mPulseWidth, EVENT_FINISH_PULSE);
     } else {
         /* stop pulse */
         PORT &= ~_BV(mPin);
-        mEvent = EVENT_START_PULSE;
-        schedule(mNextPulse);
+        schedule(mNextPulse, EVENT_START_PULSE);
     }
 }
 
@@ -73,8 +65,7 @@ void Servo::onPropertyChanged(Property* prop, PROPERTY_INFO what, ORIGIN origin)
     } else if (prop == &mEnabled) {
         // Enable has changed, let's start or stop timer
         if (mEnabled) {
-        	mEvent = EVENT_START_PULSE;
-            schedule(0);
+            schedule(0, EVENT_START_PULSE);
         } else {
             PORT &= ~_BV(mPin);
             cancel();

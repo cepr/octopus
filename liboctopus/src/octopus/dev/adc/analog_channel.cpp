@@ -55,7 +55,7 @@ void AnalogChannel::stop() {
     mMs = mPeriod = 0;
 }
 
-void AnalogChannel::Timer::onTimer() {
+void AnalogChannel::Timer::onTimer(char what) {
     if (mParent->mPeriod) {
         /* 1ms has been elapsed */
         mParent->mMs--;

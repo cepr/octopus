@@ -37,8 +37,8 @@ extern "C" void TIMER1_COMPA_vect(void);
  * to program its execution.
  *
  * SystemTimer#onTimerLISR() will be called in interrupt context, so
- * you should avoid any time consuming treatment. To execute such
- * time-consuming functions, you should use an ApplicationTimer instead.
+ * you should avoid any time consumming treatment. To execute such
+ * time-consumming functions, you should use an ApplicationTimer instead.
  *
  * \see ApplicationTimer
  */
@@ -49,12 +49,13 @@ public:
 	 * \brief Schedules the timer
 	 *
 	 * \param[in] when Timer event absolute time in microseconds. It should not be higher than now() + MAX_DELAY.
+	 * \param[in] what User parameter to pass to #onTimerLISR().
 	 *
 	 * Call this method to trigger a timer event. The method #onTimerLISR() will be called
 	 * to trigger this timer event.
 	 * Any pending scheduling of this timer will be replaced by this new one.
 	 */
-	void schedule(unsigned short when);
+	void schedule(unsigned short when, char what = 0);
 
 	/**
 	 * \brief Maximum delay of a timer event in microseconds
@@ -101,6 +102,7 @@ protected:
 	 * \brief Low-latency timer event handler
 	 *
 	 * \param[in] when Timer event absolute time in microseconds
+	 * \param[in] what User parameter that was passed to #schedule()
 	 *
 	 * This method is called from hardware timer interrupt context.
 	 * It ensures a very low latency, but the handler should be the shortest as possible to
@@ -110,7 +112,7 @@ protected:
 	 *
 	 * \see #schedule()
 	 */
-	virtual void onTimerLISR(unsigned short when) = 0;
+	virtual void onTimerLISR(unsigned short when, char what = 0) = 0;
 
 private:
 
@@ -162,6 +164,8 @@ private:
 	unsigned short mTimerWhen;
 
 	static void rescheduleHardwareTimer();
+
+	char mWhat;
 };
 
 #endif /* __AVR */

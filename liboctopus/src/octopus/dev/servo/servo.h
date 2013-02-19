@@ -85,7 +85,6 @@ private:
 	char mPin;
     uint16_t mNextPulse;
     uint16_t mPulseWidth;
-    char mEvent;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructor
@@ -104,7 +103,7 @@ public:
 
 private:
     // SystemTimer
-    void onTimerLISR(unsigned short when);
+    void onTimerLISR(unsigned short when, char what = 0);
 
     // Property
     const char* getName() const {return "servo";}

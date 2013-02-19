@@ -20,11 +20,10 @@
 #ifndef APPLICATIONTIMER_H
 #define APPLICATIONTIMER_H
 
-#ifdef __AVR__
+#ifdef __AVR
 
 #include "system_timer.h"
 #include "octopus/event/event.h"
-#include "octopus/event/looper.h"
 
 /**
  * \brief Provides a timer for long tasks.
@@ -42,6 +41,8 @@ protected:
 	/**
 	 * \brief Timer event handler
 	 *
+	 * \param[in] what User parameter that was passed to #schedule()
+	 *
 	 * This method is called when the timer event raises.
 	 *
 	 * You should override the method in a child class in order to perform time-consuming
@@ -49,23 +50,23 @@ protected:
 	 *
 	 * \see #schedule()
 	 */
-	virtual void onTimer() = 0;
+	virtual void onTimer(char what) = 0;
 
 private:
-	void onTimerLISR(unsigned short when);
+	void onTimerLISR(unsigned short when, char what = 0);
 
-	class TimerEvent : public octopus::event::Looper::Item
+	class TimerEvent : public Event
 	{
 	public:
 		TimerEvent(ApplicationTimer* parent);
 	private:
 		ApplicationTimer* mParent;
-		void onEvent();
+		void onEvent(char what);
 	};
 
 	TimerEvent mEvent;
 };
 
-#endif /* __AVR__ */
+#endif /* __AVR */
 
 #endif // APPLICATIONTIMER_H

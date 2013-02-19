@@ -28,66 +28,22 @@
 #include <string>
 #include "octopus/prop/property_listener.h"
 
-/**
- * Property that serve as proxy for a remote property and its children.
- *
- * This property has a single child which corresponds to the root
- * remote property of the device connected to the specified serial port.
- */
-class SerialPortProperty: public PropertyRecord {
+class SerialPortProperty : public PropertyRecord
+{
 private:
-	std::string mDevicePath;
-	BoostSerialPort mSerialPort;
-	Packet mPacket;
-	PropertyAddress mRootAddress;
-	RemoteProperty mRootProperty;
+	std::string		    mDevicePath;
+	BoostSerialPort     mSerialPort;
+	Packet 			    mPacket;
+	PropertyAddress     mRootAddress;
+	RemoteProperty      mRootProperty;
 
 public:
-	/**
-	 * Constructor.
-	 *
-	 * @param[in] devicepath   Serial port device path, like "/dev/ttyS0" for Linux.
-	 *
-	 * Use this constructor to create a SerialPortProperty instance.
-	 */
 	SerialPortProperty(const std::string & devicepath);
+	~SerialPortProperty();
 
-	/**
-	 * Destructor.
-	 */
-	virtual ~SerialPortProperty();
-
-	/**
-	 * Returns the serial port device path.
-	 *
-	 * @return This function returns the serial port device path that was specified in @see #SerialPortProperty.
-	 */
 	const char* getName() const;
-
-	/**
-	 * Returns "Serial port".
-	 *
-	 * @return This function returns a description of the property.
-	 */
 	const char* getDescription();
-
-	/**
-	 * Returns the remote property.
-	 *
-	 * @param[in] index  Child index, only 0 is supported.
-	 *
-	 * This property has only one child with index 0. This child correspond to
-	 * the remote property of the device which is connected to the serial port.
-	 *
-	 * @return This function returns the remote property if index is zero, 0 otherwise.
-	 */
 	Property* getChild(unsigned char index);
-
-	/**
-	 * Requests a refresh of the tracked remote property and all its children.
-	 *
-	 * This function triggers a refresh of the remote property and all its children.
-	 */
 	virtual void refresh();
 };
 

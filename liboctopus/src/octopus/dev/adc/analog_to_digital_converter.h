@@ -24,7 +24,6 @@
 
 #include "octopus/dev/timer/system_timer.h"
 #include "octopus/event/event.h"
-#include "octopus/event/looper.h"
 
 #define MAX_PENDING_CONVERTIONS 8
 
@@ -36,7 +35,7 @@
  *
  * \ingroup AVR_ADC
  */
-class AnalogToDigitalConverter : public octopus::event::Looper::Item {
+class AnalogToDigitalConverter : public Event {
 
 private:
     class AnalogChannel* mList[MAX_PENDING_CONVERTIONS];
@@ -52,7 +51,7 @@ private:
 		Timer(AnalogToDigitalConverter *parent);
 	private:
 		AnalogToDigitalConverter* mParent;
-		void onTimerLISR(unsigned short when);
+		void onTimerLISR(unsigned short when, char what);
 	};
 	Timer mTimer;
 
@@ -60,8 +59,10 @@ public:
 
     /**
      * \brief ADC conversion complete
+     *
+     * \param[in] what Not used.
      */
-    void onEvent();
+    void onEvent(char what);
 
     /**
      * \brief Returns the unique instance of \ref AnalogToDigitalConverter

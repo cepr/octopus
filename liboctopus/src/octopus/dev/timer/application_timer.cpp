@@ -17,28 +17,26 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __AVR__
+#ifdef __AVR
 
 #include "application_timer.h"
-
-using octopus::event::Looper;
 
 ApplicationTimer::ApplicationTimer() : SystemTimer(), mEvent(this)
 {
 }
 
-void ApplicationTimer::onTimerLISR(unsigned short when)
+void ApplicationTimer::onTimerLISR(unsigned short when, char what)
 {
-	Looper::get()->insert(&mEvent);
+	mEvent.Post(what);
 }
 
 ApplicationTimer::TimerEvent::TimerEvent(ApplicationTimer* parent) : mParent(parent)
 {
 }
 
-void ApplicationTimer::TimerEvent::onEvent()
+void ApplicationTimer::TimerEvent::onEvent(char what)
 {
-	mParent->onTimer();
+	mParent->onTimer(what);
 }
 
-#endif /* __AVR__ */
+#endif /* __AVR */

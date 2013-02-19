@@ -24,9 +24,6 @@
 #include "octopus/dev/compass/compass_listener.h"
 #include "octopus/dev/compass/hmc6352.h"
 #include "octopus/prop/property_data.h"
-#include "octopus/event/looper.h"
-
-using octopus::event::Looper;
 
 class Compass : public OctopusCommStack<AvrUsart, PropertyRecord>, public CompassListener {
 
@@ -89,7 +86,7 @@ int main(void)
 {
     static Compass c;
     c.onStart();
-    Looper::get()->run();
+    Event::startLooper();
     return 0;
 }
 

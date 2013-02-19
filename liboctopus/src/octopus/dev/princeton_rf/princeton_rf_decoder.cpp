@@ -17,16 +17,13 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __AVR__
+#ifdef __AVR
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include "princeton_rf.h"
 #include "princeton_rf_decoder.h"
 #include "octopus/event/event.h"
-#include "octopus/event/looper.h"
-
-using octopus::event::Looper;
 
 //#define DBG
 
@@ -36,6 +33,15 @@ static const unsigned short SHORT_PULSE_MIN = ((1-TOLERANCE) * SHORT_DURATION);
 static const unsigned short SHORT_PULSE_MAX = ((1+TOLERANCE) * SHORT_DURATION);
 static const unsigned short LONG_PULSE_MIN = ((1-TOLERANCE) * LONG_DURATION);
 static const unsigned short LONG_PULSE_MAX = ((1+TOLERANCE) * LONG_DURATION);
+
+typedef enum {
+    EVENT_S0,
+    EVENT_S1,
+    EVENT_L0,
+    EVENT_L1,
+    EVENT_INVALID,
+    EVENTS_COUNT
+} EVENT;
 
 #ifdef DBG
 static const char DBG_EVENT_CHARS[] = {
@@ -63,7 +69,7 @@ static const char DBG_STATE_CHARS[] = {
 };
 #endif
 
-const PrincetonRfDecoder::STATE PrincetonRfDecoder::NewStateTable[PrincetonRfDecoder::STATES_COUNT][PrincetonRfDecoder::EVENTS_COUNT] = {
+const STATE NewStateTable[STATES_COUNT][EVENTS_COUNT] = {
     /*                      EVENT_S0,   EVENT_S1,   EVENT_L0,   EVENT_L1,   EVENT_INVALID */
     /* -----------------------------------------------------------------------------------*/
     /* STATE_INIT */    {   STATE_INIT, STATE_S,    STATE_INIT, STATE_L,    STATE_INIT},
@@ -79,7 +85,7 @@ const PrincetonRfDecoder::STATE PrincetonRfDecoder::NewStateTable[PrincetonRfDec
     /* STATE_BIT1 */    {   STATE_INIT, STATE_S,    STATE_INIT, STATE_L,    STATE_INIT}
 };
 
-static PrincetonRfDecoder* thiz;
+static Event* _this;
 
 /* Pin Change Interrupt Request 0 */
 ISR(INT0_vect) {
@@ -91,24 +97,25 @@ ISR(INT0_vect) {
         /* Pin has changed, compute duration */
         unsigned short duration = now - start;
         /* Try to decode pulse */
+        char what;
         if ((SHORT_PULSE_MIN < duration) && (duration < SHORT_PULSE_MAX)) {
-        	thiz->mEvent = previousvalue ? PrincetonRfDecoder::EVENT_S1 : PrincetonRfDecoder::EVENT_S0;
+            what = previousvalue ? EVENT_S1 : EVENT_S0;
         } else if ((LONG_PULSE_MIN < duration) && (duration < LONG_PULSE_MAX)) {
-        	thiz->mEvent = previousvalue ? PrincetonRfDecoder::EVENT_L1 : PrincetonRfDecoder::EVENT_L0;
+            what = previousvalue ? EVENT_L1 : EVENT_L0;
         } else {
-        	thiz->mEvent = PrincetonRfDecoder::EVENT_INVALID;
+            what = EVENT_INVALID;
         }
-        Looper::get()->insert(thiz);
+        _this->Post(what);
         previousvalue = value;
         start = now;
     }
 }
 
-void PrincetonRfDecoder::onEvent() {
+void PrincetonRfDecoder::onEvent(char what) {
     /* Compute new state */
-    mState = NewStateTable[mState][mEvent];
+    mState = NewStateTable[mState][(int)what];
 #ifdef DBG
-    mListener->onRfReceived(DBG_EVENT_CHARS[mEvent]);
+    mListener->onRfReceived(DBG_EVENT_CHARS[(int)what]);
     mListener->onRfReceived(DBG_STATE_CHARS[mState]);
 #else
     switch(mState) {
@@ -128,9 +135,9 @@ void PrincetonRfDecoder::onEvent() {
     	return;
     }
     if (mBit == 12) {
-        int i;
+        char i;
         for (i=0; i<12; i++) {
-            mListener->onRfReceived(mCode[i]);
+            mListener->onRfReceived(mCode[(int)i]);
         }
         mListener->onRfReceived('\n');
         mBit = 0;
@@ -138,20 +145,21 @@ void PrincetonRfDecoder::onEvent() {
 #endif
 }
 
-PrincetonRfDecoder::PrincetonRfDecoder(Listener* listener) :
-		mState(STATE_INIT),
-		mEvent(EVENT_INVALID),
-		mBit(0),
-		mListener(listener) {
+PrincetonRfDecoder::PrincetonRfDecoder(PrincetonRfListener* listener) {
+    /* Initialize variables */
+    mState = STATE_INIT;
+    mBit = 0;
+    mListener = listener;
+    mCode[12] = 0;
     /* Set GPIO in input, no pull */
     PORTD &=~ _BV(PORTD2);
     DDRD &=~ _BV(PORTD2);
     /* Activate INT0 */
-    thiz = this;
+    _this = this;
     //PCICR |= _BV(PCIE2);
     //PCMSK2 |= _BV(PCINT23);
     EICRA = _BV(ISC00);
     EIMSK = _BV(INT0);
 }
 
-#endif /* __AVR__ */
+#endif /* __AVR */

@@ -22,9 +22,6 @@
 #include <wx/log.h>
 #endif
 
-#include "octopus/event/looper.h"
-using octopus::event::Looper;
-
 Packet::Packet(Usart *usart)
 {
 	mSize = 0;
@@ -127,11 +124,11 @@ void Packet::onUsartBufferEmpty()
 void Packet::requestToSend()
 {
 	if ((mUsart) && (mUsart->isUsartBufferEmpty())) {
-		Looper::get()->insert(this);
+		Post();
 	}
 }
 
-void Packet::onEvent()
+void Packet::onEvent(char what)
 {
 	onUsartBufferEmpty();
 }

@@ -17,10 +17,9 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __AVR__
+#ifdef __AVR
 
 #include "system_timer.h"
-#include "octopus/util/fatal.h"
 
 class SystemTimer* SystemTimer::mFirstSystemTimer(0);
 class SystemTimer* SystemTimer::mLastSystemTimer(0);
@@ -45,7 +44,7 @@ void SystemTimer::rescheduleHardwareTimer() {
         timer->mNextSystemTimer = 0;
  
 		// Raise user timer event
-		timer->onTimerLISR(timer->mTimerWhen);
+		timer->onTimerLISR(timer->mTimerWhen, timer->mWhat);
 	}
 
 	if (mFirstSystemTimer) {
@@ -66,7 +65,7 @@ ISR (TIMER1_COMPA_vect) {
 	SystemTimer::rescheduleHardwareTimer();
 }
 
-SystemTimer::SystemTimer() : mPreviousSystemTimer(0), mNextSystemTimer(0), mTimerWhen(0) {
+SystemTimer::SystemTimer() : mPreviousSystemTimer(0), mNextSystemTimer(0), mTimerWhen(0), mWhat(0) {
     TCCR1A = 0; // Normal port operation
 #if (F_CPU == 8000000L)
     TCCR1B = _BV(CS11); // clkIO / 8 (From prescaler)
@@ -96,7 +95,7 @@ void SystemTimer::cancelUnsafe(void) {
 
 }
 
-void SystemTimer::schedule(unsigned short when) {
+void SystemTimer::schedule(unsigned short when, char what) {
 
 	// We anticipate the wakeup and interrupt treatment
 	when -= TIMER_OVERHEAD;
@@ -108,6 +107,7 @@ void SystemTimer::schedule(unsigned short when) {
 
 	cancelUnsafe();
 	mTimerWhen = when;
+	mWhat = what;
 
 	SystemTimer* timer = mFirstSystemTimer;
 
@@ -148,4 +148,4 @@ void SystemTimer::schedule(unsigned short when) {
 	SREG = sreg;
 }
 
-#endif /* __AVR__ */
+#endif /* __AVR */

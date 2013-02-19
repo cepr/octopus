@@ -132,7 +132,7 @@ void Stepper::onTimerLISR(unsigned short when, char what) {
 
 	/* Update motor rotation angle, and reprogram timer */
 	tick();
-	schedule(when);
+	schedule(when, 0);
 }
 
 PROPERTY_TYPE Stepper::getType() {

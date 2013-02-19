@@ -47,7 +47,7 @@ public:
 	/**
 	 * \brief Number of bytes stored in the buffer
 	 */
-    unsigned int mCount;
+    int mCount;
 
 	/**
 	 * \brief Append a byte to the buffer

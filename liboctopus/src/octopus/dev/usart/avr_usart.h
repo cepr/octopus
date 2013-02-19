@@ -21,7 +21,6 @@
 #define AVRUSART_H_
 
 #include "usart.h"
-#include "octopus/event/looper.h"
 #include "octopus/event/event.h"
 
 /**
@@ -40,7 +39,8 @@
  *
  * @ingroup COM_STACK
  */
-class AvrUsart: public Usart, public octopus::event::Looper::Item {
+class AvrUsart: public Usart, public Event
+{
 
 public:
 
@@ -76,12 +76,6 @@ public:
 	 */
 	virtual bool isUsartBufferEmpty();
 
-	//
-	enum {
-		RX_EVENT,
-		TX_EVENT
-	} event;
-
 private:
 
 	/**
@@ -89,7 +83,7 @@ private:
 	 *
 	 * @param[in] what Unused
 	 */
-	void onEvent();
+	void onEvent(char what);
 };
 
 #endif /* AVRUSART_H_ */
