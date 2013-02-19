@@ -1,10 +1,10 @@
 
 #include "octopus/prop/octopus_comm_stack.h"
 #include "octopus/prop/property_record.h"
-#include "octopus/dev/usart/avr_usart.h"
-#include "octopus/dev/usart/usart_listener.h"
-#include "octopus/prop/packet.h"
 #include "octopus/dev/blink/blink.h"
+#include "octopus/event/looper.h"
+
+using namespace octopus;
 
 class Gpio : public PropertyRecord, public PropertyListener, public SystemTimer {
 private:
@@ -16,7 +16,7 @@ private:
     // true : output
     class Direction : public PropertyBoolean {
     public:
-        Direction(Packet* packet) : PropertyBoolean(false, packet) {}
+        Direction() : PropertyBoolean(false) {}
         const char* getName() const { return "direction"; }
         const char* getDescription() { return "true = output"; }
         using PropertyBoolean::operator =;
@@ -26,24 +26,24 @@ private:
     // if Direction is output, Level represent output latch value
     class Level: public PropertyBoolean {
     public:
-        Level(Packet* packet) : PropertyBoolean(true, packet) {}
+        Level() : PropertyBoolean(true) {}
         const char* getName() const { return "level"; }
         const char* getDescription() { return ""; }
         using PropertyBoolean::operator =;
     } mLevel;
 
 public:
-    Gpio(Packet* packet, const char* name, int port, int pin) :
+    Gpio(const char* name, int port, int pin) :
             // Parent classes
-            PropertyRecord(packet),
+            PropertyRecord(),
             PropertyListener(),
             SystemTimer(),
             // Attributes
             mName(name),
             mPort(port),
             mPin(pin),
-            mDirection(packet),
-            mLevel(packet) {
+            mDirection(),
+            mLevel() {
         mDirection.registerListener(this);
         mLevel.registerListener(this);
     }
@@ -178,20 +178,20 @@ public:
             OctopusCommStack<AvrUsart, PropertyRecord>(),
             // Properties
             mBlink(&mPacket),
-            mPB0(&mPacket, "PB0", 0, 0),
-            mPB1(&mPacket, "PB1", 0, 1),
-            mPC0(&mPacket, "PC0", 1, 0),
-            mPC1(&mPacket, "PC1", 1, 1),
-            mPC2(&mPacket, "PC2", 1, 2),
-            mPC3(&mPacket, "PC3", 1, 3),
-            mPC4(&mPacket, "PC4", 1, 4),
-            mPC5(&mPacket, "PC5", 1, 5),
-            mPD2(&mPacket, "PD2", 2, 2),
-            mPD3(&mPacket, "PD3", 2, 3),
-            mPD4(&mPacket, "PD4", 2, 4),
-            mPD5(&mPacket, "PD5", 2, 5),
-            mPD6(&mPacket, "PD6", 2, 6),
-            mPD7(&mPacket, "PD7", 2, 7) {
+            mPB0("PB0", 0, 0),
+            mPB1("PB1", 0, 1),
+            mPC0("PC0", 1, 0),
+            mPC1("PC1", 1, 1),
+            mPC2("PC2", 1, 2),
+            mPC3("PC3", 1, 3),
+            mPC4("PC4", 1, 4),
+            mPC5("PC5", 1, 5),
+            mPD2("PD2", 2, 2),
+            mPD3("PD3", 2, 3),
+            mPD4("PD4", 2, 4),
+            mPD5("PD5", 2, 5),
+            mPD6("PD6", 2, 6),
+            mPD7("PD7", 2, 7) {
     }
 
     // Property definition
@@ -229,6 +229,6 @@ public:
 int main(void)
 {
     static GPIOs robot;
-    Event::startLooper();
+    main_looper.run();
     return 0;
 }

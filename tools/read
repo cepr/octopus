@@ -1,0 +1,33 @@
+#!/bin/bash
+
+function usage()
+{
+ echo "Usage: $0 <firmware ELF> <symbol name>"
+}
+
+if [ -z "$2" ]; then
+ usage
+ exit 1
+fi
+
+elf="$1"
+symbol="$2"
+
+address=`avr-gdb "$elf" -batch -ex "printf \"%04x\", &${symbol}"`
+if [ -z "$address" ]; then
+ exit 1
+fi
+
+size=`avr-gdb "$elf" -batch -ex "printf \"%04x\", sizeof(${symbol})"`
+
+m[0]="0x52"
+m[1]="0x${address: -2}"
+m[2]="0x${address: -4:2}"
+m[3]="0x${size: -2}"
+m[4]="0x${size: -4:2}"
+checksum=$((m[0] + m[1] + m[2] + m[3] + m[4]))
+
+printf -v packet '\\x24\\x05\\x00\\x%02x\\x%02x\\x%02x\\x%02x\\x%02x\\x%02x'  ${m[0]} ${m[1]} ${m[2]} ${m[3]} ${m[4]} $checksum
+
+echo -ne $packet
+

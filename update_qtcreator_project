@@ -1,0 +1,9 @@
+#!/bin/sh
+find . -name '*.cpp' \
+-or -name '*.c' \
+-or -name '*.h' \
+-or -name 'CMakeList.txt' \
+-or -name '*.md' \
+-or -name '*.txt' \
+-or -name 'Doxyfile' \
+> octopus.files

@@ -1,0 +1,8 @@
+- usart should use AsyncOperation
+- rename AsyncOperation to AsyncTask
+- cli application for libcomm
+- move compass_listener inside compass_provider
+- use a template for stepper
+- enum for led mode (LED_OFF, LED_BLINK, LED_ACTIVITY) as a parameter for looper::start
+- use pgmspace.h instead of avr_flash
+

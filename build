@@ -1,0 +1,8 @@
+#!/bin/sh -e
+./configure
+for d in out/*; do
+ cd $d
+ make
+ cd ../..
+done
+

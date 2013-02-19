@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Cedric Priscal
+ * Copyright 2010-2013 Cedric Priscal
  *
  * This file is part of Octopus SDK.
  *
@@ -17,43 +17,40 @@
  * along with Octopus SDK.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "octopus/prop/property_record.h"
-#include "octopus/dev/usart/avr_usart.h"
-#include "octopus/dev/usart/usart_listener.h"
 #include "octopus/dev/blink/blink.h"
-#include "octopus/util/fatal.h"
+#include "octopus/event/looper.h"
+#include "octopus/avr_usart.h"
 
-class LoopBack: private UsartListener {
+using namespace octopus;
+
+class Parrot: public Buffer::Callback {
+public:
+    Parrot() :
+        buffer(&b, sizeof(b), sizeof(b), this)
+    {
+        AvrUsart::instance.read(&buffer);
+    }
+
+    virtual void onReadFinished(Buffer* buffer)
+    {
+        // Byte received, send it back
+        AvrUsart::instance.write(buffer);
+    }
+
+    virtual void onWriteFinished(Buffer *buffer)
+    {
+        // Tx terminated, listen again
+        AvrUsart::instance.read(buffer);
+    }
 
 private:
-	// List of modules
-	Blink mBlink;
-
-	// Remote control
-	AvrUsart mAvrUsart;
-
-public:
-	// Constructor
-	LoopBack() :
-			mBlink(0), mAvrUsart(AvrUsart::B57600) {
-		mAvrUsart.registerListener(this);
-	}
-
-	void onStart() {
-		mAvrUsart.sendString("LoopBack starting!");
-	}
-
-	void onUsartReceived(unsigned char byte) {
-		mAvrUsart.sendByte(byte);
-	}
-
-	void onUsartBufferEmpty() {
-	}
+    Buffer buffer;
+    char b;
 };
 
 int main(void) {
-	static LoopBack lb;
-	lb.onStart();
-	Event::startLooper();
-	return 0;
+    Blink blink;
+    Parrot parrot;
+    Looper::instance.run();
+    return 0;
 }

@@ -21,6 +21,9 @@
 #include "octopus/dev/usart/avr_usart.h"
 #include "octopus/prop/property_record.h"
 #include "octopus/dev/blink/blink.h"
+#include "octopus/event/looper.h"
+
+using namespace octopus;
 
 /**
  * @brief RC Car with one DC motor for throttle and one coil for direction
@@ -53,7 +56,7 @@ private:
             operator=(value.s8);
         }
     public:
-        Throttle(Packet* packet) : PropertyS8(0, packet) {}
+        Throttle() : PropertyS8(0) {}
         signed char operator=(signed char value) {
             mValue = value;
             if (value > 0) {
@@ -84,7 +87,7 @@ private:
             operator=(value.s8);
         }
     public:
-        Direction(Packet* packet) : PropertyS8(0, packet) {}
+        Direction() : PropertyS8(0) {}
         signed char operator=(signed char value) {
             mValue = value;
             if (value > 0) {
@@ -157,6 +160,6 @@ int main(void)
 {
     static TwoChannelsCar car;
     car.onStart();
-    Event::startLooper();
+    main_looper.run();
     return 0;
 }

@@ -19,14 +19,14 @@
 
 #include "octopus/prop/octopus_comm_stack.h"
 #include "octopus/prop/property_record.h"
-#include "octopus/dev/usart/avr_usart.h"
-#include "octopus/dev/usart/usart_listener.h"
-#include "octopus/prop/packet.h"
 #include "octopus/dev/blink/blink.h"
 #include "octopus/dev/stepper/stepper_4c.h"
 #include "octopus/dev/stepper/stepper_4d.h"
 #include "octopus/dev/servo/servo.h"
 #include "octopus/util/fatal.h"
+#include "octopus/event/looper.h"
+
+using namespace octopus;
 
 /**
  * @brief Ground robot powered by two steppers, and one servomotor.
@@ -37,14 +37,14 @@ private:
     // List of modules
     class LeftStepper: public Stepper4C {
     public:
-        LeftStepper(Packet* packet) : Stepper4C(PORTC0, PORTC1, PORTC3, PORTC2, packet) {}
+        LeftStepper() : Stepper4C(PORTC0, PORTC1, PORTC3, PORTC2) {}
         const char* getName() const { return "LeftStepper"; }
         const char* getDescription() { return "Left step motor"; }
     } mLeft;
 
     class RightStepper: public Stepper4D {
     public:
-        RightStepper(Packet* packet) : Stepper4D(PORTD3, PORTD2, PORTD4, PORTD5, packet) {}
+        RightStepper() : Stepper4D(PORTD3, PORTD2, PORTD4, PORTD5) {}
         const char* getName() const { return "RightStepper"; }
         const char* getDescription() { return "Right step motor"; }
     } mRight;
@@ -94,6 +94,6 @@ public:
 int main(void)
 {
     static Eve eve;
-    Event::startLooper();
+    main_looper.run();
     return 0;
 }

@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+# Device targets
+for f in targets/*.cmake; do
+ TARGET=`basename "$f" .cmake`
+ mkdir -p "out/${TARGET}"
+ cd "out/${TARGET}"
+ cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH="../../$f" "../.."
+ cmake .
+ cd ../..
+done
+
+# Host target
+mkdir -p out/host
+cd out/host
+cmake ../..
+cd ../..

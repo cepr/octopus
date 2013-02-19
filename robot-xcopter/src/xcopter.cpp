@@ -1,13 +1,13 @@
 
 #include "octopus/prop/octopus_comm_stack.h"
 #include "octopus/prop/property_record.h"
-#include "octopus/dev/usart/avr_usart.h"
-#include "octopus/dev/usart/usart_listener.h"
-#include "octopus/prop/packet.h"
 #include "octopus/dev/blink/blink.h"
 #include "octopus/dev/servo/servo.h"
 #include "octopus/dev/compass/hmc6352.h"
 #include "octopus/util/fatal.h"
+#include "octopus/event/looper.h"
+
+using namespace octopus;
 
 class OctopusXCopter : public OctopusCommStack<AvrUsart, PropertyRecord>
 {
@@ -19,7 +19,7 @@ private:
     class FrontLeftMotor: public Servo
     {
     public:
-        FrontLeftMotor(Packet* packet) : Servo(4, packet) {
+        FrontLeftMotor() : Servo(4) {
             //mEnabled = true;
         }
         const char* getDescription() {
@@ -33,7 +33,7 @@ private:
     class FrontRightMotor : public Servo
     {
     public:
-        FrontRightMotor(Packet* packet) : Servo(5, packet) {
+        FrontRightMotor() : Servo(5) {
             //mEnabled = true;
         }
         const char* getDescription() {
@@ -47,7 +47,7 @@ private:
     class BackLeftMotor : public Servo
     {
     public:
-        BackLeftMotor(Packet* packet) : Servo(6, packet) {
+        BackLeftMotor() : Servo(6) {
             //mEnabled = true;
         }
         const char* getDescription() {
@@ -61,7 +61,7 @@ private:
     class BackRightMotor : public Servo
     {
     public:
-        BackRightMotor(Packet* packet) : Servo(7, packet) {
+        BackRightMotor() : Servo(7) {
             //mEnabled = true;
         }
         const char* getDescription() {
@@ -79,9 +79,9 @@ private:
         Hmc6352 mCompass;
 
         // Constructor
-        Heading(Packet* packet) :
+        Heading() :
                 // parent classes
-                PropertyU16(0, packet),
+                PropertyU16(0),
                 CompassListener(),
                 ApplicationTimer(),
                 // attributes
@@ -117,12 +117,12 @@ public:
     OctopusXCopter() :
         OctopusCommStack<AvrUsart, PropertyRecord>(),
         // Attributes
-        mBlink(&mPacket),
-        mFrontLeftMotor(&mPacket),
-        mFrontRightMotor(&mPacket),
-        mBackLeftMotor(&mPacket),
-        mBackRightMotor(&mPacket),
-        mHeading(&mPacket) {
+        mBlink(),
+        mFrontLeftMotor(),
+        mFrontRightMotor(),
+        mBackLeftMotor(),
+        mBackRightMotor(),
+        mHeading() {
     }
 
     // Property definition
@@ -166,6 +166,6 @@ int main(void)
 {
     static OctopusXCopter robot;
     robot.onStart();
-    Event::startLooper();
+    main_looper.run();
     return 0;
 }
