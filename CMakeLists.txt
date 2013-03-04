@@ -10,6 +10,7 @@ if(CMAKE_CROSSCOMPILING)
     add_subdirectory(libhmc6352)
 #    add_subdirectory(libimu3000)
 #    add_subdirectory(libcomm)
+    add_subdirectory(libservo)
 endif(CMAKE_CROSSCOMPILING)
 
 add_subdirectory(libstepper)

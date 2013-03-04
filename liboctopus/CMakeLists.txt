@@ -18,7 +18,6 @@ add_library(octopus STATIC
     src/blink.cpp
     src/fatal.cpp
     src/i2c.cpp
-#    src/servo.cpp
     src/timer.cpp
 )
 
