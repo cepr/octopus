@@ -5,38 +5,64 @@
 #include "octopus/servo.h"
 #include "octopus/avr_timer.h"
 #include "octopus/blink.h"
+#include "octopus/gpio.h"
 
 using namespace octopus;
 
-class Sample : public Timer::Task {
+class ServoSample : public Timer::Task, Gpio::Listener {
 public:
-    static const Timer::time_us_t MIN_PULSE_WIDTH = 1300;
-    static const Timer::time_us_t MAX_PULSE_WIDTH = 1700;
+    static const Servo::pos_t MIN_PULSE_WIDTH = 800;
+    static const Servo::pos_t MAX_PULSE_WIDTH = 2200;
 
-    Sample() :
-        servo(&PORTC, PORTC0, MIN_PULSE_WIDTH, MAX_PULSE_WIDTH),
-        seconds(0)
+    ServoSample() :
+        servo(&Gpio::C0),
+        position((MIN_PULSE_WIDTH + MAX_PULSE_WIDTH) / 2),
+        direction(0)
     {
+        // B0 and B1 controls the servomotor (pins 8 and 9 on Arduino Pro Mini)
+        Gpio::B0.setDirection(Gpio::INPUT);
+        Gpio::B0.activatePullUp();
+        Gpio::B0.registerListener(this);
+
+        Gpio::B1.setDirection(Gpio::INPUT);
+        Gpio::B1.activatePullUp();
+        Gpio::B1.registerListener(this);
     }
 
     void run(Timer::time_us_t when, char what)
     {
         // Compute new servo position
-        servo.reachPosition((int16_t)seconds *
-                            (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) / 60);
-        seconds++;
-        if (seconds < 60) {
-            AvrTimer::instance.schedule(this, when + 1000000);
+        if (direction) {
+            servo.reachPosition(position);
+            position += direction;
+            if (position > MAX_PULSE_WIDTH) {
+                position = MAX_PULSE_WIDTH;
+            } else if (position < MIN_PULSE_WIDTH) {
+                position = MIN_PULSE_WIDTH;
+            }
+        }
+        AvrTimer::instance.schedule(this, when + 20000);
+    }
+
+    // From Gpio::Listener
+    void onPinChange()
+    {
+        if (!Gpio::B0.get()) {
+            direction = 20;
+        } else if (!Gpio::B1.get()){
+            direction = -20;
         } else {
+            direction = 0;
             servo.stop();
         }
     }
 
     Servo servo;
-    uint8_t seconds;
+    uint16_t position;
+    int16_t direction;
 };
 
-Sample s;
+ServoSample s;
 
 int main(void)
 {

@@ -17,6 +17,7 @@ add_library(octopus STATIC
     src/avr_usart.cpp
     src/blink.cpp
     src/fatal.cpp
+    src/gpio.cpp
     src/i2c.cpp
     src/timer.cpp
 )
@@ -25,6 +26,11 @@ add_library(octopus STATIC
 add_executable(squeleton-sample sample/squeleton-sample.cpp)
 target_link_libraries(squeleton-sample octopus)
 add_hex(squeleton-sample)
+
+# Gpio sample
+add_executable(gpio-sample sample/gpio-sample.cpp)
+target_link_libraries(gpio-sample octopus)
+add_hex(gpio-sample)
 
 # Blink sample
 add_executable(blink-sample sample/blink-sample.cpp)

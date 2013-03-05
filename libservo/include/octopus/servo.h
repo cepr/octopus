@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include "octopus/timer.h"
 #include <avr/io.h>
+#include "octopus/gpio.h"
 
 namespace octopus {
 
@@ -38,12 +39,9 @@ public:
      * @brief Type representing a servomotor position.
      *
      * One step of the position corresponds to 1 us of the pulse width sent to
-     * the servomotor. The zero position corresponds to the servomotor
-     * position when sending the minimum pulse width. The pulse width is
-     * computed as a modulo in order to support continuous rotation
-     * servomotors.
+     * the servomotor.
      */
-    typedef int16_t pos_t;
+    typedef Timer::time_us_t pos_t;
 
     /**
      * @brief Constructor.
@@ -51,28 +49,13 @@ public:
      * This constructor gives you access to an analog servomotor motor using 1
      * GPIO.
      *
-     * @param[in] port
-     *      Port to use:
-     *      @arg @c &PORTB
-     *      @arg @c &PORTC
-     *      @arg @c &PORTD
-     *
-     * @param[in] pin
-     *      GPIO number to use on which the servomotor is plugged.
-     *
-     * @param[in] min_pulse_width
-     *      Minimum pulse width.
-     *
-     * @param[in] max_pulse_wdith
-     *      Maximum pulse width.
+     * @param[in] gpio
+     *      GPIO to use
      *
      * @param[in] period
      *      Pulse refresh period.
      */
-    Servo(volatile uint8_t *port,
-          uint8_t pin,
-          Timer::time_us_t min_pulse_width,
-          Timer::time_us_t max_pulse_width,
+    Servo(Gpio* gpio,
           Timer::time_us_t period = 20000);
 
     /**
@@ -96,33 +79,27 @@ public:
     void stop();
 
 private:
-    Timer::time_us_t min_pulse_width;
-    Timer::time_us_t max_pulse_width;
     bool enabled;
     pos_t position;
 
     // Timer task to stop the pulse
     class StopPulseTask : public Timer::Task {
     public:
-        StopPulseTask(volatile uint8_t *port,
-                      uint8_t pin);
+        StopPulseTask(Gpio* gpio);
     private:
-        volatile uint8_t *port;
-        uint8_t npin;
+        Gpio* gpio;
         void run(Timer::time_us_t when, char what);
     };
 
     // Timer task to start the pulse
     class StartPulseTask : public Timer::Task {
     public:
-        StartPulseTask(volatile uint8_t *port,
-                       uint8_t pin,
+        StartPulseTask(Gpio* gpio,
                        Timer::time_us_t period);
         void run(Timer::time_us_t when, char what);
         Timer::time_us_t pulse_width;
     private:
-        volatile uint8_t *port;
-        uint8_t pin;
+        Gpio* gpio;
         Timer::time_us_t period;
         StopPulseTask stop_task;
     } start_task;

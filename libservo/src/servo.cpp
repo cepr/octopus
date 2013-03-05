@@ -21,49 +21,28 @@
 
 #include <avr/io.h>
 #include "octopus/servo.h"
-#include "octopus/fatal.h"
 #include "octopus/avr_timer.h"
 #include "octopus/lock.h"
 
 namespace octopus {
 
-Servo::Servo(volatile uint8_t *port,
-             uint8_t pin,
-             Timer::time_us_t min_pulse_width,
-             Timer::time_us_t max_pulse_width,
+Servo::Servo(Gpio* gpio,
              Timer::time_us_t period) :
-    min_pulse_width(min_pulse_width),
-    max_pulse_width(max_pulse_width),
     enabled(false),
     position(0),
-    start_task(port, _BV(pin), period)
+    start_task(gpio, period)
 {
-    if (port == &PORTB) {
-        PORTB &= ~_BV(pin);
-        DDRB |= _BV(pin);
-    } else if (port == &PORTC) {
-        PORTC &= ~_BV(pin);
-        DDRC |= _BV(pin);
-    } else if (port == &PORTD) {
-        PORTD &= ~_BV(pin);
-        DDRD |= _BV(pin);
-    } else {
-        fatal(FATAL_INVALID_PARAMETER);
-    }
+    gpio->setDirection(Gpio::OUTPUT);
+    gpio->clear();
 }
 
 void Servo::reachPosition(pos_t position)
 {
-    // Compute the pulse width before masquing interrupts since a modulo can be quite long.
-    Timer::time_us_t i = (position % (max_pulse_width - min_pulse_width)) + min_pulse_width;
-    {
-        // Mask interrupts and apply new pulse width.
-        Lock l;
-        start_task.pulse_width = i;
-        if (!enabled) {
-            start_task.run(AvrTimer::instance.now(), 0);
-            enabled = true;
-        }
+    Lock l;
+    start_task.pulse_width = position;
+    if (!enabled) {
+        start_task.run(AvrTimer::instance.now(), 0);
+        enabled = true;
     }
 }
 
@@ -76,20 +55,18 @@ void Servo::stop()
     }
 }
 
-Servo::StartPulseTask::StartPulseTask(volatile uint8_t *port,
-                                      uint8_t pin,
+Servo::StartPulseTask::StartPulseTask(Gpio *gpio,
                                       Timer::time_us_t period) :
-    port(port),
-    pin(pin),
+    gpio(gpio),
     period(period),
-    stop_task(port, pin)
+    stop_task(gpio)
 {
 }
 
 void Servo::StartPulseTask::run(Timer::time_us_t when, char what)
 {
     // set GPIO high
-    _MMIO_BYTE(port) |= pin;
+    gpio->set();
 
     // program end of pulse
     AvrTimer::instance.schedule(&stop_task, when + pulse_width);
@@ -98,17 +75,15 @@ void Servo::StartPulseTask::run(Timer::time_us_t when, char what)
     AvrTimer::instance.schedule(this, when + period);
 }
 
-Servo::StopPulseTask::StopPulseTask(volatile uint8_t *port,
-                                    uint8_t pin) :
-    port(port),
-    npin(~pin)
+Servo::StopPulseTask::StopPulseTask(Gpio *gpio) :
+    gpio(gpio)
 {
 }
 
 void Servo::StopPulseTask::run(Timer::time_us_t when, char what)
 {
     // clear GPIO
-    _MMIO_BYTE(port) &= npin;
+    gpio->clear();
 }
 
 } /* namespace octopus */

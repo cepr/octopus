@@ -130,7 +130,7 @@ public:
      *  This function is not safe from interrupts.
 	 */
 	T* insert(T* item, T* at = 0) {
-		if ( item && !item->prev && !item->next ) {
+        if ( item && !item->prev && !item->next && (item != first.ptr) ) {
 			if (at) {
 				// not the last element
 				item->prev = at->prev;
