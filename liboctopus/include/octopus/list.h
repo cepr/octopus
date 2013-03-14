@@ -202,9 +202,12 @@ public:
      * @warning This function is not safe from interrupts.
 	 */
 	T* remove(T* item) {
-		if (item) {
+        if (item) {
 			if (item->prev) {
 				item->prev->next = item->next;
+            } else if (first.ptr != item) {
+                // `item` is not part of the list
+                return item;
 			} else {
                 first.ptr = static_cast<T*>(item->next);
             }

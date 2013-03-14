@@ -83,10 +83,6 @@ public:
         time_us_t when;
         char what;
 
-        // For List<Task>
-        Task* prev;
-        Task* next;
-
     private:
         // From AsyncOperation
         virtual void onFinished() {
