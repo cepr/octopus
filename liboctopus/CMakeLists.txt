@@ -7,8 +7,7 @@ include_directories(
 )
 
 add_library(octopus STATIC
-#    src/analog_channel.cpp
-#    src/analog_to_digital_converter.cpp
+    src/avr_adc.cpp
     src/async_operation.cpp
     src/avr_looper.cpp
     src/avr_timer.cpp
@@ -41,3 +40,8 @@ add_hex(blink-sample)
 add_executable(usart-sample sample/usart-sample.cpp)
 target_link_libraries(usart-sample octopus)
 add_hex(usart-sample)
+
+# Temperature sample
+add_executable(temperature-sample sample/temperature-sample.cpp)
+target_link_libraries(temperature-sample octopus)
+add_hex(temperature-sample)
