@@ -34,9 +34,7 @@ AvrUsart AvrUsart::instance;
 // ///////////////////////////////////////////////////////
 
 AvrUsart::AvrUsart() :
-        read_ptr(0),
         write_ptr(0),
-        read_size(0),
         write_size(0)
 {
     setBaudrate(B57600);
@@ -121,23 +119,23 @@ void AvrUsart::setBaudrate(Baudrate baudrate)
 
 void AvrUsart::resumeRX()
 {
-    while (!read_size) {
-        Buffer* buf = read_list.front();
-        if (buf) {
-            read_size = buf->size;
-            read_ptr = buf->ptr;
-            if (!read_size) {
-                // Trying to read in an empty buffer, skip to the next one
-                read_list.remove(buf);
-                if (buf->callback) {
-                    buf->callback->onReadFinished(buf);
-                }
-            }
-        } else {
-            // No more read buffers, abort
-            return;
+    Buffer* buf;
+
+    // Skip all full buffer
+    while( ( (buf = read_list.front()) != 0) &&
+          (buf->size >= buf->capacity) ) {
+        // Trying to read in an empty buffer, skip to the next one
+        read_list.remove(buf);
+        if (buf->callback) {
+            buf->callback->onReadFinished(buf);
         }
     }
+
+    if (!buf) {
+        // No more read buffers, abort
+        return;
+    }
+
     UCSR0B |= _BV(RXCIE0) | // RX Complete Interrupt Enable
               _BV(RXEN0);   // Receiver Enable
 }
@@ -161,38 +159,33 @@ void AvrUsart::rxInterrupt()
             fatal(FATAL_USART_RX_OVERRUN);
         }
 
-        if (read_size) {
-            // Get the received byte
-            *read_ptr++ = UDR0;
+        // Read the received byte
+        unsigned char rx = UDR0;
 
-            if (--read_size == 0) {
-                // The current read buffer is full
+        // Append the received byte to the current buffer
+        Buffer* buf = read_list.front();
+        buf->ptr[buf->size++] = (char)rx;
 
-                // Remove this buffer from the list
-                Buffer* buf = read_list.front();
-                do {
-                    read_list.remove(buf);
+        // Check if the current buffer is full or if the termination
+        // character has been read.
+        if ( (buf->size == buf->capacity) ||
+             ((int)rx == buf->term_char) ) {
 
-                    // Call its callback
-                    if (buf->callback) {
-                        buf->callback->onReadFinished(buf);
-                    }
+            do {
+                read_list.remove(buf);
 
-                    // Get the next buffer
-                    buf = read_list.front();
-                    if (buf) {
-                        read_ptr = buf->ptr;
-                        read_size = buf->size;
-                    } else {
-                        suspendRX();
-                        return;
-                    }
-                } while(!read_size);
-            }
-        } else {
-            // Should not happen
-            suspendRX();
-            return;
+                // Call its callback
+                if (buf->callback) {
+                    buf->callback->onReadFinished(buf);
+                }
+
+                // Get the next buffer
+                buf = read_list.front();
+                if (!buf) {
+                    suspendRX();
+                    return;
+                }
+            } while (buf->size >= buf->capacity);
         }
     }
 }

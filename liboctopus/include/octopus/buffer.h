@@ -75,19 +75,31 @@ public:
     /**
      * @brief Constructor.
      *
-     * @param[in] ptr       Pointer to the buffer data
-     * @param[in] capacity  Buffer capacity
-     * @param[in] size      Buffer initial size
-     * @param[in] callback  Optional callback for asynchronous operations
+     * @param ptr
+     *      Pointer to the buffer data.
+     *
+     * @param capacity
+     *      Buffer capacity.
+     *
+     * @param size
+     *      Buffer initial size.
+     *
+     * @param callback
+     *      Optional callback for asynchronous operations.
+     *
+     * @param term_char
+     *      Optional termination character for a reading operation.
      */
     Buffer(char *ptr = 0,
            size_t capacity = 0,
            size_t size = 0,
-           Callback* callback = 0) :
+           Callback* callback = 0,
+           int term_char = -1) :
         ptr(ptr),
         size(size),
         capacity(capacity),
         callback(callback),
+        term_char(term_char),
         prev(0),
         next(0)
     {
@@ -119,6 +131,15 @@ public:
      * asynchronous operation using this buffer.
      */
     Callback* callback;
+
+    /**
+     * @brief Terminating char or -1 if unused.
+     *
+     * If not `-1`, this value will serve as a terminating char for the
+     * current reading, meaning that `callback` will be called every
+     * time this value is read.
+     */
+    int term_char;
 
     // For List<Buffer>
     Buffer* prev; // Pointer to the previous buffer

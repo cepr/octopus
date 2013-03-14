@@ -75,8 +75,8 @@ public:
 
 private:
     // Pointer and size for current read and write buffers
-    char *read_ptr, *write_ptr;
-    size_t read_size, write_size;
+    char *write_ptr;
+    size_t write_size;
 
     // Private constructor
     AvrUsart();
