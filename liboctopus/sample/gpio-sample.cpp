@@ -23,7 +23,7 @@ public:
         Gpio::B1.activatePullUp();
 
         // Read of the pin value
-        uint8_t value = Gpio::B1.get();
+        bool value = Gpio::B1.get();
 
         // Configuration of B5 pin (LED on Arduino Pro Mini).
         Gpio::B5.setDirection(Gpio::OUTPUT);

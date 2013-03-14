@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include "octopus/async_operation.h"
+#include "octopus/timer.h"
 
 namespace octopus {
 
@@ -11,7 +12,7 @@ namespace octopus {
  *
  * This class manages all the ATmega328P GPIOs.
  */
-class Gpio
+class Gpio: private Timer::Task
 {
 public:
 
@@ -46,10 +47,10 @@ public:
      * @brief Sets the pin value.
      *
      * @param value
-     *      @arg 0 to set the pin to LOW
-     *      @arg 1 to set the pin to HIGH
+     *      @arg `false` to set the pin to LOW
+     *      @arg `true` to set the pin to HIGH
      */
-    inline void set(uint8_t value) const {
+    inline void set(bool value) const {
         if (value) {
             set();
         } else {
@@ -66,6 +67,18 @@ public:
     inline void clear() const {
         _MMIO_BYTE(port) &= ~_BV(pin_number);
     }
+
+    /**
+     * @brief Generates a timed pulse.
+     *
+     * @param value
+     *      @arg `false` to set the pulse to LOW.
+     *      @arg `true` to set the pulse to HIGH.
+     *
+     * @param duration
+     *      Duration of the pulse in microseconds.
+     */
+    void pulse(bool value, Timer::time_us_t width);
 
     /**
      * @brief Activates the internal pull-up.
@@ -85,10 +98,10 @@ public:
      * @brief Gets the GPIO input value.
      *
      * @return
-     *      @arg 0 if GPIO is reading low
-     *      @arg 1 if GPIO is reading high
+     *      @arg `false` if GPIO is reading low
+     *      @arg `true` if GPIO is reading high
      */
-    inline uint8_t get() const {
+    inline bool get() const {
         return (_MMIO_BYTE(pin) >> pin_number) & 1;
     }
 
@@ -106,9 +119,6 @@ public:
             AsyncOperation(looper)
         {
         }
-        // For List<Listener>
-        Listener* prev;
-        Listener* next;
     protected:
         virtual void onPinChange() = 0;
     private:
@@ -163,12 +173,18 @@ public:
     static Gpio D7;
 
 private:
+    // Private constructor
     Gpio(uint8_t bank,
          uint8_t pin_number);
+
+    // From Timer::Task used to generate pulse
+    void run(Timer::time_us_t when, char what);
+
     const uint8_t bank;
     const uint8_t pin_number;
     volatile uint8_t const *pin;
     volatile uint8_t const *port;
+    bool pulse_value;
 };
 
 } /* namespace octopus */

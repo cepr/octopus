@@ -2,6 +2,7 @@
 #include "octopus/gpio.h"
 #include "octopus/lock.h"
 #include "octopus/list.h"
+#include "octopus/avr_timer.h"
 
 namespace octopus {
 
@@ -83,6 +84,25 @@ void Gpio::setDirection(direction_t direction) const
     } else {
         _MMIO_BYTE(BANKS[bank].ddr) &= ~_BV(pin_number);
     }
+}
+
+void Gpio::pulse(bool value, Timer::time_us_t width)
+{
+    // Abort any previous pulse
+    AvrTimer::instance.cancel(this);
+
+    // Start the pulse
+    pulse_value = value;
+    set(value);
+
+    // Program the Timer::Task to stop the pulse
+    AvrTimer::instance.schedule(this, AvrTimer::instance.now() + width);
+}
+
+// Called when the pulse is over
+void Gpio::run(Timer::time_us_t when, char what)
+{
+    set(!pulse_value);
 }
 
 void Gpio::registerListener(Listener *listener)
