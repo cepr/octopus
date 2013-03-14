@@ -20,6 +20,16 @@
 #include "octopus/avr_timer.h"
 #include "octopus/fatal.h"
 
+#if (F_CPU == 8000000L)
+#   define TO_TICK(t) (t)
+#   define TO_TIME(t) (t)
+#elif (F_CPU == 16000000L)
+#   define TO_TICK(t) (((uint32_t)t)<<1)
+#   define TO_TIME(t) (((uint32_t)t)>>1)
+#else
+#   error Unsupported F_CPU
+#endif
+
 namespace octopus {
 
 AvrTimer AvrTimer::instance;
@@ -34,7 +44,7 @@ AvrTimer::AvrTimer() :
 
 AvrTimer::time_us_t AvrTimer::now()
 {
-    return offset + TCNT1;
+    return TO_TIME(offset + TCNT1);
 }
 
 // This function is meant to be called with masked interrupts
@@ -54,12 +64,13 @@ void AvrTimer::reschedule()
         task->post();
     }
 
-    if (task && ((task->when >> 16) == (offset >> 16))) {
-        OCR1A = (uint16_t)list.front()->when;
+    uint32_t ticks = TO_TICK(task->when);
+    if (task && ((ticks & 0xffff0000L) == offset)) {
+        OCR1A = (uint16_t)(ticks);
         TIMSK1 = _BV(OCIE1A) |  // Timer/Counter1, Output Compare A Match Interrupt Enable
                  _BV(TOIE1);    // Timer/Counter1, Overflow Interrupt Enable
     } else {
-        // No more timers soon
+        // No timer any time soon
         TIMSK1 = _BV(TOIE1);    // Timer/Counter1, Overflow Interrupt Enable
     }
 }

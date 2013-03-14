@@ -32,7 +32,7 @@ public:
     static AvrTimer instance;
     virtual time_us_t now();
     virtual void reschedule();
-    time_us_t offset;
+    uint32_t offset;
 private:
     AvrTimer();
 };
