@@ -25,6 +25,7 @@
 #endif
 
 #include "usart.h"
+#include "gpio.h"
 
 namespace octopus {
 
@@ -40,7 +41,7 @@ namespace octopus {
  * - no parity
  * - 1 stop bit
  */
-class AvrUsart: public Usart
+class AvrUsart: public Usart, private Gpio::Listener
 {
 public:
     /**
@@ -73,6 +74,16 @@ public:
      */
     void setBaudrate(Baudrate baudrate);
 
+    /**
+     * @brief Activates the Pin Change Interrupt on RX pin.
+     *
+     * Call this method before going to power save or power down mode in
+     * order to get awake when data is coming on RX pin.
+     *
+     * You have to call this method every time before sleeping.
+     */
+    void sleep();
+
 private:
     // Pointer and size for current read and write buffers
     char *write_ptr;
@@ -92,6 +103,9 @@ private:
 
     // Suspend transmission
     void suspendTX();
+
+    // RX pin change detection
+    void onPinChange();
 
 public:
     // Reception interrupt handler

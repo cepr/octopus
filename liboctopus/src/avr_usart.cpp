@@ -23,6 +23,8 @@
 #include <avr/interrupt.h>
 #include "octopus/avr_usart.h"
 #include "octopus/fatal.h"
+#include "octopus/gpio.h"
+#include "octopus/power_management.h"
 
 namespace octopus {
 
@@ -41,6 +43,14 @@ AvrUsart::AvrUsart() :
     UCSR0C = _BV(UCSZ01) | // 8 bits, 1 stop bit, no parity
              _BV(UCSZ00);
     UCSR0B = 0; // USART is deactivated by default
+
+    // Set RX pin in input with pull-up
+    Gpio::D0.setDirection(Gpio::INPUT);
+    Gpio::D0.activatePullUp();
+
+    // Set TX pin in output high
+    Gpio::D0.setDirection(Gpio::OUTPUT);
+    Gpio::D0.set();
 }
 
 void AvrUsart::setBaudrate(Baudrate baudrate)
@@ -136,6 +146,9 @@ void AvrUsart::resumeRX()
         return;
     }
 
+    // Keep clkIO ON.
+    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_RX);
+
     UCSR0B |= _BV(RXCIE0) | // RX Complete Interrupt Enable
               _BV(RXEN0);   // Receiver Enable
 }
@@ -214,6 +227,10 @@ void AvrUsart::resumeTX()
             return;
         }
     }
+
+    // keep clkIO ON
+    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_TX);
+
     UCSR0B |= _BV(UDRIE0) | // USART Data Register Empty Interrupt Enable
               _BV(TXEN0);   // Transmitter Enable
 }
@@ -227,6 +244,12 @@ void AvrUsart::suspendTX()
 ISR(USART_UDRE_vect)
 {
     AvrUsart::instance.txInterrupt();
+}
+
+/* USART, USART Transmit Complete */
+ISR(USART_TX_vect)
+{
+    PowerManagement::instance.clk_IO.release(PowerManagement::LOCK_USART_TX);
 }
 
 void AvrUsart::txInterrupt()
@@ -269,6 +292,22 @@ void AvrUsart::txInterrupt()
             return;
         }
     }
+}
+
+// ///////////////////////////////////////////////////////
+//   Power management
+// ///////////////////////////////////////////////////////
+void AvrUsart::sleep()
+{
+    Gpio::D0.registerListener(this);
+    PowerManagement::instance.clk_IO.release(PowerManagement::LOCK_USART_RX);
+}
+
+void AvrUsart::onPinChange()
+{
+    // Incoming data, deactivate sleep
+    Gpio::D0.unregisterListener(this);
+    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_RX);
 }
 
 } /* namespace octopus */
