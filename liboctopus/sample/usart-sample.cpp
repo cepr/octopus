@@ -6,37 +6,40 @@
 
 using namespace octopus;
 
-static const char HELLO_WORLD_STRING[] = "Hello, world !\n";
-
 class UsartSample: private Buffer::Callback
 {
 public:
     // Constructor
     UsartSample() :
-        output_buffer((char*)HELLO_WORLD_STRING, // pointer to buffer data
-                      0, // capacity, not used for writing USART
-                      sizeof(HELLO_WORLD_STRING) - 1, // size, the number of bytes to write to the USART
-                      this) // callback, see onWriteFinished() below
+        buffer(data, // pointer to buffer data
+               sizeof(data), // capacity, not used for writing USART
+               sizeof(data), // size, the number of bytes to write to the USART
+               this) // callback, see onWriteFinished() below
     {
+        // Set the baudrate
+        AvrUsart::instance.setBaudrate(AvrUsart::B38400);
+
         // Initiate the first write
-        AvrUsart::instance.write(&output_buffer);
+        data[0] = '>';
+        AvrUsart::instance.write(&buffer);
     }
 
     // From Buffer::Callback
     void onReadFinished(Buffer* buffer)
-    {
-
+    {    
+        AvrUsart::instance.write(buffer);
     }
 
     // From Buffer::Callback
     void onWriteFinished(Buffer *buffer)
     {
-        (void) buffer; // parameter buffer not used
-        AvrUsart::instance.write(&output_buffer);
+        buffer->size = 0;
+        AvrUsart::instance.read(buffer);
     }
 
 private:
-    Buffer output_buffer;
+    Buffer buffer;
+    char data[1];
 };
 
 int main(void)
