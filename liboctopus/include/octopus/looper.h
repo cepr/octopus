@@ -22,6 +22,7 @@
 
 #include "octopus/list.h"
 #include "octopus/async_operation.h"
+#include "octopus/gpio.h"
 
 namespace octopus {
 
@@ -46,9 +47,10 @@ public:
      * events and will call the AsyncOperation::onFinished() method of
      * each event.
 	 *
-     * @param[in] led_activity  If set to @a true, the Arduino LED will reflect CPU activity.
+     * @param[in] led_activity
+     *      GPIO used to monitor the Looper activity.
 	 */
-    void run(bool led_activity = false);
+    void run(Gpio* led_activity = 0);
 
 private:
     // Private constructor.

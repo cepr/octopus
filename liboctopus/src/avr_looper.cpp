@@ -21,20 +21,17 @@
 
 #include "octopus/looper.h"
 #include "octopus/lock.h"
-
-#include <avr/sleep.h>
+#include "octopus/power_management.h"
 
 namespace octopus {
 
 Looper Looper::instance;
 
-void Looper::run(bool led_activity) {
-	// Initialize sleep mode
-	set_sleep_mode(SLEEP_MODE_IDLE);
+void Looper::run(Gpio* led_activity) {
 
-    // Configure Arduino LED
+    // Configure activity LED
     if (led_activity) {
-        DDRB |= _BV(DDB5);
+        led_activity->setDirection(Gpio::OUTPUT);
     }
 
     // Activate interrupts
@@ -58,13 +55,13 @@ void Looper::run(bool led_activity) {
 		} else {
 			// No more pending event, go to sleep
             if (led_activity) {
-                PORTB &= ~_BV(PORTB5);
+                led_activity->clear();
             }
-			sleep_enable();
-			sleep_cpu();
-			sleep_disable();
+
+            PowerManagement::instance.sleep();
+
             if (led_activity) {
-                PORTB |= _BV(PORTB5);
+                led_activity->set();
             }
 		}
 	}

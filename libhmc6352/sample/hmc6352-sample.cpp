@@ -54,6 +54,6 @@ int main(void)
     // Start the compass timer
     AvrTimer::instance.schedule(&compass, 0);
 
-    Looper::instance.run(true);
+    Looper::instance.run(&Gpio::B5);
     return 0;
 }

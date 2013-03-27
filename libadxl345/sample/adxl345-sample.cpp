@@ -7,6 +7,6 @@ using namespace octopus;
 
 int main(void)
 {
-    Looper::instance.run(true);
+    Looper::instance.run(&Gpio::B5);
     return 0;
 }

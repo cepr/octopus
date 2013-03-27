@@ -11,6 +11,6 @@ Blink blink(&Looper::instance);
 int main(void)
 {
     blink.enable();
-    Looper::instance.run(false);
+    Looper::instance.run();
     return 0;
 }

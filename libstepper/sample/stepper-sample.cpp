@@ -35,6 +35,6 @@ MyRobot robot;
 int main(void)
 {
     robot.start();
-    Looper::instance.run(true);
+    Looper::instance.run(&Gpio::B5);
     return 0;
 }

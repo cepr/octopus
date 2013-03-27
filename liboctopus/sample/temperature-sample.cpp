@@ -46,6 +46,6 @@ private:
 int main(void)
 {
     static TemperatureSample sample;
-    Looper::instance.run(true);
+    Looper::instance.run(&Gpio::B5);
     return 0;
 }

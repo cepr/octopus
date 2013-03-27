@@ -67,6 +67,6 @@ ServoSample s;
 int main(void)
 {
     s.run(AvrTimer::instance.now(), 0);
-    Looper::instance.run(true);
+    Looper::instance.run(&Gpio::B5);
     return 0;
 }
