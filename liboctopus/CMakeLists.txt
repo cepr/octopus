@@ -19,6 +19,7 @@ add_library(octopus STATIC
     src/gpio.cpp
     src/i2c.cpp
     src/timer.cpp
+    src/power_manager.cpp
 )
 
 # Squeleton sample

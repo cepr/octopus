@@ -1,13 +1,13 @@
-#include "octopus/power_management.h"
+#include "octopus/power_manager.h"
 
 #include <avr/io.h>
 #include <avr/sleep.h>
 
 namespace octopus {
 
-PowerManagement PowerManagement::instance;
+PowerManager PowerManager::instance;
 
-PowerManagement::PowerManagement()
+PowerManager::PowerManager()
 {
     PRR = _BV(PRADC) | // PRADC: Power Reduction ADC
             //_BV(PRUSART0) | // Power Reduction USART0
@@ -18,7 +18,7 @@ PowerManagement::PowerManagement()
             _BV(PRTWI); // Power Reduction TWI
 }
 
-void PowerManagement::sleep()
+void PowerManager::sleep()
 {
     if (!clk_IO.locks) {
         if (!clk_ADC.locks) {

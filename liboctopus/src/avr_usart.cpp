@@ -24,7 +24,7 @@
 #include "octopus/avr_usart.h"
 #include "octopus/fatal.h"
 #include "octopus/gpio.h"
-#include "octopus/power_management.h"
+#include "octopus/power_manager.h"
 
 namespace octopus {
 
@@ -147,7 +147,7 @@ void AvrUsart::resumeRX()
     }
 
     // Keep clkIO ON.
-    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_RX);
+    PowerManager::instance.clk_IO.acquire(PowerManager::LOCK_USART_RX);
 
     UCSR0B |= _BV(RXCIE0) | // RX Complete Interrupt Enable
               _BV(RXEN0);   // Receiver Enable
@@ -229,7 +229,7 @@ void AvrUsart::resumeTX()
     }
 
     // keep clkIO ON
-    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_TX);
+    PowerManager::instance.clk_IO.acquire(PowerManager::LOCK_USART_TX);
 
     UCSR0B |= _BV(UDRIE0) | // USART Data Register Empty Interrupt Enable
               _BV(TXEN0);   // Transmitter Enable
@@ -249,7 +249,7 @@ ISR(USART_UDRE_vect)
 /* USART, USART Transmit Complete */
 ISR(USART_TX_vect)
 {
-    PowerManagement::instance.clk_IO.release(PowerManagement::LOCK_USART_TX);
+    PowerManager::instance.clk_IO.release(PowerManager::LOCK_USART_TX);
 }
 
 void AvrUsart::txInterrupt()
@@ -300,14 +300,14 @@ void AvrUsart::txInterrupt()
 void AvrUsart::sleep()
 {
     Gpio::D0.registerListener(this);
-    PowerManagement::instance.clk_IO.release(PowerManagement::LOCK_USART_RX);
+    PowerManager::instance.clk_IO.release(PowerManager::LOCK_USART_RX);
 }
 
 void AvrUsart::onPinChange()
 {
     // Incoming data, deactivate sleep
     Gpio::D0.unregisterListener(this);
-    PowerManagement::instance.clk_IO.acquire(PowerManagement::LOCK_USART_RX);
+    PowerManager::instance.clk_IO.acquire(PowerManager::LOCK_USART_RX);
 }
 
 } /* namespace octopus */

@@ -21,16 +21,13 @@
 
 #include "octopus/looper.h"
 #include "octopus/lock.h"
-#include <avr/sleep.h>
+#include "octopus/power_manager.h"
 
 namespace octopus {
 
 Looper Looper::instance;
 
 void Looper::run(Gpio* led_activity) {
-
-    // Initialize sleep mode
-    set_sleep_mode(SLEEP_MODE_IDLE);
 
     // Configure activity LED
     if (led_activity) {
@@ -61,9 +58,7 @@ void Looper::run(Gpio* led_activity) {
                 led_activity->clear();
             }
 
-            sleep_enable();
-            sleep_cpu();
-            sleep_disable();
+            PowerManager::instance.sleep();
 
             if (led_activity) {
                 led_activity->set();

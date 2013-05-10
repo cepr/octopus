@@ -6,13 +6,13 @@
 
 namespace octopus {
 
-class PowerManagement
+class PowerManager
 {
 public:
     /**
-     * @brief PowerManagement singleton.
+     * @brief PowerManager singleton.
      */
-    static PowerManagement instance;
+    static PowerManager instance;
 
     /**
      * @brief List of devices that the PowerManager
@@ -30,7 +30,7 @@ public:
 
     /**
      * @brief List of locks that can be used to
-     *        prevent some clocks to be shut down.
+     *        prevent some clocks from being shut down.
      */
     typedef enum {
         LOCK_IDLE = (1<<0),
@@ -73,7 +73,7 @@ public:
     private:
         Clock() : locks(0) {}
         uint8_t locks;
-        friend class PowerManagement;
+        friend class PowerManager;
     };
 
     Clock clk_IO;
@@ -85,7 +85,7 @@ public:
     void sleep();
 
 private:
-    PowerManagement();
+    PowerManager();
     friend class Clock;
 };
 
